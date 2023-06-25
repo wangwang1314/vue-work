@@ -1,0 +1,96 @@
+body {
+  --margin: 14px;
+  --padding: 16px;
+}
+
+// 颜色变量
+$color-theme: rgb(var(--primary-6));
+$color-primary: rgb(var(--primary-6));
+$color-success: rgb(var(--success-6));
+$color-warning: rgb(var(--warning-6));
+$color-danger: rgb(var(--danger-6));
+$color-info: rgb(var(--gray-6));
+
+$color-text-1: var(--color-text-1); // 标题、重点文本字体颜色
+$color-text-2: var(--color-text-2); // 文本-全局默认字体颜色
+$color-text-3: var(--color-text-3); // 二级文本颜色
+$color-text-4: var(--color-text-4); // 辅助文本颜色
+
+$color-border: var(--color-border); // 边框颜色、分割线颜色
+$color-bg: rgb(233, 235, 239); // 背景颜色
+$color-bg-box: var(--color-bg-1);
+
+$margin: var(--margin);
+$padding: var(--padding);
+
+$radius-box: 4px;
+
+body {
+  --inner-padding: 26px;
+  --color-text-1: #111111;
+  --color-text-2: #444;
+  --color-text-3: #777;
+  --color-text-4: rgba(78, 89, 105);
+  --color-fill-5: rgb(233, 235, 239);
+  --color-text-6: rgb(134, 144, 156);
+  --color-text-7: rgb(29, 33, 41);
+  --m-size: 12px;
+  --header-black: rgb(64, 99, 255);
+  --color-white: #fff;
+  --red-init:rgb(219, 75, 67);
+  --orange-init:rgb(235, 176, 35);
+  --text-color-gray: #777;
+  --gi-footer-h: 40px;
+  --font-color-1: rgb(68, 68, 68);
+  --fill-1:rgb(119, 119, 119);
+  --primary-6: 64, 99, 255!important;
+  --primary-5:40, 74, 227!important;
+  --color-fill-1:rgb(246, 246, 246);
+  --color-fill-2: rgb(247, 248, 250);
+  --tab-bg-1: rgb(233, 235, 239);
+  --border-color-1: rgb(221, 221, 221);
+  --border-color-2: rgb(201, 205, 212);
+  --red-6: 219, 75, 67;
+  --color-fill-1: rgb(233, 235, 239);
+  --color-border-2: rgb(221, 221, 221);
+  --padding-1: 24px;
+  --color-neutral-3: rgb(221, 221, 221);
+  --bg-1: rgb(233, 235, 239);
+  --y: rgb(248, 188, 44);
+  --g: rgb(146, 204, 35);
+  --b: rgb(74, 92, 225);
+  --active-color: #ddd;
+  --primary-dark-1: rgba(var(--primary-6), 0.32);
+  --primary-dark-2: rgba(var(--primary-6), 0.16);
+  --red-color-2: rgb(247, 114, 52);
+  --orange-6: 235, 176, 35;
+  --success-6: 58, 193, 176;
+  --success-5: 50, 180, 170;
+  --success-7: 50, 180, 170;
+  --slider-left: rgb(13, 28, 67);
+  --fill-6: 78, 89, 105;
+  --danger-6: 219, 75, 67;
+  --dash-color: rgb(229, 230, 235);
+  --color-primary-light-1: rgb(221, 228, 252);
+}
+body[arco-theme='dark'] {
+  --color-fill-5: #232324;
+  --tab-bg-1: rgb(34, 34, 34);
+  --font-color-1:rgba(255,255,255);
+  --border-color-1: rgb(221, 221, 221, 0.2);
+  --border-color-2: rgb(233, 235, 239, 0.2);
+  --bg-1: #222222;
+  --color-bg-1: #16161A;
+  --fill-1:#fff;
+  --active-color: #ddd;
+  --primary-dark-1: rgb(186, 199, 248);
+  --primary-dark-2: rgb(221, 228, 252);
+  --red-color-2: rgb(247, 114, 52);
+  --orange-6: 235, 176, 35;
+  // --text-color-gray: #fff;
+  --success-6: 58, 193, 176;
+  --success-7: 50, 180, 170;
+  --success-5: 50, 180, 170;
+  --color-text-7: rgba(255, 255, 255, 0.9);
+  --dash-color: rgba(229, 230, 235, 0.8);
+}

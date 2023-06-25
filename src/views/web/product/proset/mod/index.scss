@@ -1,0 +1,116 @@
+
+.proset-head {
+  padding: 16px var(--inner-padding) 0px var(--inner-padding);
+  
+}
+.cont-box {
+  
+  margin: 16px var(--inner-padding);
+  height: calc(100vh - 234px);
+  box-sizing: border-box;
+  // overflow-y: auto;
+  .left {
+    float: left;
+    width: 22%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: 1px solid var(--color-border-2);
+    height: calc(100vh - 234px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    .tree-list {
+      
+    }
+    .left-tit {
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--color-border-2);
+      position: relative;
+      width: calc( 100% + 40px );
+      left: -20px;
+      padding-left: 20px;
+      box-sizing: border-box;
+    }
+  }
+  .right {
+    width: 78%;
+    float: left;
+    height: calc(100vh - 234px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    // background: var(--color-bg-1);
+    padding: 0px 20px 20px 80px;
+    .right-tit {
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .cus-tit {
+      margin: 30px 0 0 0;
+    }
+    .right-content {
+      
+      width: 540px;
+      padding-bottom: 30px;
+    }
+    .ipt-with {
+      width: 220px;
+    }
+    .del-icon {
+      color: rgb(var(--danger-6));
+      margin-left: 20px;
+      cursor: pointer;
+    }
+    .item {
+      padding-top: 4px;
+    }
+  }
+}
+.proset {
+  background: var(--color-bg-1);
+  :deep(.arco-form-item) {
+    margin-bottom: 6px;
+  }
+}
+
+.dra-table {
+  margin-top: 8px;
+  :deep(thead) {
+    display: none;
+  }
+  :deep(:not(.arco-table-border-cell) .arco-table-container) {
+    border: none;
+  }
+  :deep(.arco-table-container) {
+    border: none;
+  }
+  :deep(.arco-table-td) {
+    border: none;
+  }
+  :deep(.arco-table-cell) {
+    padding: 4px 4px;
+  }
+}
+.del-class {
+  cursor: pointer;
+  color: var(--color-text-6);
+}
+.table-add {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  span {
+    margin-left: 8px;
+    line-height: 32px;
+    color: var(--color-text-3);
+    font-size: 14px;
+  }
+}
+.btn-wrap {
+  // text-align: center;
+  margin-top: 30px;
+}
+.detail .arco-card-header {
+  margin-left: -32px;
+}

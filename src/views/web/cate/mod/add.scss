@@ -1,0 +1,40 @@
+.cate-edit {
+  overflow: auto;
+  padding: 15px 20px 0 20px;
+  background-color: var(--color-bg-1);
+}
+.card-wrap {
+  // margin: var(--margin);
+  margin-bottom: 0;
+  .chose-btn {
+    margin-top: 4px;
+  }
+}
+$paddingl: 117px;
+.btn-wrap {
+  display: flex;
+  padding-left: $paddingl;
+  padding-bottom: 54px;
+}
+.drag-upload {
+  display: flex;
+  :deep(.arco-upload)  {
+    flex: 0 0 50%;
+    width: 50%;
+  }
+  :deep(.arco-upload-list) {
+    flex: 0 0 50%;
+    width: 50%;
+    box-sizing: border-box;
+    padding-left: 16px;
+    margin-top: -24px;
+  }
+}
+
+.w-tips {
+  color: var(--orange-init);
+  font-family: PingFang SC;
+  font-size: 12px;
+  line-height: 20px;
+  margin-top: 8px;
+}

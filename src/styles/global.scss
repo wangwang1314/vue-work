@@ -1,0 +1,466 @@
+/* 全局样式 */
+@import './var.scss';
+
+// 通用外边距
+.gi_margin {
+  margin: $margin;
+}
+
+// 通用内边距
+.gi_padding {
+  padding: $padding;
+}
+
+.gi_relative {
+  position: relative;
+}
+
+.gi_absolute {
+  position: absolute;
+}
+
+.gi_rotate_90deg {
+  transform: rotate(90deg);
+}
+
+.gi_rotate_-90deg {
+  transform: rotate(-90deg);
+}
+
+.gi_rotate_180deg {
+  transform: rotate(180deg);
+}
+
+.gi_rotate_-180deg {
+  transform: rotate(-180deg);
+}
+
+// 通用盒子
+.gi_box {
+  background: var(--color-bg-1);
+  border-radius: $radius-box;
+  overflow: hidden;
+}
+
+.gi_select_input {
+  width: 120px !important;
+}
+
+.gi_search_input {
+  width: 250px !important;
+}
+
+.gi_line_1 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.gi_line_2 {
+  -webkit-line-clamp: 2;
+}
+
+.gi_line_3 {
+  -webkit-line-clamp: 3;
+}
+
+.gi_line_4 {
+  -webkit-line-clamp: 4;
+}
+
+.gi_line_5 {
+  -webkit-line-clamp: 5;
+}
+
+.gi_line_2,
+.gi_line_3,
+.gi_line_4,
+.gi_line_5 {
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box; // 弹性伸缩盒
+  -webkit-box-orient: vertical; // 设置伸缩盒子元素排列方式
+}
+
+.gi_hover_btn {
+  border: 0 !important;
+  background-color: transparent !important;
+
+  &:hover {
+    background: var(--color-secondary-hover) !important;
+  }
+
+  &:active {
+    background: var(--color-secondary-active) !important;
+  }
+}
+
+.gi_card {
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .arco-card-body {
+    flex: 1;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.arco-table-col-fixed-left.arco-table-th, .arco-table-col-fixed-right.arco-table-th {
+  background-color: var(--color-fill-5);
+}
+.arco-table-tr-checked .arco-table-td {
+  background-color: var(--color-bg-2);
+}
+
+.arco-table-size-small .arco-table-th {
+  font-size: var(--m-size);
+}
+.arco-table-size-small .arco-table-td {
+  font-size: var(--m-size);
+}
+.asider {
+  .menu-level-1 {
+    &.no-child {
+      border-left: 2px solid transparent;
+    }
+    &.no-child.arco-menu-selected {
+      border-left: 2px solid rgb(var(--primary-6));
+    }
+    &>.arco-menu-inline-header {
+      border-left: 2px solid transparent;
+    }
+    &>.arco-menu-inline-header.arco-menu-selected  {
+      border-left: 2px solid rgb(var(--primary-6));
+    }
+  }
+  .menu-level-2 {
+    margin-left: 25px;
+  }
+  .menu-level-3:last-child {
+    &::before {
+      content: '';
+      display: block;
+      height: 20px;
+      border-left: 1px solid rgb(var(--fill-6));
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+  .menu-level-3 {
+    margin-left: 30px;
+    position: relative;
+    &::before {
+      content: '';
+      display: block;
+      height: 44px;
+      border-left: 1px solid rgb(var(--fill-6));
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    &::after {
+      content: '';
+      display: block;
+      width: 16px;
+      border-top: 1px solid rgb(var(--fill-6));
+      position: absolute;
+      left: 0;
+      top: 48%;
+    }
+    .arco-menu-title {
+      width: 132px;
+      height: 32px;
+      padding-left: 12px;
+      box-sizing: border-box;
+      line-height: 32px;
+      
+      
+    }
+    &.arco-menu-selected {
+      .arco-menu-title {
+        background :rgb(var(--primary-6));
+        color: #fff;
+        border-radius: 4px;
+      }
+    }
+  }
+  .arco-menu-light .arco-menu-inline-header {
+    .arco-menu-icon-suffix {
+      svg {
+        color: inherit;
+        margin-right: 0;
+      }
+    }
+    .arco-menu-icon{
+      color: #fff;
+      svg {
+        color: inherit;
+      }
+    }
+    &.arco-menu-selected {
+      .arco-menu-icon{
+        color: rgb(var(--primary-6));
+        svg {
+          color: inherit;
+        }
+      }
+    }
+  }
+  .arco-menu-vertical .arco-menu-has-icon{
+    .arco-menu-icon {
+      color: #fff;
+      svg {
+        color: inherit;
+      }
+    }
+    &.arco-menu-selected {
+      .arco-menu-icon{
+        color: rgb(var(--primary-6));
+        svg {
+          color: inherit;
+        }
+      }
+    }
+  }
+  .arco-menu-light .arco-menu-item, .arco-menu-light .arco-menu-group-title, .arco-menu-light .arco-menu-pop-header, .arco-menu-light .arco-menu-inline-header{
+    color: #fff;
+    background: transparent;
+  }
+  .arco-menu-light .arco-menu-item.arco-menu-selected, .arco-menu-light .arco-menu-group-title.arco-menu-selected, .arco-menu-light .arco-menu-pop-header.arco-menu-selected, .arco-menu-light .arco-menu-inline-header.arco-menu-selected {
+    color: rgb(var(--primary-6));
+  }
+  .arco-menu-indent {
+    width: 0;
+  }
+
+  .arco-menu .arco-menu-item .arco-icon, .arco-menu .arco-menu-group-title .arco-icon, .arco-menu .arco-menu-pop-header .arco-icon, .arco-menu .arco-menu-inline-header .arco-icon, .arco-menu .arco-menu-item .arco-menu-icon, .arco-menu .arco-menu-group-title .arco-menu-icon, .arco-menu .arco-menu-pop-header .arco-menu-icon, .arco-menu .arco-menu-inline-header .arco-menu-icon {
+    margin-right: 4px;
+    // width: 10px;
+  }
+  .arco-menu-light .arco-menu-inline-header.arco-menu-selected:hover {
+      background-color: var(--slider-left);
+  }
+  .arco-menu-vertical .arco-menu-inner {
+    padding: 16px 8px 4px 0px;
+
+  }
+}
+
+
+
+// 按钮重置样式
+.arco-btn-size-medium {
+  border-radius: 2px;
+}
+// .arco-btn-primary.arco-btn-size-medium {
+//   padding: 0 46px;
+// }
+// .arco-btn-secondary.arco-btn-size-medium {
+//   padding: 0 32px;
+// }
+.arco-btn-secondary, .arco-btn-secondary[type='button'], .arco-btn-secondary[type='submit'] {
+  border-color: transparent;
+  background-color: rgba(var(--gray-2),1);
+  color: var(--color-text-4);
+}
+.arco-btn-secondary:hover, .arco-btn-secondary[type='button']:hover, .arco-btn-secondary[type='submit']:hover {
+  border-color: transparent;
+  background-color: rgba(var(--gray-3),0.8);
+  color: var(--color-text-4);
+}
+.arco-btn-size-small {
+  border-radius: 2px;
+  &.arco-btn-secondary, &.arco-btn-secondary[type='button'], &.arco-btn-secondary[type='submit'] {
+    border-color: transparent;
+    background-color: rgba(var(--gray-2),1);
+    color: var(--color-text-4);
+  }
+  &.arco-btn-secondary:hover, &.arco-btn-secondary[type='button']:hover, &.arco-btn-secondary[type='submit']:hover {
+    border-color: transparent;
+    background-color: rgba(var(--gray-3),0.8);
+    color: var(--color-text-4);
+  }
+}
+.arco-btn-text, .arco-btn-text[type='button'], .arco-btn-text[type='submit'] {
+  padding: 2px;
+}
+.arco-btn-text.arco-btn-status-danger:hover {
+  background-color: transparent;
+}
+.arco-btn-secondary.arco-btn-disabled:hover, .arco-btn-secondary[type='button'].arco-btn-disabled:hover, .arco-btn-secondary[type='submit'].arco-btn-disabled:hover {
+  border: 1px solid var(--color-border-2);
+  cursor: not-allowed;
+  color: var(--color-text-4);
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-2);
+}
+
+// tab样式
+// .arco-tabs-nav-type-capsule .arco-tabs-nav-tab:not(.arco-tabs-nav-tab-scroll) {
+//   justify-content: start;
+// }
+// .arco-tabs-nav-type-capsule.arco-tabs-nav-horizontal .arco-tabs-tab:not(:first-of-type) {
+//   margin-left: 0;
+// }
+// .arco-tabs-nav-type-capsule.arco-tabs-nav-horizontal .arco-tabs-tab:not(:first-of-type)::before{
+//   height: 32px;
+//   left: 0;
+// }
+// .arco-tabs-nav-type-capsule.arco-tabs-nav-horizontal .arco-tabs-tab::before {
+//   height: 32px;
+//   left: 0;
+// }
+// .arco-tabs-nav-type-capsule .arco-tabs-tab-active, .arco-tabs-nav-type-capsule .arco-tabs-tab-active:hover {
+//   background-color: var(--primary-dark-2);
+// }
+body[arco-theme='dark'] .arco-tabs-nav-type-capsule {
+  // .arco-tabs-tab:hover {
+  //   background-color: var(--primary-dark-2);
+  //   color: rgb(var(--primary-6));
+  // }
+  // .arco-tabs-tab {
+  //   background-color: var(--primary-dark-2);
+  // }
+  // .arco-tabs-tab-active {
+  //   background-color: var(--primary-dark-2);
+  // }
+}
+// .arco-tabs-nav-type-capsule .arco-tabs-nav-tab-list {
+//   padding: 0;
+// }
+// .arco-tabs-nav-type-capsule .arco-tabs-tab {
+//   border-bottom: 2px solid transparent;
+// }
+// .arco-tabs-nav-type-capsule .arco-tabs-tab.arco-tabs-tab-active {
+//   border-color: rgb(var(--primary-6));
+// }
+.arco-form-item {
+  margin-bottom: 16px;
+}
+
+.color-fill-1 {
+  color: var(--fill-1);
+}
+
+// 输入框 下拉选择框
+.arco-input-wrapper {
+  background-color: var(--color-fill-2);
+  border: 1px solid transparent;
+}
+.arco-input-wrapper.arco-input-disabled {
+  background-color: var(--color-fill-2);
+  border: 1px solid transparent;
+}
+.arco-input-wrapper.arco-input-disabled:hover {
+  background-color: var(--color-fill-2);
+  border: 1px solid transparent;
+}
+.arco-textarea-wrapper {
+  background-color: var(--color-fill-2);
+  border: 1px solid transparent;
+}
+.arco-select-view-single {
+  background-color: var(--color-fill-2);
+  border: 1px solid transparent;
+}
+.arco-select-view-multiple {
+  background-color: var(--color-fill-2);
+  border: 1px solid transparent;
+}
+
+
+// 重置下上传组件样式
+// .arco-upload-list-picture-error-tip .arco-upload-icon-error {
+//   color: var(--red-init);
+// }
+// .arco-upload-list-picture-status-error .arco-upload-list-picture-mask {
+//   background: rgba(255, 236, 232, 0.8);
+// }
+
+
+// arco-card-header样式重置
+.detail {
+  .arco-card-header {
+    border-bottom: none;
+    height: 44px;
+    padding: 10px 16px;
+    .arco-card-header-title {
+      color: var(--color-text-7);
+    }
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 16px;
+      left: 4px;
+      border-left: 2px solid rgb(var(--primary-6));
+    }
+  }
+}
+
+
+// 锚点样式重置
+.arco-anchor-line-slider {
+  display: none;
+}
+
+
+// 颜色样式重置
+.arco-form-item-label-col > .arco-form-item-label {
+  color: var(--color-text-4)
+}
+
+// 没有表格线的表格
+.coustom-table {
+  &.arco-table-border-cell .arco-table-th {
+    border-right: none;
+    border-left: none;
+  }
+  &.arco-table-border-cell .arco-table-td:not(.arco-table-tr-expand) {
+    border-right: none;
+    border-left: none;
+  }
+  &.arco-table-border .arco-table-tr .arco-table-th {
+    border-bottom: none;
+  }
+  &.arco-table-border .arco-table-container {
+    border-top: none;
+    border-left: none;
+  }
+}
+.arco-table-td {
+  color: var(--color-text-7);
+}
+.link-class {
+  font-size: 12px;
+  color: var(--color-text-7);
+  &:hover {
+    color: rgb(var(--primary-6));
+  }
+}
+
+
+// alert
+.arco-alert-content {
+  color: var(--color-text-7);
+  font-size: 12px;
+}
+
+// 上传组件
+.arco-upload-picture-card {
+  box-sizing: border-box;
+}
+.arco-upload-drag-text {
+  color: var(--color-text-7)
+}
+// form表单样式重置
+.arco-form-item-extra {
+  color: var(--color-text-4);
+}
