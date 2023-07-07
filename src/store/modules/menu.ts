@@ -71,6 +71,57 @@ export const useMenuStore = defineStore({
               ]
             },
             {
+              id: 'GSZL',
+              name: '公司资料',
+              path: '/web/company',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2,
+              children: [
+                {
+                  id: 'GSJS',
+                  name: '公司介绍',
+                  path: '/web/company/intro',
+                  keepAlive: false,
+                  hidden: false,
+                  level: 3
+                },
+                {
+                  id: 'GSYS',
+                  name: '公司优势',
+                  path: '/web/company/adv',
+                  keepAlive: false,
+                  hidden: false,
+                  level: 3
+                },
+                {
+                  id: 'HZPP',
+                  name: '合作品牌',
+                  path: '/web/company/brand',
+                  keepAlive: false,
+                  hidden: false,
+                  level: 3
+                },
+                {
+                  id: 'KHZY',
+                  name: '客户赠言',
+                  path: '/web/company/message',
+                  keepAlive: false,
+                  hidden: false,
+                  level: 3
+                },
+                {
+                  id: 'GCZS',
+                  name: '工厂展示',
+                  path: '/web/company/factory',
+                  keepAlive: false,
+                  hidden: false,
+                  level: 3
+                },
+              ]
+            },
+            {
               id: 'FLGL',
               name: '分类管理',
               path: '',

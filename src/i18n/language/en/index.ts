@@ -45,5 +45,11 @@ export default {
   波兰语: 'polish',
   优先展示: 'order of display',
   批量设置: 'Set products in batch',
-  海关编码: 'HS Code'
+  海关编码: 'HS Code',
+  公司资料: 'Company Information',
+  公司介绍: 'Company Introduction',
+  公司优势: 'company advantage',
+  合作品牌: 'cooperative brand',
+  客户赠言: 'Words from customers',
+  工厂展示: 'factory tour',
 }

@@ -67,6 +67,61 @@ const Data = {
           ]
         },
         {
+          path: '/web/company',
+          name: 'webcompany', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+          meta: {
+            title: '公司资料',
+            keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+          },
+          children: [
+            {
+              path: '/web/company/intro',
+              name: 'webcompanyintro', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/main/index.vue'),
+              meta: {
+                title: '公司介绍',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/adv',
+              name: 'webcompanyadv', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/adv/index.vue'),
+              meta: {
+                title: '公司优势',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/brand',
+              name: 'webcompanybrand', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/brand/index.vue'),
+              meta: {
+                title: '合作品牌',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/message',
+              name: 'webcompanymessage', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/message/index.vue'),
+              meta: {
+                title: '客户赠言',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/factory',
+              name: 'webcompanyfactory', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/factory/index.vue'),
+              meta: {
+                title: '工厂展示',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            }
+          ]
+        },
+        {
           path: '/web/webcate',
           name: 'webcate', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
           meta: {
