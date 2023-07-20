@@ -3,7 +3,7 @@ import type { CateParams, CateData, AddCate, DelCate, AddKey, EditCate, SeoParam
 import qs from 'qs'
 const baseURL = import.meta.env.VITE_API_BASE_AJAX
 /** @desc 获取分类列表信息 */
-export function getCategoryList(params: CateParams) {
+export function getCategoryList(params) {
   return axios.get<ApiRes<CateData>>(`${baseURL}?r=category/list`, params)
 }
 /** @desc 新建分类 */

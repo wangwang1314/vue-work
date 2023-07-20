@@ -17,6 +17,12 @@
             v-model:checked-keys="cusform.checkedKeys"
             :check-strictly="true"
             :data="treeData"
+            :fieldNames="{
+              key: 'id',
+              title: 'name'
+            }"
+            ref="tree"
+            @select="onSelect"
           />
         </div>
         <div class="right">
@@ -33,11 +39,19 @@
               </div>
             </a-form-item>
             <div class="arco-card-header"><div class="arco-card-header-title">自定义属性</div></div>
-            <a-form-item label="自定义属性" :content-flex="false" :hide-label="true">
+            <a-form-item label="自定义属性" :content-flex="false" :hide-label="true" style="position: relative">
+              <div class="loading-wrap" v-show="ailoading">
+                <div class="loading">
+                  <div class="shape shape-1"></div>
+                  <div class="shape shape-2"></div>
+                  <div class="shape shape-3"></div>
+                  <div class="shape shape-4"></div>
+                </div>
+              </div>
               <a-row class="full-width" :gutter="10">
                 <a-col :span="16">
                   <a-space style="margin-top: 6px">
-                    <a-button size="mini" type="text">AI计算自定义属性</a-button>
+                    <a-button size="mini" type="text" @click="getAiFn">AI计算自定义属性</a-button>
                   </a-space>
                 </a-col>
                 <a-col :span="24">
@@ -52,6 +66,7 @@
                 @change="handleChange"
                 :draggable="{ type: 'handle', width: 40 }"
                 class="dra-table"
+                size="small"
                 v-show="couArr.length"
               >
                 <template #empty>
@@ -60,12 +75,12 @@
                 <template #columns>
                   <a-table-column title="属性名称" align="center" :width="140">
                     <template #cell="{ record, rowIndex }">
-                      <a-input placeholder="Material" :key="rowIndex" v-model="record.keys" allow-clear />
+                      <a-input placeholder="Material" :key="rowIndex" v-model="record.attr_key" allow-clear />
                     </template>
                   </a-table-column>
                   <a-table-column title="属性值" align="center">
                     <template #cell="{ record }">
-                      <a-input placeholder="Blank or Printed" v-model="record.value" allow-clear />
+                      <a-input placeholder="Blank or Printed" v-model="record.attr_val" allow-clear />
                     </template>
                   </a-table-column>
                   <a-table-column align="left" :width="30">
@@ -98,8 +113,8 @@
             </a-form-item>
             <div class="btn-wrap">
               <a-space>
-                <a-button type="primary">确定</a-button>
-                <a-button>取消</a-button>
+                <a-button type="primary" @click="confirmFn" :loading="btnloading">确定</a-button>
+                <a-button :disabled="btnloading" @click="cancelFn">取消</a-button>
               </a-space>
             </div>
           </div>
@@ -110,7 +125,7 @@
     <!-- 二次确认弹框 -->
     <a-modal v-model:visible="popup" :width="286">
       <template #title>提示</template>
-      <div><icon-exclamation-circle-fill size="16" style="color: rgb(var(--orangered-5))" /> 确认要对 {{ cateName }}, 分类产品 {{ currentProp }} 属性进行批量删除吗？</div>
+      <div><icon-exclamation-circle-fill size="16" style="color: rgb(var(--orangered-5))" /> 确认要对 {{ cateName }}, 分类产品 {{ currentProp.name }} 属性进行批量删除吗？</div>
       <template #footer>
         <a-button @click="popup = false" :disabled="btnloading">取消</a-button>
         <a-button type="primary" @click="batchDel" :loading="btnloading">确定</a-button>
@@ -122,6 +137,8 @@
 import type { setform, listItem } from './type'
 import { ref, reactive, h, createApp, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { Message } from '@arco-design/web-vue'
+import { getCategoryList, aiRecommend, prBatchSet, prBatchDel } from '@/apis'
+import { getTreeDate } from '@/utils/common'
 const checkedKeys = ref<Array<string>>([])
 const allCheck = ref(false)
 const cusform = reactive<setform>({
@@ -144,95 +161,102 @@ const cusform = reactive<setform>({
       name: '认证证书',
       checked: false,
       value: '',
-      key: 'Brand Name'
+      key: 'Certification'
     },
     {
       name: '型号',
       checked: false,
       value: '',
-      key: 'Brand Name'
+      key: 'Model Number'
     },
     {
       name: '最小起订量',
       checked: false,
       value: '',
-      key: 'Brand Name'
+      key: 'Minimum Order Quantity'
     },
     {
       name: '价格',
       checked: false,
       value: '',
-      key: 'Brand Name'
+      key: 'Price'
     },
     {
       name: '常规包装',
       checked: false,
       value: '',
-      key: 'Brand Name'
+      key: 'Packaging Details'
     },
     {
       name: '发货期限',
       checked: false,
       value: '',
-      key: 'Brand Name'
+      key: 'Delivery Time'
     },
     {
       name: '付款方式',
       checked: false,
       value: '',
-      key: 'Brand Name'
+      key: 'Payment Terms'
     },
     {
       name: '供货能力',
       checked: false,
       value: '',
-      key: 'Brand Name'
+      key: 'Supply Ability'
     }
   ]
 })
+const treeData = ref<Array<any>>([])
+const allTree = ref<Array<string>>([])
+const tree = ref()
+const getTableDate = async () => {
+  const res = await getCategoryList()
+  if (res.code === 0) {
+    allTree.value = res.data?.list.map((item) => {
+      return item.id
+    })
+    treeData.value = getTreeDate(res.data?.list)
+  }
+}
+getTableDate()
 const checkChange = (value: boolean) => {
   if (value) {
-    cusform.checkedKeys = ['0-0', '0-0-1', '0-0-2', '0-0-2-1', '0-0-2-2']
+    tree.value.checkAll()
   } else {
     cusform.checkedKeys = []
   }
 }
-const treeData = [
-  {
-    title: 'Trunk 0-0',
-    key: '0-0',
-    children: [
-      {
-        title: 'Leaf',
-        key: '0-0-1'
-      },
-      {
-        title: 'Branch 0-0-2',
-        key: '0-0-2',
-        children: [
-          {
-            title: 'Leaf',
-            key: '0-0-2-1'
-          },
-          {
-            title: 'Leaf',
-            key: '0-0-2-2'
-          }
-        ]
-      }
-    ]
+const onSelect = (ids) => {
+  const index = cusform.checkedKeys.indexOf(ids[0])
+  if (!~index) {
+    cusform.checkedKeys.push(ids[0])
+  } else {
+    cusform.checkedKeys.splice(index, 1)
   }
-]
-
+}
 // 自定义属性
+const ailoading = ref(false)
+const getAiFn = async () => {
+  if (cusform.checkedKeys.length <= 0) {
+    return Message.warning('请选择分类！')
+  }
+  ailoading.value = true
+  const res = await aiRecommend({ category_id: cusform.checkedKeys[0] }).finally(() => {
+    ailoading.value = false
+  })
+  if (res.code === 0) {
+    couArr.value = res.data?.attr
+  }
+}
 const couArr = ref<Array<any>>([])
 const handleChange = (data) => {
   couArr.value = data
 }
 const addCou = (index: number) => {
   const itemObj = {
-    keys: '',
-    value: ''
+    attr_key: '',
+    attr_val: ''
   }
   if (index >= 0) {
     couArr.value.splice(index + 1, 0, itemObj)
@@ -245,23 +269,61 @@ const delCous = (index: number) => {
 }
 
 // 删除
-const cateName = ref('cate')
-const currentProp = ref('')
+const cateName = ref('')
+const currentProp = ref({ name: '', key: ''})
 const popup = ref(false)
 const btnloading = ref(false)
-const batchDel = () => {
+const batchDel = async () => {
   btnloading.value = true
-  setTimeout(() => {
+  const res = await prBatchDel({
+    ids: cusform.checkedKeys,
+    type: 1,
+    attr_key: currentProp.value.key
+  }).finally(() => {
     btnloading.value = false
+  })
+  if (res.code === 0) {
     popup.value = false
-  },1000)
+    Message.success(res.message || '操作成功')
+  }
 }
 const delRow = (row: listItem) => {
+  const arrTreeObj = tree.value.getCheckedNodes()
+  cateName.value = arrTreeObj.map((item) => { return item.name }).toString()
   if (cusform.checkedKeys.length <= 0) {
     return Message.warning('请选择分类！')
   }
-  currentProp.value = row.name
+  currentProp.value.name = row.name
+  currentProp.value.key = row.key
   popup.value = true
+}
+
+// 点击保存
+const confirmFn = async () => {
+  if (cusform.checkedKeys.length <= 0) {
+    return Message.warning('请选择分类！')
+  }
+  btnloading.value = true
+  const currentObj = {}
+  couArr.value.forEach((item) => {
+    currentObj[item.attr_key] = item.attr_val
+  })
+  cusform.itemList.forEach((item) => {
+    currentObj[item.key] = item.value
+  })
+  const res = await prBatchSet({
+    ids: cusform.checkedKeys,
+    type: 1, // 1以分类维度，2品牌维度
+    ...currentObj
+  }).finally(() => {
+    btnloading.value = false
+  })
+  if (res.code === 0) {
+    Message.success(res.message || '操作成功')
+  }
+}
+const cancelFn = () => {
+  cusform.checkedKeys = []
 }
 </script>
 <style lang="scss" scoped>

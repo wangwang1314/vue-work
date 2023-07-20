@@ -13,6 +13,7 @@
             row-key="id"
             :data="tableData"
             size="small"
+            ref="rtable"
             :bordered="{ cell: true }"
             :pagination="false"
             :scroll="{ x: '100%', y: '100%', minWidth: 1000 }"
@@ -31,12 +32,12 @@
               </a-table-column>
               <a-table-column title="单独设置产品" data-index="time" :width="80" align="right">
                 <template #cell="{ record }">
-                  <a-link v-if="record.productcount > 0">{{ record.productcount }}</a-link>
-                  <span style="padding: 1px 4px;" v-else>{{ record.productcount }}</span>
+                  <a-link v-if="record.specify_product_num > 0" @click="goLink(record)">{{ record.specify_product_num }}</a-link>
+                  <span style="padding: 1px 4px;" v-else>{{ record.specify_product_num }}</span>
                 </template>
               </a-table-column>
               <a-table-column title="海关编码" data-index="time" :width="120" align="center">
-                <template #cell="{ record }">98745612，98745631</template>
+                <template #cell="{ record }">{{record.hs_code?.toString()}}</template>
               </a-table-column>
               <a-table-column title="操作" data-index="time" :width="120" align="center">
                 <template #cell="{ record }">
@@ -49,18 +50,19 @@
       </div>
     </div>
     <GiFooter></GiFooter>
-    <customs-code ref="customsRef"></customs-code>
+    <customs-code ref="customsRef" @update="getTableData"></customs-code>
   </div>
 </template>
 <script setup lang="ts" name="catelist">
 import { reactive, ref, h } from 'vue'
 import { usePagination } from '@/hooks'
-import { getCategoryList, addCategory, delCategory, editCateName, addCateKeyword, resetSeo, setSeo } from '@/apis'
+import { getCategoryList, setCateHscode, allHscode } from '@/apis'
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getTreeDate } from '@/utils/common'
 import type { ItemList, CateItem } from './type'
 import customsCode from './mod/customs-code.vue'
+const router = useRouter()
 const expandedKeys = ref([])
 const rowSelection = reactive({
   type: 'checkbox',
@@ -77,23 +79,31 @@ const isEdit = ref(false)
 const tableData = ref<Array<ItemList>>([])
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
 const loading = ref(false)
+const rtable = ref()
 const getTableData = async () => {
   loading.value = true
-  const { code, data } = await getCategoryList({
-    search_name: searchForm.search_name
+  const { code, data } = await allHscode({
   }).finally(() => {
     loading.value = false
   })
   if (code === 0) {
-    tableData.value = data.list
-    isEdit.value = data.full_edit
-    setTotal(data.total_record)
+    tableData.value = getTreeDate(data.categories)
+    // setTotal(data.total_record)
   }
 }
 getTableData()
 const customsRef = ref()
 const setFn = (row: ItemList) => {
   customsRef.value?.showDialog(row)
+}
+const goLink = (row: ItemList) => {
+  router.push({
+    path: '/web/webproduct/list',
+    query: {
+      hs_code: 2,
+      category_id: row.id
+    }
+  })
 }
 </script>
 <style lang="scss" scoped>

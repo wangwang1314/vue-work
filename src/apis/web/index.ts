@@ -1,5 +1,5 @@
 import axios from '@/utils/http'
-import type { productdata, productparams, similarParams, PrListParams, PrFlagUp, PrFlagList } from './type'
+import type { productdata, productparams, similarParams, PrListParams, PrFlagUp, PrFlagList, aiParams, aiRecommendRes } from './type'
 import qs from 'qs'
 const baseURL = import.meta.env.VITE_API_BASE_AJAX
 /** @desc 获取商品列表信息 */
@@ -66,7 +66,14 @@ export function hscodeCheck(params) {
 export function setHscode(params) {
   return axios.post<ApiRes<null>>(`${baseURL}?r=product/edit-hs-code`, qs.stringify(params))
 }
-
+/** @desc 海关编码列表 */
+export function allHscode(params) {
+  return axios.get<ApiRes<null>>(`${baseURL}?r=category/all-hs-code`, params)
+}
+/** @desc 设置分类海关编码 */
+export function setCateHscode(params) {
+  return axios.post<ApiRes<null>>(`${baseURL}?r=category/set-hs-code`, qs.stringify(params))
+}
 /** @desc 分类调整 */
 export function editCategory(params) {
   return axios.post<ApiRes<null>>(`${baseURL}?r=product/edit-category`, qs.stringify(params))
@@ -110,6 +117,20 @@ export function prFlagSet(params: PrFlagUp) {
 /** @desc 优先展示页脚产品分类设置 */
 export function prCateSet(params: PrFlagList) {
   return axios.post<ApiRes<null>>(`${baseURL}?r=flag/set-foot-cate`, qs.stringify(params))
+}
+/** @desc ai 计算自定义属性 */
+export function aiRecommend(params: aiParams) {
+  return axios.get<ApiRes<aiRecommendRes>>(`${baseURL}?r=ai/custom-attr-recommend`, params)
+}
+
+/** @desc 分类批量设置 */
+export function prBatchSet(params: PrFlagList) {
+  return axios.post<ApiRes<aiRecommendRes>>(`${baseURL}?r=product/batch-set`, qs.stringify(params))
+}
+
+/** @desc 分类批量删除属性 */
+export function prBatchDel(params: PrFlagList) {
+  return axios.post<ApiRes<aiRecommendRes>>(`${baseURL}?r=product/batch-del`, qs.stringify(params))
 }
 
 export * from './mod/addpro'

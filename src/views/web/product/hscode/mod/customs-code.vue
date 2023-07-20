@@ -18,17 +18,25 @@
                 <div class="ipt-box" v-for="(item, index) in codeNum" :key="index">
                   <a-input placeholder="" v-model.lazy="codeNum[index].value" @change="changeFn(index)" allow-clear>
                     <template #suffix>
-                      <icon-close-circle-fill size="18" class="red" v-if="codeNum[index].value && codeNum[index].check == 1" />
-                      <icon-check-circle-fill size="18" class="green" v-else-if="codeNum[index].value && codeNum[index].check == 2" />
+                      <icon-close-circle-fill
+                        size="18"
+                        class="red"
+                        v-if="codeNum[index].value && codeNum[index].check == 1"
+                      />
+                      <icon-check-circle-fill
+                        size="18"
+                        class="green"
+                        v-else-if="codeNum[index].value && codeNum[index].check == 2"
+                      />
                     </template>
                   </a-input>
                 </div>
                 <a-button type="text" size="mini" @click="addFn">添加</a-button>
               </a-col>
-              <a-col :span="18" style="padding-left: 16px;">
+              <a-col :span="18" style="padding-left: 16px">
                 <a-input-search v-model="searchText" placeholder="" search-button style="margin-bottom: 10px">
                   <template #button-icon>
-                    <icon-search @click="searchFn" />
+                    <icon-search @click="searchClickFn" />
                   </template>
                 </a-input-search>
                 <a-card :title="text + '：'" class="card-normal">
@@ -67,7 +75,7 @@
       <template #footer>
         <div style="margin-top: -30px">
           <a-button @click="showTag = false">取消</a-button>
-          <a-button type="primary" @click="confirmFn" style="margin: 0 0 6px 16px;">确定</a-button>
+          <a-button type="primary" @click="confirmFn" style="margin: 0 0 6px 16px">确定</a-button>
         </div>
       </template>
     </a-modal>
@@ -75,7 +83,7 @@
 </template>
 <script setup lang="ts" name="cateCustoms">
 import { ref, reactive } from 'vue'
-import { cateHscode, hscodeSearch, hscodeCheck, setHscode } from '@/apis'
+import { cateHscode, hscodeSearch, hscodeCheck, setHscode, setCateHscode } from '@/apis'
 import { throttle, debounce } from '@/utils/common'
 import { Notification, Message } from '@arco-design/web-vue'
 interface codeObj {
@@ -101,26 +109,28 @@ const showDialog = (obj: codeObj) => {
   currentRow.code = code
   currentRow.cateid = cateid
   currentRow.id = id
-  currentRow.type = hs_code === '跟随分类' ? '1' : '2'
   showTag.value = true
-  if (currentRow.type === '1') {
-    getCateList()
+  if (hs_code.length > 0) {
+    codeNum.value = []
+    hs_code.forEach((item) => {
+      codeNum.value.push({
+        value: item,
+        check: 0
+      })
+    })
   } else {
-    // codeNum.value = hs_code
+    codeNum.value = [
+      {
+        value: '',
+        check: 0
+      }
+    ]
   }
+  searchFn(name)
 }
 const cateloading = ref(false)
 const form = reactive({})
-const getCateList = async () => {
-  cateloading.value = true
-  const res = await cateHscode({
-    category_id: currentRow.cateid
-  })
-  cateloading.value = false
-  if (res.code == 0) {
-    catedata.value = res.data?.hs_code
-  }
-}
+
 const catedata = ref([])
 const data = ref([])
 interface CodeItem {
@@ -140,28 +150,41 @@ const addFn = () => {
   })
 }
 const changeFn = debounce(async (index: number) => {
-  const res = await hscodeCheck({ hs_code: codeNum.value })
+  const res = await hscodeCheck({ hs_code: codeNum.value[index].value })
   if (res.code == 0) {
     codeNum.value[index].check = res.data?.check_pass ? 2 : 1
   }
 }, 30)
 const searchText = ref<string>('')
 const loadingFlag = ref<boolean>(false)
-const searchFn = async () => {
+const searchFn = async (str?: string) => {
+  const searchWord = typeof str === 'string' ? str : searchText.value
   loadingFlag.value = true
   const res = await hscodeSearch({
-    keyword: searchText.value
+    keyword: searchWord
   })
   if (res.code == 0) {
     loadingFlag.value = false
     data.value = res.data?.hs_code
   }
 }
+const searchClickFn = () => {
+  if (!searchText.value) {
+    return Message.warning('请输入关键词')
+  }
+  text.value = '查询结果'
+  searchFn()
+}
 const confirmFn = async () => {
-  const res = await setHscode({
-    hs_code: codeNum.value,
-    product_id: currentRow.id,
-    type: currentRow.type
+  const hscode = []
+  codeNum.value.forEach((item)=>{
+    if (item.value && item.check !== 1) {
+      hscode.push(item.value)
+    }
+  })
+  const res = await setCateHscode({
+    hs_code: hscode,
+    category_id: currentRow.id
   })
   showTag.value = false
   if (res.code == 0) {
@@ -172,7 +195,8 @@ const confirmFn = async () => {
 const text = ref('查询结果')
 const recommand = () => {
   text.value = '智能推荐'
-  searchFn()
+  searchText.value = ''
+  searchFn(currentRow.name)
 }
 defineExpose({
   showDialog

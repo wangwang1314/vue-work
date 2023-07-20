@@ -99,3 +99,11 @@ export interface PrFlagList {
   flag_type: string
   product_ids: Array<string>
 }
+
+export interface aiParams {
+  category_id: Array<string> | string
+}
+
+export interface aiRecommendRes {
+  attr: Array<any>
+}
