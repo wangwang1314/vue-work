@@ -40,7 +40,7 @@ export const useMenuStore = defineStore({
                   id: 'CPGL',
                   name: '产品列表',
                   path: '/web/webproduct/list',
-                  keepAlive: true,
+                  keepAlive: false,
                   hidden: false,
                   level: 3
                 },

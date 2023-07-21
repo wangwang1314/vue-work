@@ -426,7 +426,14 @@ getTableData()
 const formRef = ref()
 const resetFn = () => {
   form.video_id = ''
-  formRef.value && formRef.value.resetFields()
+  form.search_name = ''
+  form.category_id = ''
+  form.p_uid = ''
+  form.hs_code = ''
+  form.product_id = ''
+  form.order_by = 'uptime'
+  form.order = 'desc'
+  // formRef.value && formRef.value.resetFields()
 }
 
 const goAdd = () => {
@@ -635,7 +642,7 @@ const showCode = (row: productListItem) => {
 
 // 搜索cate
 const searchCate = (cateid: string) => {
-  router.replace({
+  router.push({
     path: '/web/webproduct/list',
     query: {
       category_id: cateid
