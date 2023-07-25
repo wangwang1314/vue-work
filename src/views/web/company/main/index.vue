@@ -4,17 +4,27 @@
       <a-tabs hide-content size="medium" type="capsule" v-model:active-key="activeKey">
         <a-tab-pane :key="1">
           <template #title>
-            <div class="tit">普通产品<span class="s-span">({{titArray.count1}})</span></div>
+            <div class="tit">基本信息</div>
           </template>
         </a-tab-pane>
         <a-tab-pane :key="2">
           <template #title>
-            <div class="tit">已删除产品<span class="s-span">({{titArray.count2}})</span></div>
+            <div class="tit">公司介绍</div>
           </template>
         </a-tab-pane>
         <a-tab-pane :key="3">
           <template #title>
-            <div class="tit">卖点产品<span class="s-span">({{titArray.count3}})</span></div>
+            <div class="tit">公司服务</div>
+          </template>
+        </a-tab-pane>
+        <a-tab-pane :key="4">
+          <template #title>
+            <div class="tit">公司历史</div>
+          </template>
+        </a-tab-pane>
+        <a-tab-pane :key="5">
+          <template #title>
+            <div class="tit">公司团队</div>
           </template>
         </a-tab-pane>
       </a-tabs>
