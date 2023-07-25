@@ -277,7 +277,12 @@
           <a-input placeholder="图片名称"></a-input>
         </a-form-item>
         <a-form-item label="图片描述">
-          <a-textarea placeholder="图片描述"></a-textarea>
+          <a-textarea
+            placeholder="图片描述"
+            :auto-size="{
+              minRows: 3
+            }"
+          ></a-textarea>
         </a-form-item>
         <a-form-item label="浏览图片">
           <a-upload
@@ -315,16 +320,8 @@
 
 <script setup lang="ts" name="companyTable">
 import { reactive, ref, h, nextTick } from 'vue'
-import { usePagination } from '@/hooks'
 import {
-  getProductList,
-  checkSimilarity,
-  similarityReport,
-  getSimilarity,
-  productDel,
-  setHotspot,
-  editUser,
-  editCategory
+  getProductList
 } from '@/apis'
 import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
@@ -399,7 +396,6 @@ const picCropper = (item) => {
   nextTick(() => {
     picvise.value = true
   })
-
 }
 const picChange = (imgArr) => {
   imgArr.forEach((item) => {

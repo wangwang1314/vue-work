@@ -39,12 +39,14 @@
 import { ref, reactive } from 'vue'
 import Pane1 from './Pane1.vue'
 import Pane2 from './Pane2.vue'
-import Pane3 from './Pane3.vue'
+// import Pane3 from './Pane3.vue'
 
 const PaneMap: any = {
   1: Pane1,
   2: Pane2,
-  3: Pane3
+  3: Pane2,
+  4: Pane2,
+  5: Pane2
 }
 
 const titArray = reactive({count1: 0, count2: 0, count3: 0})
