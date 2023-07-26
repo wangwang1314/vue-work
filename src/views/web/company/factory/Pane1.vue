@@ -1,24 +1,9 @@
 <template>
-  <div class="brand-detail">
+  <div class="com-detail">
     <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
-      <a-row>
-        <a-col :span="18">
-          <a-form-item label="介绍说明">
-            <a-textarea
-              :auto-size="{
-                minRows: 2
-              }"
-              :max-length="{ length: 150, errorOnly: true }"
-              allow-clear
-              show-word-limit
-            ></a-textarea>
-            <template #extra> 合作品牌说明，建议<span class="warning-color">100-120</span>个字符 </template>
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="18">
-          <a-form-item label="公司图片">
+      <a-form-item label="上传图片">
+        <a-row class="full-width">
+          <a-col :span="22">
             <div class="arco-upload-wrapper arco-upload-wrapper-type-picture-card">
               <draggable v-model="fileList">
                 <template #item="{ element }">
@@ -44,9 +29,9 @@
                     <img :src="element.url" :alt="element.name" />
                     <div class="arco-upload-list-picture-mask">
                       <div class="arco-upload-list-picture-operation">
-                        <span class="arco-upload-icon arco-upload-icon-preview">
+                        <!-- <span class="arco-upload-icon arco-upload-icon-preview">
                           <icon-edit @click="picCropper(element)" />
-                        </span>
+                        </span> -->
                         <span class="arco-upload-icon arco-upload-icon-preview">
                           <icon-eye @click="picListShow(element)" />
                         </span>
@@ -88,18 +73,25 @@
                 </template>
               </draggable>
             </div>
-            <template #extra>
-              <div style="line-height: 18px">拖拽可调整顺序</div>
-              <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="showPicCenter"
-                >图片中心选择</a-button
-              >
-              <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
-            </template>
-          </a-form-item>
-        </a-col>
-      </a-row>
+          </a-col>
+        </a-row>
+        <template #extra>
+          <div style="line-height: 18px">拖拽可调整顺序</div>
+          <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="showPicCenter"
+            >图片中心选择</a-button
+          >
+          <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
+        </template>
+      </a-form-item>
+      <a-form-item label="详细介绍">
+        <a-row class="full-width">
+          <a-col :span="22">
+            <uedit v-model="form.html"></uedit>
+          </a-col>
+        </a-row>
+      </a-form-item>
       <a-row class="full-width">
-        <a-col :span="18">
+        <a-col :span="22">
           <div class="com-btn-box">
             <a-space :size="16">
               <a-button type="primary">保存</a-button>
@@ -111,27 +103,66 @@
     </a-form>
   </div>
 </template>
-<script setup lang="ts" name="brand">
+
+<script setup lang="ts" name="companyTable">
 import { reactive, ref, h, nextTick } from 'vue'
-import {
-  getProductList
-} from '@/apis'
+import { getProductList } from '@/apis'
+import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
 import { getTreeDate } from '@/utils/common'
 import picDialog from '@/components/commonDialog/picDialog.vue'
 import lodash from 'lodash'
 import draggable from 'vuedraggable'
+import uedit from '@/components/editor/uedit.vue'
+const emit = defineEmits(['update', 'changeTab'])
+const router = useRouter()
+const route = useRoute()
+const form = reactive({
+  html: ''
+})
+const loading = ref(false)
+const baseURL = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX
+const picUploadUrl = baseURL + '?r=picture/upload'
+
+const getTableData = async () => {
+  loading.value = true
+  const {} = form
+  const { code, data } = await getProductList({})
+  if (code == 0) {
+  }
+  loading.value = false
+}
+getTableData()
 const formRef = ref()
-const form = reactive({})
-// 图片中心
 const fileList = ref([])
+const fileLogo = ref([])
+const successUpload = (res) => {
+  if (res.response.code == 0) {
+    res.id = res.response.data?.picture_id
+    res.url = res.response.data?.picture_url_l
+  } else {
+    res.status = 'error'
+  }
+}
+const picUploadChange = (arr, type) => {
+  if (type == 1) {
+    fileLogo.value = arr
+  } else if (type == 2) {
+    fileList.value = arr
+  } else if (type == 3) {
+    fileDia.value = arr
+  }
+}
+
+// 图片中心
 const picDialogRef = ref()
 const showPicCenter = () => {
   picDialogRef.value?.showDialog({
     group_name: ''
   })
 }
+
 const picListDel = (file) => {
   let index = lodash.findIndex(fileList.value, function (o) {
     return o.uid == file.uid
@@ -160,7 +191,17 @@ const picChange = (imgArr) => {
   })
   fileList.value = fileList.value.concat(imgArr)
 }
+const diaform = reactive({})
+const picvise = ref(false)
+const fileDia = ref([])
+const handleCancel = () => {
+  picvise.value = false
+}
+const handleBeforeOk = () => {
+  picvise.value = false
+}
 </script>
+
 <style lang="scss" scoped>
 @import './mod/list.scss';
 </style>

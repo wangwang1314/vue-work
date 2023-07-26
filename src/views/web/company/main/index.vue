@@ -30,7 +30,12 @@
       </a-tabs>
     </section>
     <transition name="fade-slide" mode="out-in" appear>
-        <component :is="PaneMap[activeKey]" @update="updateFn" @changeTab="changeTab"></component>
+      <pane1 v-if="activeKey == 1"></pane1>
+      <pane2 v-else-if="activeKey == 2"></pane2>
+      <pane2 v-else-if="activeKey == 3"></pane2>
+      <pane2 v-else-if="activeKey == 4"></pane2>
+      <pane2 v-else-if="activeKey == 5"></pane2>
+      <!-- <component :is="PaneMap[activeKey]" @update="updateFn" @changeTab="changeTab"></component> -->
     </transition>
   </div>
 </template>
