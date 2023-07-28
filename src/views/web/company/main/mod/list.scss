@@ -43,7 +43,15 @@
 }
 .com-btn-box {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   margin-top: 20px;
   padding-bottom: 20px;
+}
+.input-group-box {
+  :deep(.arco-form-item) {
+    margin-bottom: 8px;
+  }
+  :deep(.arco-form-item-label-col) {
+    padding-right: 8px;
+  }
 }

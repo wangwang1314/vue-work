@@ -3,6 +3,8 @@
   overflow-x: hidden;
   padding: 15px 20px 0 20px;
   background-color: var(--color-bg-1);
+  min-height: 100%;
+  box-sizing: border-box;
 }
 .full-width {
   width: 100%;
@@ -44,7 +46,7 @@
 }
 .com-btn-box {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   margin-top: 20px;
   padding-bottom: 20px;
 }

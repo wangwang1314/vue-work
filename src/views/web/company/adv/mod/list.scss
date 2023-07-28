@@ -1,14 +1,35 @@
 .adv-detail {
   overflow: auto;
   overflow-x: hidden;
-  padding: 15px 20px 0 20px;
+  padding: 15px 20px 0px 20px;
   background-color: var(--color-bg-1);
+  min-height: 100%;
+  :deep(.arco-card-header-title) {
+    color: var(--color-text-7);
+  }
+  :deep(.arco-card-header) {
+    border: none;
+    height: auto;
+    
+    position: relative;
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      height: 16px;
+      left: 4px;
+      border-left: 2px solid rgb(var(--primary-6));
+    }
+  }
+  :deep(.arco-card-size-medium .arco-card-body) {
+    padding: 6px 8px 0 8px;
+  }
 }
 .full-width {
   width: 100%;
 }
 .com-form {
-  padding: 0 16px;
+  // padding: 0 16px;
   box-sizing: border-box
 }
 .video-chose-list {
@@ -44,7 +65,8 @@
 }
 .com-btn-box {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   margin-top: 20px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
+  padding-left: 6px;
 }

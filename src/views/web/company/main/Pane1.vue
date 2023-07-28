@@ -1,12 +1,12 @@
 <template>
   <div class="com-detail">
-    <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
-      <a-form-item field="name" label="产品名称">
+    <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true" label-align="left">
+      <a-form-item field="name" label="产品名称" :label-col-style="{'flex': '0 0 70px'}">
         <a-row class="full-width">
           <a-col :span="15"> Shenzhen TTI Fiber Communication Tech.co., Ltd. </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item field="cate" label="公司logo" :content-flex="false">
+      <a-form-item field="cate" label="公司logo" :content-flex="false" :label-col-style="{'flex': '0 0 70px'}">
         <a-upload
           list-type="picture-card"
           :action="picUploadUrl"
@@ -34,7 +34,7 @@
           <div style="line-height: 18px">建议上传透明底的图片格式，220*60尺寸，高度小于100并且图片质量小于100k</div>
         </template>
       </a-form-item>
-      <a-form-item label="公司图片">
+      <a-form-item label="公司图片" :label-col-style="{'flex': '0 0 70px'}">
         <a-row class="full-width">
           <a-col :span="24">
             <div class="arco-upload-wrapper arco-upload-wrapper-type-picture-card">
@@ -116,7 +116,7 @@
           <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
         </template>
       </a-form-item>
-      <a-form-item label="产品视频">
+      <a-form-item label="产品视频" :label-col-style="{'flex': '0 0 70px'}">
         <a-row class="full-width">
           <a-col :span="15">
             <a-button type="primary" size="mini" @click="showVideoCenter" style="margin-top: 4px"
@@ -155,7 +155,7 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item label="公司资料" :content-flex="false">
+      <a-form-item label="公司资料" class="input-group-box" :content-flex="false" :label-col-style="{'flex': '0 0 70px'}">
         <a-row class="full-width">
           <a-col :span="15">
             <a-form-item label="Business Type">
@@ -254,13 +254,13 @@
         </a-row>
         <a-row class="full-width">
           <a-col :span="15">
-            <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="addAttr">添加</a-button>
+            <a-button type="primary" size="mini" @click="addAttr">添加</a-button>
           </a-col>
         </a-row>
         <a-row class="full-width">
           <a-col :span="15">
             <div class="com-btn-box">
-              <a-space :size="16">
+              <a-space :size="12">
                 <a-button type="primary">保存</a-button>
                 <a-button>取消</a-button>
               </a-space>

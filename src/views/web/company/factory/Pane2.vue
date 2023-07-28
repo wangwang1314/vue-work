@@ -93,10 +93,12 @@
       <a-row class="full-width">
         <a-col :span="22">
           <div class="com-btn-box">
-            <a-space :size="16">
-              <a-button type="primary">保存</a-button>
-              <a-button>取消</a-button>
-            </a-space>
+            <a-form-item label="">
+              <a-space :size="12">
+                <a-button type="primary">保存</a-button>
+                <a-button>取消</a-button>
+              </a-space>
+            </a-form-item>
           </div>
         </a-col>
       </a-row>
