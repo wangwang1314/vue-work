@@ -51,7 +51,7 @@
   :deep(.arco-form-item) {
     margin-bottom: 8px;
   }
-  :deep(.arco-form-item-label-col) {
+  :deep(.arco-form-item-label-col .arco-form-item-label-col) {
     padding-right: 8px;
   }
 }
