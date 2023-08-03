@@ -142,7 +142,7 @@ const fileLogo = ref([])
 const successUpload = (res) => {
   if (res.response.code == 0) {
     res.id = res.response.data?.picture_id
-    res.url = res.response.data?.picture_url_l
+    res.url = res.response.data?.picture_url
   } else {
     res.status = 'error'
   }

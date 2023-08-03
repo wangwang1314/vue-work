@@ -307,7 +307,7 @@ const fileList = ref([])
 const successUpload = (res) => {
   if (res.response.code == 0) {
     res.id = res.response.data?.picture_id
-    res.url = res.response.data?.picture_url_l
+    res.url = res.response.data?.picture_url
   } else {
     res.status = 'error'
   }
@@ -512,7 +512,7 @@ const editCous = (row) => {
   fileList3.value = [
     {
       id: row.pic_id,
-      url: row.picture_url_l,
+      url: row.picture_url,
       uid: row.id + Math.random()
     }
   ]

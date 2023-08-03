@@ -1,7 +1,7 @@
 <template>
   <div class="manage">
     <section class="tab">
-      <a-tabs hide-content size="medium" type="capsule" v-model:active-key="activeKey">
+      <a-tabs hide-content size="medium" type="capsule" @change="changeTab">
         <a-tab-pane :key="1">
           <template #title>
             <div class="tit">基本信息</div>
@@ -30,18 +30,19 @@
       </a-tabs>
     </section>
     <transition name="fade-slide" mode="out-in" appear>
-      <pane1 v-if="activeKey == 1"></pane1>
-      <pane2 v-else-if="activeKey == 2"></pane2>
-      <pane2 v-else-if="activeKey == 3"></pane2>
-      <pane2 v-else-if="activeKey == 4"></pane2>
-      <pane2 v-else-if="activeKey == 5"></pane2>
+      <pane1 v-if="activeKey == 1" :key="1"></pane1>
+      <pane2 v-else-if="activeKey == 2" :key="2" type="intro"></pane2>
+      <pane2 v-else-if="activeKey == 3" :key="3" type="history"></pane2>
+      <pane2 v-else-if="activeKey == 4" :key="4" type="service"></pane2>
+      <pane2 v-else-if="activeKey == 5" :key="5" type="team"></pane2>
       <!-- <component :is="PaneMap[activeKey]" @update="updateFn" @changeTab="changeTab"></component> -->
     </transition>
   </div>
 </template>
 
 <script setup lang="ts" name="productlist">
-import { ref, reactive } from 'vue'
+import { ref, reactive, nextTick } from 'vue'
+import { throttle, debounce } from '@/utils/common'
 import Pane1 from './Pane1.vue'
 import Pane2 from './Pane2.vue'
 // import Pane3 from './Pane3.vue'
@@ -61,9 +62,9 @@ const updateFn = (data) => {
   titArray.count2 = data.status_deleted_nums
   titArray.count3= data.hot_count
 }
-const changeTab = (val: number) => {
+const changeTab = debounce((val: number) => {
   activeKey.value = val
-}
+}, 200)
 </script>
 
 <style lang="scss" scoped>

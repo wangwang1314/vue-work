@@ -1,16 +1,23 @@
 <template>
   <div class="com-detail">
-    <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true" label-align="left">
-      <a-form-item field="name" label="产品名称" :label-col-style="{'flex': '0 0 70px'}">
+    <a-form
+      class="com-form"
+      ref="formRef"
+      size="medium"
+      :model="form"
+      layout="horizontal"
+      :auto-label-width="true"
+      label-align="left"
+    >
+      <a-form-item field="name" label="公司名称" :label-col-style="{ flex: '0 0 70px' }">
         <a-row class="full-width">
-          <a-col :span="15"> Shenzhen TTI Fiber Communication Tech.co., Ltd. </a-col>
+          <a-col :span="15">{{ form.name }}</a-col>
         </a-row>
       </a-form-item>
-      <a-form-item field="cate" label="公司logo" :content-flex="false" :label-col-style="{'flex': '0 0 70px'}">
+      <a-form-item field="cate" label="公司logo" :content-flex="false" :label-col-style="{ flex: '0 0 70px' }">
         <a-upload
           list-type="picture-card"
-          :action="picUploadUrl"
-          :data="{ type: '22' }"
+          :action="logourl"
           :file-list="fileLogo"
           image-preview
           :limit="1"
@@ -34,12 +41,12 @@
           <div style="line-height: 18px">建议上传透明底的图片格式，220*60尺寸，高度小于100并且图片质量小于100k</div>
         </template>
       </a-form-item>
-      <a-form-item label="公司图片" :label-col-style="{'flex': '0 0 70px'}">
+      <a-form-item label="公司图片" :label-col-style="{ flex: '0 0 70px' }">
         <a-row class="full-width">
           <a-col :span="24">
             <div class="arco-upload-wrapper arco-upload-wrapper-type-picture-card">
               <draggable v-model="fileList">
-                <template #item="{ element }">
+                <template #item="{ element, index }">
                   <span
                     v-if="element.status == 'error'"
                     class="arco-upload-list-picture arco-upload-list-picture-status-error"
@@ -63,7 +70,7 @@
                     <div class="arco-upload-list-picture-mask">
                       <div class="arco-upload-list-picture-operation">
                         <span class="arco-upload-icon arco-upload-icon-preview">
-                          <icon-edit @click="picCropper(element)" />
+                          <icon-edit @click="picCropper(element, index)" />
                         </span>
                         <span class="arco-upload-icon arco-upload-icon-preview">
                           <icon-eye @click="picListShow(element)" />
@@ -90,7 +97,7 @@
                     :file-list="fileList"
                     :show-file-list="false"
                     ref="uploadRef"
-                    :data="{ type: '4' }"
+                    :data="{ type: '0' }"
                     @success="successUpload"
                   >
                     <template #upload-button>
@@ -116,7 +123,7 @@
           <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
         </template>
       </a-form-item>
-      <a-form-item label="产品视频" :label-col-style="{'flex': '0 0 70px'}">
+      <a-form-item label="产品视频" :label-col-style="{ flex: '0 0 70px' }">
         <a-row class="full-width">
           <a-col :span="15">
             <a-button type="primary" size="mini" @click="showVideoCenter" style="margin-top: 4px"
@@ -155,17 +162,22 @@
           </a-col>
         </a-row>
       </a-form-item>
-      <a-form-item label="公司资料" class="input-group-box" :content-flex="false" :label-col-style="{'flex': '0 0 70px'}">
+      <a-form-item
+        label="公司资料"
+        class="input-group-box"
+        :content-flex="false"
+        :label-col-style="{ flex: '0 0 70px' }"
+      >
         <a-row class="full-width">
           <a-col :span="15">
             <a-form-item label="Business Type">
-              <a-select placeholder="请选择" multiple allow-clear>
-                <a-option>Beijing</a-option>
-                <a-option>Shanghai</a-option>
-                <a-option>Guangzhou</a-option>
-                <a-option>Shenzhen</a-option>
-                <a-option>Chengdu</a-option>
-                <a-option>Wuhan</a-option>
+              <a-select
+                placeholder="请选择"
+                multiple
+                allow-clear
+                v-model="form.info.business_type"
+                :options="form.business_type"
+              >
               </a-select>
             </a-form-item>
           </a-col>
@@ -173,13 +185,13 @@
         <a-row class="full-width">
           <a-col :span="15">
             <a-form-item label="Main Market">
-              <a-select placeholder="请选择" multiple allow-clear>
-                <a-option>Beijing</a-option>
-                <a-option>Shanghai</a-option>
-                <a-option>Guangzhou</a-option>
-                <a-option>Shenzhen</a-option>
-                <a-option>Chengdu</a-option>
-                <a-option>Wuhan</a-option>
+              <a-select
+                placeholder="请选择"
+                v-model="form.info.market_name"
+                multiple
+                allow-clear
+                :options="form.market"
+              >
               </a-select>
             </a-form-item>
           </a-col>
@@ -187,7 +199,7 @@
         <a-row class="full-width">
           <a-col :span="15">
             <a-form-item label="Brands">
-              <a-input placeholder="" allow-clear />
+              <a-input placeholder="" v-model="form.info.brands" allow-clear />
             </a-form-item>
           </a-col>
         </a-row>
@@ -196,11 +208,11 @@
             <a-form-item label="No. of Employees" :content-flex="false">
               <a-row>
                 <a-col :span="11">
-                  <a-input />
+                  <a-input v-model="form.info.employee_number[0]" />
                 </a-col>
                 <a-col :span="2" style="text-align: center; line-height: 30px"> - </a-col>
                 <a-col :span="11">
-                  <a-input />
+                  <a-input v-model="form.info.employee_number[1]" />
                 </a-col>
               </a-row>
             </a-form-item>
@@ -211,11 +223,11 @@
             <a-form-item label="Annual Sales" :content-flex="false">
               <a-row>
                 <a-col :span="11">
-                  <a-input><template #append>USD</template></a-input>
+                  <a-input v-model="form.info.annual_sales[0]"><template #append>USD</template></a-input>
                 </a-col>
                 <a-col :span="2" style="text-align: center; line-height: 30px"> - </a-col>
                 <a-col :span="11">
-                  <a-input><template #append>USD</template></a-input>
+                  <a-input v-model="form.info.annual_sales[1]"><template #append>USD</template></a-input>
                 </a-col>
               </a-row>
             </a-form-item>
@@ -224,21 +236,32 @@
         <a-row class="full-width">
           <a-col :span="15">
             <a-form-item label="Year Established">
-              <a-input placeholder="" allow-clear />
+              <a-input placeholder="" v-model="form.info.year_established" allow-clear />
             </a-form-item>
           </a-col>
         </a-row>
         <a-row class="full-width">
           <a-col :span="15">
             <a-form-item label="Export p.c">
-              <a-input placeholder="" allow-clear />
+              <a-select placeholder="请选择" v-model="form.info.export_ratio" allow-clear>
+                <a-option value="< 10%">&lt; 10%</a-option>
+                <a-option value="10% - 20%">10% - 20%</a-option>
+                <a-option value="20% - 30%">20% - 30%</a-option>
+                <a-option value="30% - 40%">30% - 40%</a-option>
+                <a-option value="40% - 50%">40% - 50%</a-option>
+                <a-option value="50% - 60%">50% - 60%</a-option>
+                <a-option value="60% - 70%">60% - 70%</a-option>
+                <a-option value="70% - 80%">70% - 80%</a-option>
+                <a-option value="80% - 90%">80% - 90%</a-option>
+                <a-option value="90% - 100%">90% - 100%</a-option>
+              </a-select>
             </a-form-item>
           </a-col>
         </a-row>
         <a-row class="full-width">
           <a-col :span="15">
             <a-form-item label="Customers Served">
-              <a-input placeholder="" allow-clear />
+              <a-input v-model="form.info.customers_served" placeholder="" allow-clear />
             </a-form-item>
           </a-col>
         </a-row>
@@ -246,10 +269,13 @@
           <a-col :span="15">
             <a-form-item label="Customers Served">
               <template #label>
-                <a-input placeholder="" allow-clear />
+                <a-input placeholder="" v-model="item.name" allow-clear />
               </template>
-              <a-input placeholder="" allow-clear />
+              <a-input placeholder="" v-model="item.value" allow-clear />
             </a-form-item>
+          </a-col>
+          <a-col :span="4">
+            <icon-delete class="del-icon" @click="delCous(index)"></icon-delete>
           </a-col>
         </a-row>
         <a-row class="full-width">
@@ -261,8 +287,8 @@
           <a-col :span="15">
             <div class="com-btn-box">
               <a-space :size="12">
-                <a-button type="primary">保存</a-button>
-                <a-button>取消</a-button>
+                <a-button type="primary" @click="saveFn" :loading="loading">保存</a-button>
+                <a-button @click="cancelFn" :disabled="loading">取消</a-button>
               </a-space>
             </div>
           </a-col>
@@ -274,7 +300,7 @@
       <template #title>上传图片</template>
       <a-form ref="diaformRef" size="medium" :model="diaform" layout="horizontal" :auto-label-width="true">
         <a-form-item label="图片名称">
-          <a-input placeholder="图片名称"></a-input>
+          <a-input placeholder="图片名称" v-model="diaform.title"></a-input>
         </a-form-item>
         <a-form-item label="图片描述">
           <a-textarea
@@ -282,13 +308,14 @@
             :auto-size="{
               minRows: 3
             }"
+            v-model="diaform.picturedesc"
           ></a-textarea>
         </a-form-item>
         <a-form-item label="浏览图片">
           <a-upload
             list-type="picture-card"
             :action="picUploadUrl"
-            :data="{ type: '22' }"
+            :data="{ type: '0' }"
             :file-list="fileDia"
             image-preview
             :limit="1"
@@ -320,10 +347,8 @@
 
 <script setup lang="ts" name="companyTable">
 import { reactive, ref, h, nextTick } from 'vue'
-import {
-  getProductList
-} from '@/apis'
-import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
+import { companyInfo, companySave } from '@/apis'
+import type {} from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
 import { getTreeDate } from '@/utils/common'
@@ -332,20 +357,73 @@ import videoDialog from '@/components/commonDialog/videoDialog.vue'
 import lodash from 'lodash'
 import draggable from 'vuedraggable'
 const emit = defineEmits(['update', 'changeTab'])
-const router = useRouter()
-const route = useRoute()
-const form = reactive({})
-const loading = ref(false)
 const baseURL = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX
 const picUploadUrl = baseURL + '?r=picture/upload'
-
+const logourl = baseURL + '?r=picture/upload-logo'
+const domain = 'https://www.maoyt.com'
+const router = useRouter()
+const route = useRoute()
+const form = reactive({
+  name: '',
+  logopath: '',
+  videoid: '',
+  info: {
+    brands: '',
+    market_name: [],
+    business_type: [],
+    year_established: '',
+    export_ratio: '',
+    customers_served: '',
+    employee_number: [],
+    annual_sales: []
+  },
+  picture_info: [],
+  detail: [],
+  business_type: [],
+  market: []
+})
+const loading = ref(false)
 const getTableData = async () => {
-  loading.value = true
-  const {} = form
-  const { code, data } = await getProductList({})
+  const { code, data } = await companyInfo()
   if (code == 0) {
+    const { name, market, business_type, picture_info, logopath, videoid, video_info, info, detail } = data.company
+    form.name = name
+    form.market = market
+    form.business_type = business_type
+    picture_info.forEach((item, index) => {
+      item.uid = item.id
+      item.url = item.picture_url
+    })
+    fileList.value = picture_info
+    fileLogo.value = [
+      {
+        url: domain + logopath,
+        picture_path: logopath
+      }
+    ]
+    // 视频相关
+    if (videoid) {
+      videoChosed.value = [
+        {
+          img_path: video_info.img_path,
+          title: video_info.title,
+          id: videoid
+        }
+      ]
+    }
+    // 公司资料部分
+    form.info = info
+    if (detail && detail.length > 0) {
+      attrArr.value = detail
+    } else {
+      attrArr.value = [
+        {
+          name: '',
+          value: ''
+        }
+      ]
+    }
   }
-  loading.value = false
 }
 getTableData()
 const formRef = ref()
@@ -354,7 +432,8 @@ const fileLogo = ref([])
 const successUpload = (res) => {
   if (res.response.code == 0) {
     res.id = res.response.data?.picture_id
-    res.url = res.response.data?.picture_url_l
+    res.url = res.response.data?.picture_url + '?' + new Date().getTime()
+    res.picture_path = res.response.data?.picture_path
   } else {
     res.status = 'error'
   }
@@ -390,9 +469,13 @@ const picListShow = (file) => {
   picPrewiewVisible.value = true
 }
 const cropperRef = ref()
-const picCropper = (item) => {
+const picEditIndex = ref(0)
+const picCropper = (item, index) => {
+  picEditIndex.value = index
   fileDia.value = []
   fileDia.value.push(item)
+  diaform.title = item.title
+  diaform.picturedesc = item.picturedesc
   nextTick(() => {
     picvise.value = true
   })
@@ -405,13 +488,23 @@ const picChange = (imgArr) => {
   })
   fileList.value = fileList.value.concat(imgArr)
 }
-const diaform = reactive({})
+const diaform = reactive({
+  title: '',
+  picturedesc: ''
+})
 const picvise = ref(false)
 const fileDia = ref([])
 const handleCancel = () => {
   picvise.value = false
 }
 const handleBeforeOk = () => {
+  const { title, picturedesc } = diaform
+  fileList.value[picEditIndex.value].title = title
+  fileList.value[picEditIndex.value].picturedesc = picturedesc
+  if (fileDia.value.length) {
+    fileList.value[picEditIndex.value].id = fileDia.value[0].id
+    fileList.value[picEditIndex.value].url = fileDia.value[0].url
+  }
   picvise.value = false
 }
 // 视频中心
@@ -437,15 +530,43 @@ const videoDetailRef = ref()
 // 自定义属性
 const attrArr = ref([
   {
-    attr_key: '',
-    attr_value: ''
+    name: '',
+    value: ''
   }
 ])
 const addAttr = () => {
   attrArr.value.push({
-    attr_key: '',
-    attr_value: ''
+    name: '',
+    value: ''
   })
+}
+const delCous = (index: number) => {
+  attrArr.value.splice(index, 1)
+}
+
+// 保存
+const saveFn = async () => {
+  loading.value = true
+  const { name, info } = form
+  fileList.value.forEach((item, index) => {
+    item.sort = index
+  })
+  const { code, data, message } = await companySave({
+    name,
+    info,
+    logopath: fileLogo.value.length ? fileLogo.value[0].picture_path : '',
+    detail: attrArr.value,
+    videoid: videoChosed.value.length ? videoChosed.value[0].id : '',
+    picture_info: fileList.value
+  }).finally(() => {
+    loading.value = false
+  })
+  if (code == 0) {
+    Message.success(message || '操作成功')
+  }
+}
+const cancelFn = () => {
+  getTableData()
 }
 </script>
 

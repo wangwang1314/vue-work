@@ -5,6 +5,7 @@ export * from './user'
 export * from './cate'
 export * from './home'
 export * from './web'
+export * from './company'
 
 export * from './person/type'
 export * from './system/type'

@@ -795,7 +795,7 @@ const picUploadChange = (file) => {
 const successUpload = (res) => {
   if (res.response.code == 0) {
     res.id = res.response.data?.picture_id
-    res.url = res.response.data?.picture_url_l
+    res.url = res.response.data?.picture_url
   } else {
     res.status = 'error'
   }
@@ -1164,7 +1164,7 @@ const reverdetail = (product) => {
   if (product.associate && product.associate.length) {
     product.associate.forEach((item) => {
       item.uid = item.picture_id
-      item.url = item.picture_url_l
+      item.url = item.picture_url
       item.id = item.picture_id
     })
     fileList.value = product.associate
