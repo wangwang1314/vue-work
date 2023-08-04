@@ -8,9 +8,9 @@
       <img @click="toHome" src="@/assets/images/logo.png" />
       <div class="text-wrap">
         <div class="left">
-          <a-link class="addr-span" target="_blank" :href="'http://' + (userStore.userInfo.homeInfo?.company_uncheck.domain || '')">
+          <a-link class="addr-span" target="_blank" :href="'http://' + (userStore.userInfo.homeInfo?.company?.domain || '')">
             <template #icon><icon-link :size="18" /></template>
-            {{ 'http://' + ((userStore.userInfo.homeInfo?.company_uncheck.domain) || '') }}
+            {{ 'http://' + ((userStore.userInfo.homeInfo?.company?.domain) || '') }}
           </a-link>
           <!-- <span class="addr-span"><a href="http://www.ryderelectronics.com" target="_blank">http://www.ryderelectronics.com</a></span> -->
           <!-- <a class="link-addr" target="_blank" href="http://mao.ecer.com/test/ryderelectronics.com/">制作环境</a> -->

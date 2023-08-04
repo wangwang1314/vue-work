@@ -1,7 +1,7 @@
 export interface homePage {
   total_commission: string
   ops_company_info: companyInfo
-  company_uncheck: companyuncheck
+  company: companyuncheck
   user: user
 }
 interface companyInfo {

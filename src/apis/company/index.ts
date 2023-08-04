@@ -41,7 +41,7 @@ export function getCompanyLeaveWord() {
 }
 /** @desc 保存客户赠言 */
 export function saveCompanyLeaveWord(params: leaveWord) {
-  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-leave-word`, params)
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-leave-word`, qs.stringify(params))
 }
 /** @desc 获取工厂展示 */
 export function getCompanyFactory(params: factoryParams) {
@@ -49,5 +49,10 @@ export function getCompanyFactory(params: factoryParams) {
 }
 /** @desc 保存工厂信息 */
 export function saveCompanyFactory(params: saveFactory) {
-  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-factory`, params)
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-factory`, qs.stringify(params))
+}
+
+/** @desc 删除图片关联 */
+export function pictureDdel(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=picture/del`, qs.stringify(params))
 }
