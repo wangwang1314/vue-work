@@ -121,6 +121,7 @@
         </a-form-item>
         <a-form-item label="浏览图片">
           <a-upload
+            :on-before-remove="picRemove"
             list-type="picture-card"
             :action="picUploadUrl"
             :data="{ type: picType }"
@@ -213,9 +214,15 @@ const picListDel = (file) => {
   let index = lodash.findIndex(fileList.value, function (o) {
     return o.uid == file.uid
   })
+  delPicAjax(fileList.value[index]?.id)
   fileList.value.splice(index, 1)
 }
-const delPicAjax = (id) => {
+const delPicAjax = async(id) => {
+  const res = await pictureDdel({
+    id,
+    sid: userStore.userInfo.homeInfo.company.id,
+    type:picType 
+  })
 }
 const picPreviewSrc = ref<string>('')
 const picPrewiewVisible = ref<boolean>(false)
@@ -261,6 +268,10 @@ const handleBeforeOk = () => {
     fileList.value[picEditIndex.value].url = fileDia.value[0].url
   }
   picvise.value = false
+}
+const picRemove = (data) => {
+  delPicAjax(data.id)
+  return data
 }
 const getData = async () => {
   const res = await getCompanyFactory({

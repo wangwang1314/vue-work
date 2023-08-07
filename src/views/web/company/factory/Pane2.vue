@@ -57,7 +57,7 @@
                     :file-list="fileList"
                     :show-file-list="false"
                     ref="uploadRef"
-                    :data="{ type: '4' }"
+                    :data="{ type: picType }"
                     @success="successUpload"
                   >
                     <template #upload-button>
@@ -121,9 +121,10 @@
         </a-form-item>
         <a-form-item label="浏览图片">
           <a-upload
+            :on-before-remove="picRemove"
             list-type="picture-card"
             :action="picUploadUrl"
-            :data="{ type: '0' }"
+            :data="{ type: picType }"
             :file-list="fileDia"
             image-preview
             :limit="1"
@@ -155,7 +156,7 @@
 
 <script setup lang="ts" name="companyTable">
 import { reactive, ref, h, nextTick } from 'vue'
-import { getCompanyFactory, saveCompanyFactory } from '@/apis'
+import { getCompanyFactory, saveCompanyFactory, pictureDdel } from '@/apis'
 import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
@@ -164,8 +165,12 @@ import picDialog from '@/components/commonDialog/picDialog.vue'
 import lodash from 'lodash'
 import draggable from 'vuedraggable'
 import uedit from '@/components/editor/uedit.vue'
+import { useUserStore } from '@/store'
+const userStore = useUserStore()
+// const companyid = userStore.userInfo.homeInfo.company.id
 // plineinfo，oeminfo，rdinfo
 const type = 'oeminfo'
+const picType = 2
 const emit = defineEmits(['update', 'changeTab'])
 const router = useRouter()
 const route = useRoute()
@@ -209,7 +214,15 @@ const picListDel = (file) => {
   let index = lodash.findIndex(fileList.value, function (o) {
     return o.uid == file.uid
   })
+  delPicAjax(fileList.value[index]?.id)
   fileList.value.splice(index, 1)
+}
+const delPicAjax = async(id) => {
+  const res = await pictureDdel({
+    id,
+    sid: userStore.userInfo.homeInfo.company.id,
+    type:picType 
+  })
 }
 const picPreviewSrc = ref<string>('')
 const picPrewiewVisible = ref<boolean>(false)
@@ -256,6 +269,10 @@ const handleBeforeOk = () => {
   }
   picvise.value = false
 }
+const picRemove = (data) => {
+  delPicAjax(data.id)
+  return data
+}
 const getData = async () => {
   const res = await getCompanyFactory({
     type
@@ -278,7 +295,7 @@ const saveFn = async () => {
   const res = await saveCompanyFactory({
     type,
     remark: form.remark,
-    picture_info: fileList.value 
+    picture_info: fileList.value
   }).finally(() => {
     loading.value = false
   })
