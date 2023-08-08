@@ -97,7 +97,7 @@
                     :file-list="fileList"
                     :show-file-list="false"
                     ref="uploadRef"
-                    :data="{ type: '0' }"
+                    :data="{ type: picType }"
                     @success="successUpload"
                   >
                     <template #upload-button>
@@ -313,9 +313,10 @@
         </a-form-item>
         <a-form-item label="浏览图片">
           <a-upload
+            :on-before-remove="picRemove"
             list-type="picture-card"
             :action="picUploadUrl"
-            :data="{ type: '0' }"
+            :data="{ type: picType }"
             :file-list="fileDia"
             image-preview
             :limit="1"
@@ -347,7 +348,7 @@
 
 <script setup lang="ts" name="companyTable">
 import { reactive, ref, h, nextTick } from 'vue'
-import { companyInfo, companySave } from '@/apis'
+import { companyInfo, companySave, pictureDdel } from '@/apis'
 import type {} from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
@@ -363,6 +364,9 @@ const logourl = baseURL + '?r=picture/upload-logo'
 const domain = 'https://www.maoyt.com'
 const router = useRouter()
 const route = useRoute()
+import { useUserStore } from '@/store'
+const userStore = useUserStore()
+const picType = '0'
 const form = reactive({
   name: '',
   logopath: '',
@@ -397,7 +401,7 @@ const getTableData = async () => {
     fileList.value = picture_info
     fileLogo.value = [
       {
-        url: domain + logopath,
+        url: domain + logopath + '?' + new Date().getTime(),
         picture_path: logopath
       }
     ]
@@ -460,7 +464,19 @@ const picListDel = (file) => {
   let index = lodash.findIndex(fileList.value, function (o) {
     return o.uid == file.uid
   })
+  delPicAjax(fileList.value[index]?.id)
   fileList.value.splice(index, 1)
+}
+const delPicAjax = async(id) => {
+  const res = await pictureDdel({
+    id,
+    sid: userStore.userInfo.homeInfo.company.id,
+    type: picType 
+  })
+}
+const picRemove = (data) => {
+  delPicAjax(data.id)
+  return data
 }
 const picPreviewSrc = ref<string>('')
 const picPrewiewVisible = ref<boolean>(false)

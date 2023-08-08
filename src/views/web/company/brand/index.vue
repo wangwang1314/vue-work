@@ -70,7 +70,7 @@
                     :file-list="fileList"
                     :show-file-list="false"
                     ref="uploadRef"
-                    :data="{ type: '21' }"
+                    :data="{ type: picType }"
                     @success="successUpload"
                   >
                     <template #upload-button>
@@ -113,7 +113,7 @@
 </template>
 <script setup lang="ts" name="brandname">
 import { reactive, ref, h, nextTick } from 'vue'
-import { getCompanyPartner, saveCompanyPartner } from '@/apis'
+import { getCompanyPartner, saveCompanyPartner, pictureDdel } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
 import { getTreeDate } from '@/utils/common'
@@ -122,6 +122,9 @@ import lodash from 'lodash'
 import draggable from 'vuedraggable'
 const baseURL = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX
 const picUploadUrl = baseURL + '?r=picture/upload'
+import { useUserStore } from '@/store'
+const userStore = useUserStore()
+const picType = '21'
 const formRef = ref()
 const form = reactive({
   partnersinfo: ''
@@ -139,7 +142,15 @@ const picListDel = (file) => {
   let index = lodash.findIndex(fileList.value, function (o) {
     return o.uid == file.uid
   })
+  delPicAjax(fileList.value[index]?.id)
   fileList.value.splice(index, 1)
+}
+const delPicAjax = async(id) => {
+  const res = await pictureDdel({
+    id,
+    sid: userStore.userInfo.homeInfo.company.id,
+    type: picType 
+  })
 }
 const picPreviewSrc = ref<string>('')
 const picPrewiewVisible = ref<boolean>(false)

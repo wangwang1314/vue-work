@@ -17,9 +17,10 @@
             </a-form-item>
             <a-form-item field="cate" label="客户LOGO" :content-flex="false">
               <a-upload
+                :on-before-remove="picRemove"
                 list-type="picture-card"
                 :action="picUploadUrl"
-                :data="{ type: '9' }"
+                :data="{ type: picType }"
                 :file-list="item.imgList"
                 image-preview
                 :limit="1"
@@ -83,10 +84,13 @@
 </template>
 <script setup lang="ts" name="adv">
 import { reactive, ref, h, nextTick } from 'vue'
-import { getCompanyLeaveWord, saveCompanyLeaveWord } from '@/apis'
+import { getCompanyLeaveWord, saveCompanyLeaveWord, pictureDdel } from '@/apis'
 import { Message } from '@arco-design/web-vue'
 const baseURL = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX
 const picUploadUrl = baseURL + '?r=picture/upload'
+import { useUserStore } from '@/store'
+const userStore = useUserStore()
+const picType = '9'
 const fileLogo = ref([])
 const formRef = ref()
 const loading = ref(false)
@@ -99,6 +103,17 @@ const form = reactive({
     }
   ]
 })
+const delPicAjax = async(data) => {
+  const res = await pictureDdel({
+    id: data.id,
+    sid: data.sid,
+    type: picType 
+  })
+}
+const picRemove = (data) => {
+  delPicAjax(data)
+  return data
+}
 const successUpload = (res) => {
   if (res.response.code == 0) {
     res.id = res.response.data?.picture_id
