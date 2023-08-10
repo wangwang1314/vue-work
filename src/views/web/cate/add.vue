@@ -20,6 +20,7 @@
               >图片中心选择</a-button
             >
             <a-upload
+              :on-before-remove="(data)=> picRemove(data, '22')"
               list-type="picture-card"
               :action="picUploadUrl"
               :data="{ type: '22' }"
@@ -51,6 +52,7 @@
               >图片中心选择</a-button
             >
             <a-upload
+              :on-before-remove="(data)=> picRemove(data, '23')"
               list-type="picture-card"
               :action="picUploadUrl"
               :data="{ type: '23' }"
@@ -292,7 +294,7 @@ import uedit from '@/components/editor/uedit.vue'
 import ueditorTemp from '@/components/editor/ueditor-temp.vue'
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
-import { progetTplContent, getCateDetail, saveCateIntro, delCateIntro, getCateTntro, editCateContent } from '@/apis'
+import { progetTplContent, getCateDetail, saveCateIntro, delCateIntro, getCateTntro, editCateContent, pictureDdel } from '@/apis'
 const route = useRoute()
 const baseURL = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX
 const picUploadUrl = baseURL + '?r=picture/upload'
@@ -303,6 +305,17 @@ const form = reactive({
   descp: '',
   parentid: ''
 })
+const delPicAjax = async(id, type) => {
+  const res = await pictureDdel({
+    id,
+    sid: route.query.id,
+    type
+  })
+}
+const picRemove = (data, type) => {
+  delPicAjax(data.id, type)
+  return data
+}
 const fileList = ref([])
 const successUpload = (res) => {
   if (res.response.code == 0) {
@@ -445,6 +458,8 @@ const saveFn = () => {
         top_pic_id: fileList2.value[0]?fileList2.value[0].id:'',
         doc_ids: docIds,
         parent_id: parentid
+      }).finally(() => {
+        loading.value = false
       })
       if (res.code === 0) {
         Message.success(res.message || '提交成功')

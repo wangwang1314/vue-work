@@ -615,7 +615,8 @@ import {
   progetAttr,
   proAddProduct,
   proEditProduct,
-  qualityControl
+  qualityControl,
+  pictureDdel
 } from '@/apis'
 import { useUserStore } from '@/store'
 import successTpl from './mod/success.vue'
@@ -804,6 +805,7 @@ const picListDel = (file) => {
   let index = lodash.findIndex(fileList.value, function (o) {
     return o.uid == file.uid
   })
+  delPicAjax(fileList.value[index].id)
   fileList.value.splice(index, 1)
 }
 const picPreviewSrc = ref<string>('')
@@ -827,6 +829,13 @@ const cropperChange = (data) => {
   fileList.value[index].file = data.file
   nextTick(() => {
     uploadRef.value?.submit()
+  })
+}
+const delPicAjax = async(id) => {
+  const res = await pictureDdel({
+    id,
+    sid: route.query.id,
+    type: '4'
   })
 }
 // 文件上传
