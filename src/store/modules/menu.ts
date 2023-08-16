@@ -145,11 +145,49 @@ export const useMenuStore = defineStore({
         {
           icon: 'icon-file',
           id: 'ZYGL',
-          name: '资源管理',
+          name: '资源中心',
           path: '/file',
           keepAlive: false,
           hidden: false,
-          level: 1
+          level: 1,
+          children: [
+            {
+              id: 'XWZX',
+              name: '新闻中心',
+              path: '/file/news',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'ALZX',
+              name: '案例中心',
+              path: '/file/case',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'FAQS',
+              name: 'Faqs',
+              path: '/file/faqs',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'ZDYYM',
+              name: '自定义页面',
+              path: '/file/custom',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            }
+          ]
         },
         {
           icon: 'IconApps',

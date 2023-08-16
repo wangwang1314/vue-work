@@ -290,7 +290,7 @@ const searchFn = () => {
 const popup = ref(false)
 const showPopFn = () => {
   if (!selectObj.keys.length) {
-    return Message.warning('请选择分类')
+    return Message.warning('请选择产品')
   }
   popup.value = true
 }

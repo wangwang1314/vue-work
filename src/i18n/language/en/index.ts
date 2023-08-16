@@ -52,4 +52,9 @@ export default {
   合作品牌: 'cooperative brand',
   客户赠言: 'Words from customers',
   工厂展示: 'factory tour',
+  资源中心: 'Resource Center',
+  新闻中心: 'News Center',
+  案例中心: 'Case Center',
+  Faqs: 'Faqs',
+  自定义页面: 'Custom pages'
 }
