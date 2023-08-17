@@ -278,3 +278,9 @@
   color: var(--color-text-3);
   pointer-events: none;
 }
+.table-wrap .tab {
+  padding-top: 16px;
+  :deep(.arco-tabs-nav-tab) {
+    justify-content: flex-start;
+  }
+}
