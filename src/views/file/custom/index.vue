@@ -2,10 +2,35 @@
   <div class="table-wrap">
     <div class="table-page">
       <section class="tab">
-        <a-tabs type="capsule" :hide-content="true" :editable="true" @add="handleAdd" @delete="handleDelete" show-add-button auto-switch>
+        <a-tabs
+          type="capsule"
+          :hide-content="true"
+          :editable="true"
+          @add="handleAdd"
+          @delete="handleDelete"
+          show-add-button
+          auto-switch
+        >
           <a-tab-pane v-for="(item, index) of data" :key="item.key" :title="item.title">
             <template #title>
-              <div>{{ item.title }}</div>
+              <div class="title-con">
+                
+                <div v-if="!item.isactive">{{ item.title }}
+                  <span class="icon-wrap-s">
+                    <icon-edit @click="Inputedit(item)" />
+                  </span>
+                </div>
+                <div v-else>
+                  <modinput
+                    :item="item"
+                    @change="
+                      (data) => {
+                        changeInput(data, item, index)
+                      }
+                    "
+                  ></modinput>
+                </div>
+              </div>
             </template>
           </a-tab-pane>
           <template #extra>
@@ -84,7 +109,13 @@
                       <template #icon><icon-edit :size="13" :stroke-width="3" /></template>
                       <template #default>编辑</template>
                     </a-button>
-                    <icon-arrow-rise @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }" size="16" :strokeWidth="7" class="up-icon" />
+                    <icon-arrow-rise
+                      @click="sortFn(0, record)"
+                      :class="{ disabled: rowIndex == 0 }"
+                      size="16"
+                      :strokeWidth="7"
+                      class="up-icon"
+                    />
                     <icon-arrow-fall
                       @click="sortFn(1, record)"
                       :class="{ disabled: tableData.length - 1 == rowIndex }"
@@ -143,10 +174,10 @@ import {
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getTreeDate } from '@/utils/common'
-import type { ItemList, CateItem } from './type'
+import modinput from './mod/mod-input.vue'
 const router = useRouter()
 const goEdit = (row: CateItem) => {
-  router.push({ path: '/file/newsdetail', query: { id: row.id } })
+  router.push({ path: '/file/customdetail', query: { id: row.id } })
 }
 const expandedKeys = ref([])
 const rowSelection = reactive({
@@ -253,44 +284,56 @@ const sortFn = async (sort: number, row) => {
 }
 const addContent = () => {
   router.push({
-    path: '/file/newsdetail'
+    path: '/file/customdetail'
   })
 }
 const count = ref(0)
 const data = ref([
-      {
-        key: '1',
-        title: 'Tab 1',
-        content: 'Content of Tab Panel 1'
-      },
-      {
-        key: '2',
-        title: 'Tab 2',
-        content: 'Content of Tab Panel 2'
-      },
-      {
-        key: '3',
-        title: 'Tab 3',
-        content: 'Content of Tab Panel 3'
-      },
-      {
-        key: '4',
-        title: 'Tab 4',
-        content: 'Content of Tab Panel 4'
-      }
-    ]);
+  {
+    key: '1',
+    title: 'Tab 1',
+    content: 'Content of Tab Panel 1'
+  },
+  {
+    key: '2',
+    title: 'Tab 2',
+    content: 'Content of Tab Panel 2'
+  },
+  {
+    key: '3',
+    title: 'Tab 3',
+    content: 'Content of Tab Panel 3'
+  },
+  {
+    key: '4',
+    title: 'Tab 4',
+    content: 'Content of Tab Panel 4'
+  }
+])
 
-    const handleAdd = () => {
-      const number = count.value++;
-      data.value = data.value.concat({
-        key: '',
-        title: ''
-      })
-    };
-    const handleDelete = (key) => {
-      data.value = data.value.filter(item => item.key !== key)
-    };
+const handleAdd = () => {
+  const number = count.value++
+  data.value = data.value.concat({
+    key: '',
+    title: '',
+    isactive: true
+  })
+}
+const handleDelete = (key) => {
+  data.value = data.value.filter((item) => item.key !== key)
+}
 
+const changeInput = (dataitem, item, index) => {
+  const { title, isactive, key } = dataitem
+  item.title = title
+  item.isactive = isactive
+  if (!key && !title) {
+    data.value.splice(index, 1)
+  }
+}
+const Inputedit = (item) => {
+  item.isactive = true
+}
 </script>
 <style lang="scss" scoped>
 @import './mod/list.scss';

@@ -29,9 +29,9 @@
             </a-row>
           </a-form-item>
           <a-form-item field="cate" label="自定义图片" :content-flex="false">
-            <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="showPicCenter(2)"
+            <!-- <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="showPicCenter(2)"
               >图片中心选择</a-button
-            >
+            > -->
             <a-upload
               :on-before-remove="(data)=> picRemove(data, '23')"
               list-type="picture-card"
