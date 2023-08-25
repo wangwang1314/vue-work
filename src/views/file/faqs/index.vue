@@ -64,8 +64,8 @@
               </a-table-column>
               <a-table-column title="操作" :width="320" align="center">
                 <template #cell="{ record, rowIndex }">
-                  <a-space :size="4">
-                    <a-button type="text" size="mini" @click="goEdit(record)">
+                  <a-space :size="8">
+                    <a-button type="text" status="warning" size="mini" @click="goEdit(record)">
                       <template #icon><icon-edit :size="13" :stroke-width="3" /></template>
                       <template #default>编辑</template>
                     </a-button>

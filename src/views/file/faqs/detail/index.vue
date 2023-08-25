@@ -77,7 +77,7 @@
       </div>
       <div class="btn-wrap">
         <a-button type="primary" @click="saveFn" :loading="loading">保存</a-button>
-        <a-button type="outline" style="margin-left: 10px" :disabled="loading">取消</a-button>
+        <a-button style="margin-left: 10px" :disabled="loading">取消</a-button>
       </div>
     </a-form>
     <!-- 分类介绍弹框 -->

@@ -34,7 +34,7 @@
             </template>
           </a-tab-pane>
           <template #extra>
-            <a-button size="mini" type="primary" @click="handleAdd">
+            <a-button size="small" style="margin-left: 16px;" type="primary" @click="handleAdd">
               类目添加
               <template #icon><icon-plus :size="13" :stroke-width="3" /></template>
             </a-button>
@@ -104,8 +104,8 @@
               </a-table-column>
               <a-table-column title="操作" :width="320" align="center">
                 <template #cell="{ record, rowIndex }">
-                  <a-space :size="4">
-                    <a-button type="text" size="mini" @click="goEdit(record)">
+                  <a-space :size="8">
+                    <a-button type="text" status="warning" size="mini" @click="goEdit(record)">
                       <template #icon><icon-edit :size="13" :stroke-width="3" /></template>
                       <template #default>编辑</template>
                     </a-button>

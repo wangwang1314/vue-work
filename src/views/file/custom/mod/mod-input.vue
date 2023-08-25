@@ -1,5 +1,5 @@
 <template>
-  <a-input ref="ainput" style="width: 80px" v-model="title" @blur="changeFn"></a-input>
+  <a-input ref="ainput" style="width: 80px" size="mini" v-model="title" @blur="changeFn"></a-input>
 </template>
 <script lang="ts" setup name="modinput">
 import { reactive, ref, h, onMounted, watch } from 'vue'

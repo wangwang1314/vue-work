@@ -282,6 +282,7 @@
   padding-top: 16px;
   :deep(.arco-tabs-nav-tab) {
     justify-content: flex-start;
+    flex: unset;
   }
 }
 .title-con {
