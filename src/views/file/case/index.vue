@@ -56,10 +56,10 @@
                   <a-link class="link-class">{{ record.name }}</a-link>
                 </template>
               </a-table-column>
-              <a-table-column title="发布时间" data-index="time" :width="145" align="left">
-                <template #cell="{ record }">{{ record.uptime }}</template>
+              <a-table-column title="发布时间" data-index="pubtime" :width="145" align="left">
+                <template #cell="{ record }">{{ record.pubtime }}</template>
               </a-table-column>
-              <a-table-column title="更新时间" data-index="time" :width="145" align="left">
+              <a-table-column title="更新时间" data-index="uptime" :width="145" align="left">
                 <template #cell="{ record }">{{ record.uptime }}</template>
               </a-table-column>
               <a-table-column title="操作" :width="320" align="center">
@@ -116,19 +116,13 @@
 import { reactive, ref, h } from 'vue'
 import { usePagination } from '@/hooks'
 import {
-  getCategoryList,
-  addCategory,
-  delCategory,
-  editCateName,
-  addCateKeyword,
-  resetSeo,
-  setSeo,
-  getSeo
+  fileCaseList,
+  fileCaseDel,
 } from '@/apis'
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getTreeDate } from '@/utils/common'
-import type { ItemList, CateItem } from './type'
+const casetype = ref('0')
 const router = useRouter()
 const goEdit = (row: CateItem) => {
   router.push({ path: '/file/casedetail', query: { id: row.id } })
@@ -151,8 +145,11 @@ const calist = ref([])
 const summary = ref({})
 const getTableData = async () => {
   loading.value = true
-  const { code, data } = await getCategoryList({
-    search_name: searchForm.search_name
+  const { code, data } = await fileCaseList({
+    search_name: searchForm.search_name,
+    page_no: current.value,
+    page_size: pageSize.value,
+    type: casetype.value
   }).finally(() => {
     loading.value = false
   })
@@ -160,7 +157,7 @@ const getTableData = async () => {
     tableData.value = data.list
     isEdit.value = data.full_edit
     soid.value = data.soid
-    setTotal(data.total_record)
+    setTotal(data.total_records)
     calist.value = data.prod_plan
     summary.value = data.summary
   }
@@ -184,8 +181,8 @@ const selectObj = reactive<webSelectObj>({
 })
 const batchDel = async () => {
   btnloading.value = true
-  const res = await delCategory({
-    category_ids: selectObj.keys
+  const res = await fileCaseDel({
+    ids: selectObj.keys
   }).finally(() => {
     btnloading.value = false
   })

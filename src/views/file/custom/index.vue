@@ -57,7 +57,7 @@
             <a-form-item field="search_name">
               <a-input-search
                 @search="searchFn"
-                placeholder="请输入新闻名称"
+                placeholder="请输入自定义名称"
                 v-model="searchForm.search_name"
                 search-button
               >
@@ -91,7 +91,7 @@
             @page-size-change="changePageSize"
           >
             <template #columns>
-              <a-table-column :cellClass="'cell-cous'" title="新闻名称" data-index="address" :width="220" align="left">
+              <a-table-column :cellClass="'cell-cous'" title="自定义名称" data-index="address" :width="220" align="left">
                 <template #cell="{ record }">
                   <a-link class="link-class">{{ record.name }}</a-link>
                 </template>
