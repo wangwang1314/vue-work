@@ -17,7 +17,7 @@
             <a-form-item field="search_name">
               <a-input-search
                 @search="searchFn"
-                placeholder="请输入FAQS名称"
+                placeholder="请输入案例名称"
                 v-model="searchForm.search_name"
                 search-button
               >
@@ -51,15 +51,15 @@
             @page-size-change="changePageSize"
           >
             <template #columns>
-              <a-table-column :cellClass="'cell-cous'" title="FAQS名称" data-index="address" :width="220" align="left">
+              <a-table-column :cellClass="'cell-cous'" title="案例名称" data-index="address" :width="280" align="left">
                 <template #cell="{ record }">
-                  <a-link class="link-class">{{ record.name }}</a-link>
+                  <a-link class="link-class" @click="goEdit(record)" >{{ record.name }}</a-link>
                 </template>
               </a-table-column>
-              <a-table-column title="发布时间" data-index="time" :width="145" align="left">
-                <template #cell="{ record }">{{ record.uptime }}</template>
+              <a-table-column title="发布时间" data-index="pubtime" :width="160" align="left">
+                <template #cell="{ record }">{{ record.pubtime }}</template>
               </a-table-column>
-              <a-table-column title="更新时间" data-index="time" :width="145" align="left">
+              <a-table-column title="更新时间" data-index="uptime" :width="160" align="left">
                 <template #cell="{ record }">{{ record.uptime }}</template>
               </a-table-column>
               <a-table-column title="操作" :width="320" align="center">
@@ -116,19 +116,14 @@
 import { reactive, ref, h } from 'vue'
 import { usePagination } from '@/hooks'
 import {
-  getCategoryList,
-  addCategory,
-  delCategory,
-  editCateName,
-  addCateKeyword,
-  resetSeo,
-  setSeo,
-  getSeo
+  fileCaseList,
+  fileCaseDel,
+  fileCaseUp, fileCaseDown, fileDelCategory
 } from '@/apis'
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getTreeDate } from '@/utils/common'
-import type { ItemList, CateItem } from './type'
+const casetype = ref('3')
 const router = useRouter()
 const goEdit = (row: CateItem) => {
   router.push({ path: '/file/faqsdetail', query: { id: row.id } })
@@ -151,8 +146,11 @@ const calist = ref([])
 const summary = ref({})
 const getTableData = async () => {
   loading.value = true
-  const { code, data } = await getCategoryList({
-    search_name: searchForm.search_name
+  const { code, data } = await fileCaseList({
+    search_name: searchForm.search_name,
+    page_no: current.value,
+    page_size: pageSize.value,
+    type: casetype.value
   }).finally(() => {
     loading.value = false
   })
@@ -160,7 +158,7 @@ const getTableData = async () => {
     tableData.value = data.list
     isEdit.value = data.full_edit
     soid.value = data.soid
-    setTotal(data.total_record)
+    setTotal(data.total_records)
     calist.value = data.prod_plan
     summary.value = data.summary
   }
@@ -184,8 +182,8 @@ const selectObj = reactive<webSelectObj>({
 })
 const batchDel = async () => {
   btnloading.value = true
-  const res = await delCategory({
-    category_ids: selectObj.keys
+  const res = await fileCaseDel({
+    ids: selectObj.keys
   }).finally(() => {
     btnloading.value = false
   })
@@ -205,8 +203,8 @@ const singeDel = (row: CateItem) => {
 }
 const singeBatchDel = async () => {
   btnloading.value = true
-  const res = await delCategory({
-    category_ids: [currentRow.value.id]
+  const res = await fileCaseDel({
+    ids: [currentRow.value.id]
   }).finally(() => {
     btnloading.value = false
   })
@@ -219,22 +217,22 @@ const singeBatchDel = async () => {
 
 /*  排序 */
 const sortFn = async (sort: number, row) => {
-  // let res
-  // if (sort) {
-  //   res = await prFlagDown({
-  //     flag_type: flag_type.value,
-  //     product_id: row.id
-  //   })
-  // } else {
-  //   res = await prFlagUp({
-  //     flag_type: flag_type.value,
-  //     product_id: row.id
-  //   })
-  // }
-  // if (res.code === 0) {
-  //   Message.success(res.message || '操作成功')
-  //   getTableData()
-  // }
+  let res
+  if (sort) {
+    res = await fileCaseDown({
+      type: casetype.value,
+      id: row.id
+    })
+  } else {
+    res = await fileCaseUp({
+      type: casetype.value,
+      id: row.id
+    })
+  }
+  if (res.code === 0) {
+    Message.success(res.message || '操作成功')
+    getTableData()
+  }
 }
 const addContent = () => {
   router.push({

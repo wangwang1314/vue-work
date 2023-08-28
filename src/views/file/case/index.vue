@@ -51,15 +51,15 @@
             @page-size-change="changePageSize"
           >
             <template #columns>
-              <a-table-column :cellClass="'cell-cous'" title="案例名称" data-index="address" :width="220" align="left">
+              <a-table-column :cellClass="'cell-cous'" title="案例名称" data-index="address" :width="280" align="left">
                 <template #cell="{ record }">
-                  <a-link class="link-class">{{ record.name }}</a-link>
+                  <a-link class="link-class" @click="goEdit(record)" >{{ record.name }}</a-link>
                 </template>
               </a-table-column>
-              <a-table-column title="发布时间" data-index="pubtime" :width="145" align="left">
+              <a-table-column title="发布时间" data-index="pubtime" :width="160" align="left">
                 <template #cell="{ record }">{{ record.pubtime }}</template>
               </a-table-column>
-              <a-table-column title="更新时间" data-index="uptime" :width="145" align="left">
+              <a-table-column title="更新时间" data-index="uptime" :width="160" align="left">
                 <template #cell="{ record }">{{ record.uptime }}</template>
               </a-table-column>
               <a-table-column title="操作" :width="320" align="center">
@@ -118,6 +118,7 @@ import { usePagination } from '@/hooks'
 import {
   fileCaseList,
   fileCaseDel,
+  fileCaseUp, fileCaseDown, fileDelCategory
 } from '@/apis'
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -202,8 +203,8 @@ const singeDel = (row: CateItem) => {
 }
 const singeBatchDel = async () => {
   btnloading.value = true
-  const res = await delCategory({
-    category_ids: [currentRow.value.id]
+  const res = await fileCaseDel({
+    ids: [currentRow.value.id]
   }).finally(() => {
     btnloading.value = false
   })
@@ -216,22 +217,22 @@ const singeBatchDel = async () => {
 
 /*  排序 */
 const sortFn = async (sort: number, row) => {
-  // let res
-  // if (sort) {
-  //   res = await prFlagDown({
-  //     flag_type: flag_type.value,
-  //     product_id: row.id
-  //   })
-  // } else {
-  //   res = await prFlagUp({
-  //     flag_type: flag_type.value,
-  //     product_id: row.id
-  //   })
-  // }
-  // if (res.code === 0) {
-  //   Message.success(res.message || '操作成功')
-  //   getTableData()
-  // }
+  let res
+  if (sort) {
+    res = await fileCaseDown({
+      type: casetype.value,
+      id: row.id
+    })
+  } else {
+    res = await fileCaseUp({
+      type: casetype.value,
+      id: row.id
+    })
+  }
+  if (res.code === 0) {
+    Message.success(res.message || '操作成功')
+    getTableData()
+  }
 }
 const addContent = () => {
   router.push({

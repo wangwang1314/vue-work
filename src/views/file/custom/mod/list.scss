@@ -263,9 +263,10 @@
 .cate-n {
   padding-top: 6px;
 }
-// .link-class {
-//   font-size: var(--m-size);
-// }
+.link-class {
+  font-size: var(--m-size);
+  color: rgb(var(--primary-6));
+}
 .up-icon {
   color: rgb(var(--primary-6));
   cursor: pointer;
