@@ -10,14 +10,15 @@
           @delete="handleDelete"
           show-add-button
           auto-switch
+          v-model:active-key="tabKey"
         >
-          <a-tab-pane v-for="(item, index) of data" :key="item.key" :title="item.title">
+          <a-tab-pane v-for="(item, index) of tabData" :key="item.id" :title="item.title">
             <template #title>
               <div class="title-con">
-                
-                <div v-if="!item.isactive">{{ item.title }}
+                <div v-if="!item.isactive">
+                  {{ item.title }}
                   <span class="icon-wrap-s">
-                    <icon-edit @click="Inputedit(item)" />
+                    <icon-edit @click.stop="Inputedit(item)" />
                   </span>
                 </div>
                 <div v-else>
@@ -34,7 +35,7 @@
             </template>
           </a-tab-pane>
           <template #extra>
-            <a-button size="small" style="margin-left: 16px;" type="primary" @click="handleAdd">
+            <a-button size="small" style="margin-left: 16px" type="primary" @click="handleAdd">
               类目添加
               <template #icon><icon-plus :size="13" :stroke-width="3" /></template>
             </a-button>
@@ -91,13 +92,19 @@
             @page-size-change="changePageSize"
           >
             <template #columns>
-              <a-table-column :cellClass="'cell-cous'" title="自定义名称" data-index="address" :width="220" align="left">
+              <a-table-column
+                :cellClass="'cell-cous'"
+                title="自定义名称"
+                data-index="address"
+                :width="220"
+                align="left"
+              >
                 <template #cell="{ record }">
                   <a-link class="link-class">{{ record.name }}</a-link>
                 </template>
               </a-table-column>
               <a-table-column title="发布时间" data-index="time" :width="145" align="left">
-                <template #cell="{ record }">{{ record.uptime }}</template>
+                <template #cell="{ record }">{{ record.pubtime }}</template>
               </a-table-column>
               <a-table-column title="更新时间" data-index="time" :width="145" align="left">
                 <template #cell="{ record }">{{ record.uptime }}</template>
@@ -158,27 +165,20 @@
     <GiFooter></GiFooter>
   </div>
 </template>
-<script setup lang="ts" name="catelist">
-import { reactive, ref, h } from 'vue'
+<script setup lang="ts" name="cuslist">
+import { reactive, ref, h, watch } from 'vue'
 import { usePagination } from '@/hooks'
-import {
-  getCategoryList,
-  addCategory,
-  delCategory,
-  editCateName,
-  addCateKeyword,
-  resetSeo,
-  setSeo,
-  getSeo
-} from '@/apis'
-import { Notification, Message } from '@arco-design/web-vue'
+import { fileCaseList, fileCaseDel, fileCaseUp, fileCaseDown, fileDelPage, fileEditPage, fileAddPage } from '@/apis'
+import { Notification, Message, Modal } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getTreeDate } from '@/utils/common'
 import modinput from './mod/mod-input.vue'
+const casetype = ref('-100')
 const router = useRouter()
 const goEdit = (row: CateItem) => {
-  router.push({ path: '/file/customdetail', query: { id: row.id } })
+  router.push({ path: '/file/customdetail', query: { id: row.id, page_id: tabKey.value } })
 }
+const tabKey = ref('')
 const expandedKeys = ref([])
 const rowSelection = reactive({
   type: 'checkbox',
@@ -188,31 +188,39 @@ const rowSelection = reactive({
 const searchForm = reactive({
   search_name: ''
 })
-const isEdit = ref(false)
 const tableData = ref<Array<ItemList>>([])
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
 const loading = ref(false)
-const soid = ref('')
-const calist = ref([])
-const summary = ref({})
-const getTableData = async () => {
+const getTableData = async (flag) => {
   loading.value = true
-  const { code, data } = await getCategoryList({
-    search_name: searchForm.search_name
+  const { code, data } = await fileCaseList({
+    search_name: searchForm.search_name,
+    page_no: current.value,
+    page_size: pageSize.value,
+    type: casetype.value,
+    page_id: tabKey.value
   }).finally(() => {
     loading.value = false
   })
   if (code === 0) {
     tableData.value = data.list
-    isEdit.value = data.full_edit
-    soid.value = data.soid
-    setTotal(data.total_record)
-    calist.value = data.prod_plan
-    summary.value = data.summary
+    if (flag) {
+      data.pages.forEach((item, index) => {
+        item.title = item.page_name
+        if (index === 0) {
+          tabKey.value = item.id
+        }
+        item.isactive = false
+      })
+      tabData.value = data.pages
+    }
+    setTotal(data.total_records)
   }
 }
-getTableData()
-
+getTableData(1)
+watch(tabKey, (val) => {
+  getTableData()
+})
 // 搜索
 const searchFn = () => {
   getTableData()
@@ -230,8 +238,8 @@ const selectObj = reactive<webSelectObj>({
 })
 const batchDel = async () => {
   btnloading.value = true
-  const res = await delCategory({
-    category_ids: selectObj.keys
+  const res = await fileCaseDel({
+    ids: selectObj.keys
   }).finally(() => {
     btnloading.value = false
   })
@@ -251,8 +259,8 @@ const singeDel = (row: CateItem) => {
 }
 const singeBatchDel = async () => {
   btnloading.value = true
-  const res = await delCategory({
-    category_ids: [currentRow.value.id]
+  const res = await fileCaseDel({
+    ids: [currentRow.value.id]
   }).finally(() => {
     btnloading.value = false
   })
@@ -265,73 +273,81 @@ const singeBatchDel = async () => {
 
 /*  排序 */
 const sortFn = async (sort: number, row) => {
-  // let res
-  // if (sort) {
-  //   res = await prFlagDown({
-  //     flag_type: flag_type.value,
-  //     product_id: row.id
-  //   })
-  // } else {
-  //   res = await prFlagUp({
-  //     flag_type: flag_type.value,
-  //     product_id: row.id
-  //   })
-  // }
-  // if (res.code === 0) {
-  //   Message.success(res.message || '操作成功')
-  //   getTableData()
-  // }
+  let res
+  if (sort) {
+    res = await fileCaseDown({
+      type: casetype.value,
+      id: row.id
+    })
+  } else {
+    res = await fileCaseUp({
+      type: casetype.value,
+      id: row.id
+    })
+  }
+  if (res.code === 0) {
+    Message.success(res.message || '操作成功')
+    getTableData()
+  }
 }
 const addContent = () => {
   router.push({
-    path: '/file/customdetail'
+    path: '/file/customdetail',
+    query: { page_id: tabKey.value }
   })
 }
 const count = ref(0)
-const data = ref([
-  {
-    key: '1',
-    title: 'Tab 1',
-    content: 'Content of Tab Panel 1'
-  },
-  {
-    key: '2',
-    title: 'Tab 2',
-    content: 'Content of Tab Panel 2'
-  },
-  {
-    key: '3',
-    title: 'Tab 3',
-    content: 'Content of Tab Panel 3'
-  },
-  {
-    key: '4',
-    title: 'Tab 4',
-    content: 'Content of Tab Panel 4'
-  }
-])
+const tabData = ref([])
 
 const handleAdd = () => {
   const number = count.value++
-  data.value = data.value.concat({
-    key: '',
+  tabData.value = tabData.value.concat({
+    id: '',
     title: '',
     isactive: true
   })
 }
 const handleDelete = (key) => {
-  data.value = data.value.filter((item) => item.key !== key)
+  Modal.confirm({
+    title: '提示',
+    content: `确认删除`,
+    onOk: async() => {
+      if (key) {
+        const res = await fileDelPage({
+          id: key
+        })
+        if (res.code === 0) {
+          tabData.value = tabData.value.filter((item) => item.id !== key)
+        }
+      } else {
+        tabData.value = tabData.value.filter((item) => item.id !== key)
+      }
+    },
+    onCancel: () => {}
+  })
 }
 
 const changeInput = (dataitem, item, index) => {
-  const { title, isactive, key } = dataitem
+  const { title, isactive, id } = dataitem
   item.title = title
   item.isactive = isactive
-  if (!key && !title) {
-    data.value.splice(index, 1)
+  if (!id && !title) {
+    tabData.value.splice(index, 1)
+  } else {
+    if (id) {
+      fileEditPage({
+        id,
+        name: title
+      })
+    } else {
+      fileAddPage({
+        name: title
+      })
+    }
   }
 }
 const Inputedit = (item) => {
+  console.log(6666)
   item.isactive = true
 }
 </script>

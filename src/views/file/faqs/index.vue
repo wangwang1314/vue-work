@@ -17,7 +17,7 @@
             <a-form-item field="search_name">
               <a-input-search
                 @search="searchFn"
-                placeholder="请输入案例名称"
+                placeholder="请输入FAQS名称"
                 v-model="searchForm.search_name"
                 search-button
               >
@@ -51,7 +51,7 @@
             @page-size-change="changePageSize"
           >
             <template #columns>
-              <a-table-column :cellClass="'cell-cous'" title="案例名称" data-index="address" :width="280" align="left">
+              <a-table-column :cellClass="'cell-cous'" title="FAQS名称" data-index="address" :width="280" align="left">
                 <template #cell="{ record }">
                   <a-link class="link-class" @click="goEdit(record)" >{{ record.name }}</a-link>
                 </template>
