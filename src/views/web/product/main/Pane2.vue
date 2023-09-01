@@ -370,7 +370,7 @@ const form = reactive({
 })
 
 let personArr = reactive<proPersonItem[]>([])
-let cateArr = reactive<procateItem[]>([])
+const cateArr = ref([])
 const loading = ref(false)
 let tableData = reactive<productListItem[]>([])
 const collapsed = ref(false)
@@ -395,7 +395,7 @@ const getTableData = async () => {
   if (code == 0) {
     tableData = data.list
     personArr = data.p_users
-    cateArr = data.categories
+    cateArr.value = data.categories
     emit('update', data)
     setTotal(Number(data.total_records))
   }
@@ -504,7 +504,7 @@ const cateFn = () => {
     return Message.warning('请选择产品')
   }
   cateTag.value = true
-  treeData.value = getTreeDate(cateArr)
+  treeData.value = getTreeDate(cateArr.value)
 }
 const cateTag = ref<boolean>(false)
 const cateKey = ref('')
@@ -602,14 +602,14 @@ const showCode = (row: productListItem) => {
 
 // 搜索cate
 const searchCate = (cateid: string) => {
-  router.replace({
+  router.push({
     path: '/web/webproduct/list',
     query: {
-      category_id: cateid
+      category_id: String(cateid)
     }
   })
   resetFn()
-  form.category_id = cateid
+  form.category_id = String(cateid)
   getTableData()
 }
 // 搜索关键字
