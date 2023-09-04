@@ -30,7 +30,7 @@
       </a-tabs>
     </section>
 
-    <transition name="fade-slide" mode="out-in" appear>
+    <transition name="zoom-fade" mode="out-in" appear>
       <component :is="PaneMap[activeKey]" @update="updateFn"></component>
     </transition>
   </div>

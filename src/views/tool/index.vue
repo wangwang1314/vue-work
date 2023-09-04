@@ -9,7 +9,7 @@
     </a-card>
 
     <section class="content">
-      <transition name="fade-slide" mode="out-in" appear>
+      <transition name="zoom-fade" mode="out-in" appear>
         <component :is="menuList[selectedKey].value"></component>
       </transition>
     </section>

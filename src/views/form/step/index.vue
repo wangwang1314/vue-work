@@ -7,7 +7,7 @@
         <a-step description="恭喜您，转账成功">完成转账</a-step>
       </a-steps>
 
-      <transition name="fade-slide" mode="out-in" appear>
+      <transition name="zoom-fade" mode="out-in" appear>
         <keep-alive>
           <component :is="ComponentMap[current]" :form="form" @next="next" @prev="prev" @again="current = 1" />
         </keep-alive>

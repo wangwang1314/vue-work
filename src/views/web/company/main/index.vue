@@ -29,7 +29,7 @@
         </a-tab-pane>
       </a-tabs>
     </section>
-    <transition name="fade-slide" mode="out-in" appear>
+    <transition name="zoom-fade" mode="out-in" appear>
       <pane1 v-if="activeKey == 1" :key="1"></pane1>
       <pane2 v-else-if="activeKey == 2" :key="2" type="intro"></pane2>
       <pane2 v-else-if="activeKey == 3" :key="3" type="history"></pane2>
