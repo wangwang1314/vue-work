@@ -144,8 +144,8 @@ export const useMenuStore = defineStore({
         },
         {
           icon: 'icon-file',
-          id: 'ZYGL',
-          name: '资源中心',
+          id: 'XWAL',
+          name: '新闻案例',
           path: '/file',
           keepAlive: false,
           hidden: false,

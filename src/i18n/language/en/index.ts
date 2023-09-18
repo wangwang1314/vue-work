@@ -56,5 +56,6 @@ export default {
   新闻中心: 'News Center',
   案例中心: 'Case Center',
   Faqs: 'Faqs',
-  自定义页面: 'Custom pages'
+  自定义页面: 'Custom pages',
+  新闻案例: 'News stories'
 }
