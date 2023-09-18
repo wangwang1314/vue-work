@@ -1,5 +1,5 @@
 <template>
-  <div class="banner-detail">
+  <div class="com-detail">
     <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
       <a-form-item label="上传图片">
         <a-row class="full-width">

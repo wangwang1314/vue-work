@@ -1,5 +1,5 @@
 <template>
-  <div class="banner-detail">
+  <div class="com-detail">
     <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
       <a-form-item label="上传图片">
         <a-row class="full-width">
@@ -169,8 +169,8 @@ import { useUserStore } from '@/store'
 const userStore = useUserStore()
 // const companyid = userStore.userInfo.homeInfo.company.id
 // plineinfo，oeminfo，rdinfo
-const type = 'oeminfo'
-const picType = 2
+const type = 'rdinfo'
+const picType = 3
 const emit = defineEmits(['update', 'changeTab'])
 const router = useRouter()
 const route = useRoute()

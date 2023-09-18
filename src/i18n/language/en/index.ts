@@ -57,5 +57,9 @@ export default {
   案例中心: 'Case Center',
   Faqs: 'Faqs',
   自定义页面: 'Custom pages',
-  新闻案例: 'News stories'
+  新闻案例: 'News stories',
+  插图管理: 'Illustration management',
+  首页幻灯: 'home slide',
+  内页顶图: 'Top of the inside page',
+  网站插图: 'Website Illustrations'
 }

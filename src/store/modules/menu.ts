@@ -191,11 +191,12 @@ export const useMenuStore = defineStore({
         },
         {
           icon: 'IconApps',
-          id: 'WZSD',
-          name: '网站设定',
+          id: 'CTGL',
+          name: '插图管理',
           keepAlive: false,
           hidden: false,
-          level: 1
+          level: 1,
+          path: '/banner/list'
         },
         {
           icon: 'icon-email',

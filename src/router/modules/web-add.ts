@@ -1,6 +1,6 @@
 import { DEFAULT_LAYOUT } from '../base'
 
-const Data = {
+const Webadd = {
   component: DEFAULT_LAYOUT,
   children: [
     {
@@ -154,4 +154,4 @@ const Data = {
   ]
 }
 
-export default Data
+export default Webadd
