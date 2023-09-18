@@ -1,5 +1,5 @@
 <template>
-  <div class="com-detail">
+  <div class="banner-detail">
   
   </div>
 </template>
