@@ -63,3 +63,10 @@
     line-height: 162px;
   }
 }
+:deep(.inner-banner) {
+  .arco-col-11 {
+    display: block;
+    float: left;
+    margin-right: 8px;
+  }
+}

@@ -4,17 +4,17 @@
       <a-form-item label="上传图片" :content-flex="false">
         <a-row class="full-width">
           <draggable v-model="fileList" class="dra-wrap-b">
-            <template #item="{ element }">
+            <template #item="{ element, index }">
               <a-col :span="11" class="pic-item">
                 <span class="arco-upload-list-picture">
                   <img :src="element.url" :alt="element.name" />
                   <div class="arco-upload-list-picture-mask">
                     <div class="arco-upload-list-picture-operation">
-                      <span class="arco-upload-icon arco-upload-icon-preview">
-                        <icon-link :size="20" @click="picCropper(element)" />
+                      <span class="arco-upload-icon arco-upload-icon-preview" v-show="element.picid">
+                        <icon-link :size="20" @click="picCropper(element, index)" />
                       </span>
                       <span class="arco-upload-icon arco-upload-icon-preview">
-                        <icon-edit :size="20" @click="picListShow(element)" />
+                        <icon-edit :size="20" @click="picListShow(element, index)" />
                       </span>
                       <span class="arco-upload-icon arco-upload-icon-remove">
                         <icon-delete :size="20" @click="picListDel(element)" />
@@ -33,7 +33,7 @@
                   :file-list="fileList"
                   :show-file-list="false"
                   ref="uploadRef"
-                  :data="{ type: '4' }"
+                  :data="{ type: '10' }"
                   @success="successUpload"
                   draggable
                   :action="picUrl"
@@ -99,13 +99,15 @@
 
 <script setup lang="ts" name="companyTable">
 import { reactive, ref, h, nextTick } from 'vue'
-import { getCompanyFactory, saveCompanyFactory, pictureDdel } from '@/apis'
+import { getHomeBanner, pictureDdel, saveHomeBanner } from '@/apis'
 import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
 import lodash from 'lodash'
 import draggable from 'vuedraggable'
 import linkdialog from './mod/linkdialog.vue'
+import { useUserStore } from '@/store'
+const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const picUrl = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX + '?r=picture/upload'
@@ -126,7 +128,23 @@ const successUpload = (res) => {
   }
 }
 const loading = ref(false)
-const saveFn = () => {}
+const saveFn = async() => {
+  loading.value = true
+  const params = fileList.value.map((item, index) => {
+    const {id, title, picturedesc} = item
+    return {
+      id, title, picturedesc, sort: index
+    }
+  })
+  const res = await saveHomeBanner({
+    home_banner: params
+  }).finally(() => {
+    loading.value = false
+  })
+  if (res.code === 0) {
+    Message.success(res.message || '操作成功')
+  }
+}
 const picListDel = (file) => {
   const index = lodash.findIndex(fileList.value, function (o) {
     return o.uid == file.uid
@@ -138,8 +156,8 @@ const picListDel = (file) => {
 const delPicAjax = async (id) => {
   const res = await pictureDdel({
     id,
-    sid: route.query.id,
-    type: '4'
+    sid: userStore.userInfo.homeInfo.company.id,
+    type: '10'
   })
 }
 
@@ -149,15 +167,34 @@ const dialogForm = reactive({
   picturedesc: ''
 })
 const cateconfirm = () => {
+  fileList.value[currentIndex.value].title = dialogForm.title
+  fileList.value[currentIndex.value].picturedesc = dialogForm.picturedesc
   catevisi.value = false
 }
-const picListShow = () => {
+const currentIndex = ref(0)
+const picListShow = (item, index) => {
+  currentIndex.value = index
+  const { title, picturedesc } = item
+  dialogForm.title = title
+  dialogForm.picturedesc = picturedesc
   catevisi.value = true
 }
 const linkRef = ref()
-const picCropper = () => {
-  linkRef.value?.showDialog()
+const picCropper = (item, index) => {
+  currentIndex.value = index
+  linkRef.value?.showDialog(item.id)
 }
+const getDate = async () => {
+  const res = await getHomeBanner()
+  if (res.code == 0) {
+    res.data.banner.forEach((item) => {
+      item.uid = item.id
+      item.url = item.picture_url
+    })
+    fileList.value = res.data.banner
+  }
+}
+getDate()
 </script>
 
 <style lang="scss" scoped>

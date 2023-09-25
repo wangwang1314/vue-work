@@ -8,32 +8,31 @@
       title="产品列表"
     >
       <template #footer>
-        <a-button @click="handleCancel" :disabled="btnloading">取消</a-button>
         <a-button @click="handleBeforeOk" type="primary" :loading="btnloading">确定</a-button>
+        <a-button @click="handleCancel" :disabled="btnloading">取消</a-button>
       </template>
       <a-form label-align="right" ref="formRef" auto-label-width :model="form" class="form" direction="inline">
         <div class="radio-box">
           <div class="radio-item">
-            <a-radio value="1" v-model="checkRadio">点击图片跳转到分类页</a-radio>
-            <div v-show="checkRadio == '1'" class="select-w">
+            <a-radio value="8" v-model="checkRadio">点击图片跳转到分类页</a-radio>
+            <div v-show="checkRadio == '8'" class="select-w">
               <a-select
                 placeholder="请选择"
-                v-model="form.category_id"
+                v-model="cateId"
               >
-                <a-option value="">所有分类</a-option>
                 <a-option v-for="item in catelist" :key="item.id" :value="item.id">{{ item.name }}</a-option>
               </a-select>
             </div>
             
           </div>
           <div class="radio-item">
-            <a-radio value="2" v-model="checkRadio">点击图片跳转到VR页</a-radio>
+            <a-radio value="3" v-model="checkRadio">点击图片跳转到VR页</a-radio>
           </div>
           <div class="radio-item">
-            <a-radio value="3" v-model="checkRadio">点击图片跳转到产品页</a-radio>
+            <a-radio value="4" v-model="checkRadio">点击图片跳转到产品页</a-radio>
           </div>
         </div>
-        <a-row :gutter="16" wrap v-show="checkRadio == '3'">
+        <a-row :gutter="16" wrap v-show="checkRadio == '4'">
           <a-col :span="6">
             <a-form-item field="search_name" label="产品名称">
               <a-input v-model="form.search_name" placeholder="请输入产品名称" />
@@ -56,7 +55,7 @@
         </a-row>
       </a-form>
       <a-table
-        v-show="checkRadio == '3'"
+        v-show="checkRadio == '4'"
         :data="fileArr"
         row-key="id"
         :row-selection="{ type: 'radio', showCheckedAll: true, onlyCurrent: false }"
@@ -95,7 +94,7 @@
 import { ref, reactive, watch } from 'vue'
 import { Notification, Message } from '@arco-design/web-vue'
 import { usePagination } from '@/hooks'
-import { prFlagList, prFlagSet } from '@/apis'
+import { prFlagList, prFlagSet, getLink, setLink } from '@/apis'
 const emit = defineEmits(['update'])
 const props = defineProps({
   flagType: {
@@ -139,7 +138,7 @@ const getTableData = async () => {
     //   }
     // })
     max.value = data.flag_max
-    fileArr.value = data.flag_list.concat(data.list).slice(0, pageTotal.value)
+    fileArr.value = data.list
     pageCount.value = data.flag_total
     catelist.value = data.categories
     setTotal(Number(data.total_records))
@@ -151,30 +150,64 @@ const handleCancel = () => {
 }
 const btnloading = ref(false)
 const handleBeforeOk = async () => {
-  return visible.value = false
-  if (!selectedKeys.value.length) {
-    return Message.warning('请选择产品')
-  }
   btnloading.value = true
-  const res = await prFlagSet({
-    flag_type: props.flagType,
-    product_ids: selectedKeys.value
-  }).finally(() => {
-    btnloading.value = false
-  })
-  if (res.code === 0) {
-    Message.success(res.message || '请求成功')
+  if (checkRadio.value) {
+    let sid;
+    if (checkRadio.value == 3) {
+      sid = 1
+    } else if (checkRadio.value == 8) {
+      if (!cateId.value) {
+        return Message.warning('请选择分类')
+      }
+      sid = cateId.value
+    } else {
+      if (!selectedKeys.value[0]) {
+        return Message.warning('请选择产品')
+      }
+      sid = selectedKeys.value[0]
+    }
+    const res = await setLink({
+      type: (checkRadio.value == 3) ? 4 : checkRadio.value,
+      id: videoId.value,
+      sid
+    }).finally(() => {
+      btnloading.value = false
+      visible.value = false
+    })
+    if (res.code === 0) {
+      Message.success(res.message || '操作成功')
+    }
+  } else {
     visible.value = false
-    emit('update')
   }
 }
 const videoId = ref('')
 const showDialog = (id: string) => {
   videoId.value = id
+  checkRadio.value = ''
   selectedKeys.value = []
+  cateId.value = ''
   pageCount.value = 0
+  btnloading.value = false
+  getlinkFn()
   getTableData()
   visible.value = true
+}
+const cateId = ref('')
+const getlinkFn = async () => {
+  const res = await getLink({
+    id: videoId.value 
+  })
+  if (res.code == 0 && res.data) {
+    checkRadio.value = String(res.data.type)
+    if (res.data.type == 4 && res.data.sid == 1) {
+      checkRadio.value = '3'
+    } else if (res.data.type == 4){
+      selectedKeys.value = [String(res.data.sid)]
+    } else if (res.data.type === 8) {
+      cateId.value = String(res.data.sid)
+    }
+  }
 }
 const fileArr = ref([])
 const selectedKeys = ref([])

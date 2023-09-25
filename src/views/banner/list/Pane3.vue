@@ -56,7 +56,8 @@ import type { productListItem, webSelectObj, proPersonItem, procateItem } from '
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
 import lodash from 'lodash'
-import draggable from 'vuedraggable'
+import { useUserStore } from '@/store'
+const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const picUrl = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX + '?r=picture/upload'
