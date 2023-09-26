@@ -267,7 +267,7 @@ const loading = ref(false)
 const saveFn = async() => {
   loading.value = true
   const res = await saveInnerBanner({
-    video_info: fileList.value.length?fileList.value[0]:[],
+    video_banner: fileList.value.length?fileList.value[0]:[],
     product_banner: fileList2.value.length?fileList2.value[0]:[],
     about_banner: fileList3.value.length?fileList3.value[0]:[],
     contact_banner: fileList4.value.length?fileList4.value[0]:[],
@@ -318,7 +318,7 @@ const delPicAjax = async (id, type) => {
 const getDetail = async () => {
   const res = await getInnerBanner()
   if (res.code === 0) {
-    fileList.value = resetDetail(res.data.video_info)
+    fileList.value = resetDetail(res.data.video_banner)
     fileList2.value = resetDetail(res.data.product_banner)
     fileList3.value = resetDetail(res.data.about_banner)
     fileList4.value = resetDetail(res.data.contact_banner)

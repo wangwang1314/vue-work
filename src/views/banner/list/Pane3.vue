@@ -24,7 +24,7 @@
                   :file-list="fileList"
                   :show-file-list="false"
                   ref="uploadRef"
-                  :data="{ type: '4' }"
+                  :data="{ type: setType }"
                   @success="(res)=>{ successUpload(res, 1) }"
                   draggable
                   :action="picUrl"
@@ -51,12 +51,13 @@
 
 <script setup lang="ts" name="companyTable">
 import { reactive, ref, h, nextTick } from 'vue'
-import { getCompanyFactory, saveCompanyFactory, pictureDdel } from '@/apis'
+import { getWebInset, setWebInset, pictureDdel } from '@/apis'
 import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
 import lodash from 'lodash'
 import { useUserStore } from '@/store'
+const setType = ref('29')
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
@@ -86,6 +87,7 @@ const successUpload = (res, num) => {
   if (res.response.code == 0) {
     res.id = res.response.data?.picture_id
     res.url = res.response.data?.picture_url
+    res.type = setType.value
   } else {
     res.status = 'error'
   }
@@ -110,7 +112,17 @@ const successUpload = (res, num) => {
   item.value.push(res)
 }
 const loading = ref(false)
-const saveFn = () => {}
+const saveFn = async() => {
+  loading.value = true
+  const res = await setWebInset({
+    video_inset: fileList.value.length?fileList.value[0]:[],
+  }).finally(() => {
+    loading.value = false
+  })
+  if (res.code === 0) {
+    Message.success(res.message || '操作成功')
+  }
+}
 const picListDel = (file, num) => {
   let item
   switch (num) {
@@ -143,11 +155,24 @@ const delPicAjax = async (id) => {
   const res = await pictureDdel({
     id,
     sid: route.query.id,
-    type: '4'
+    type: setType.value
   })
 }
 
-
+const getDetail = async () => {
+  const res = await getWebInset()
+  if (res.code === 0) {
+    fileList.value = resetDetail(res.data.video_inset)
+  }
+}
+getDetail()
+const resetDetail = (item) => {
+  if (item) {
+    item.url = item.picture_url
+    return [item]
+  }
+  return []
+}
 </script>
 
 <style lang="scss" scoped>
