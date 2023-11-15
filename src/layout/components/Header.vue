@@ -210,6 +210,7 @@ const logout = () => {
       display: flex;
       height: 28px;
       line-height: 28px;
+      margin-right: 16px;
       .count {
         background-color: #fff;
         
@@ -231,7 +232,7 @@ const logout = () => {
       }
     }
     .inter {
-      margin:0 16px 0 16px;
+      
       .count {
         span {
           color: var(--orange-init);

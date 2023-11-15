@@ -276,8 +276,8 @@ const getTableData = async () => {
     isEdit.value = data.full_edit
     soid.value = data.soid
     setTotal(data.total_record)
-    calist.value = data.prod_plan
-    summary.value = data.summary
+    calist.value = data.prod_plan || []
+    summary.value = data.summary || {}
   }
 }
 getTableData()
