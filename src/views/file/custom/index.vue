@@ -277,12 +277,14 @@ const sortFn = async (sort: number, row) => {
   if (sort) {
     res = await fileCaseDown({
       type: casetype.value,
-      id: row.id
+      id: row.id,
+      page_id: tabKey.value
     })
   } else {
     res = await fileCaseUp({
       type: casetype.value,
-      id: row.id
+      id: row.id,
+      page_id: tabKey.value
     })
   }
   if (res.code === 0) {

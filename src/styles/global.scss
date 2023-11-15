@@ -446,7 +446,10 @@ body[arco-theme='dark'] .arco-tabs-nav-type-capsule {
   }
 }
 
-
+// 表格empty 去掉虚拟滚动条
+.arco-table-empty .arco-scrollbar-thumb {
+  display: none;
+}
 // alert
 .arco-alert-content {
   color: var(--color-text-7);
