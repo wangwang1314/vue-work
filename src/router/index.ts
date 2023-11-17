@@ -7,7 +7,9 @@ import { DEFAULT_LAYOUT } from './base'
 const modules = import.meta.globEager('./modules/*.ts')
 
 function formatModules(_modules: any, result: RouteRecordNormalized[]) {
+  console.log(_modules)
   Object.keys(_modules).forEach((key) => {
+    
     const defaultModule = _modules[key].default
     if (!defaultModule) return
     const moduleList = Array.isArray(defaultModule) ? [...defaultModule] : [defaultModule]

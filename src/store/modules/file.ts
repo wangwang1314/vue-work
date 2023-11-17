@@ -18,7 +18,7 @@ export const useFileStore = defineStore({
       // 是否批量操作: true:批量 false:单文件
       isBatchMode: false,
       // 当前批量勾选的文件列表
-      selectedFileList: JSON.parse(sessionStorage.getItem('FILE_LIST') as string) || []
+      selectedFileList: []
     }
   },
   getters: {
@@ -37,10 +37,8 @@ export const useFileStore = defineStore({
       if (this.selectedFileIdList.includes(item.id)) {
         const index = this.selectedFileList.findIndex((i) => i.id === item.id)
         this.selectedFileList.splice(index, 1)
-        window.sessionStorage.setItem('FILE_LIST', JSON.stringify(this.selectedFileList))
       } else {
         this.selectedFileList.push(item)
-        window.sessionStorage.setItem('FILE_LIST', JSON.stringify(this.selectedFileList))
       }
     }
   }

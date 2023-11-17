@@ -144,7 +144,7 @@ watch(
 )
 
 const handleNavTab = () => {
-  console.log('路由对象', route)
+  // console.log('路由对象', route)
   navtabStore.addTagItem({
     name: route.meta.title || '未命名',
     path: route.path,
