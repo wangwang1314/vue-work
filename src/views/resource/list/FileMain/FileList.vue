@@ -9,7 +9,12 @@
       :row-selection="isBatchMode ? rowSelection : undefined"
     >
       <template #columns>
-        <a-table-column title="名称">
+        <a-table-column title="序号" :width="80">
+          <template #cell="{ record, rowIndex }">
+            {{rowIndex + 1}}
+          </template>
+        </a-table-column>
+        <a-table-column title="文档名称">
           <template #cell="{ record }">
             <a-trigger
               trigger="contextMenu"
@@ -20,9 +25,6 @@
               update-at-scroll
             >
               <div class="file-name" @click="handleRowClick(record)">
-                <div class="file-image">
-                  <FileImg :data="record"></FileImg>
-                </div>
                 <span>{{ record.name }}</span>
               </div>
               <template #content>
@@ -31,25 +33,16 @@
             </a-trigger>
           </template>
         </a-table-column>
-        <a-table-column title="扩展名" data-index="extendName" :width="100"></a-table-column>
-        <a-table-column title="更改时间" data-index="updateTime" :width="200"></a-table-column>
-        <a-table-column title="操作" :width="120" align="center">
+        <a-table-column title="上传时间" data-index="updateTime" :width="200"></a-table-column>
+        <a-table-column title="引用" data-index="extendName" :width="100"></a-table-column>
+        <a-table-column title="操作" :width="200" align="center">
           <template #cell="{ record }">
-            <a-popover
-              trigger="click"
-              position="bottom"
-              content-class="more-option"
-              :content-style="{ padding: 0, 'margin-top': 0 }"
-            >
-              <a-button type="text"><icon-more :size="16" /></a-button>
-              <template #content>
-                <FileRightMenu
-                  :file-info="record"
-                  :show-class-style="false"
-                  @click="handleRightMenuItemClick($event, record)"
-                ></FileRightMenu>
-              </template>
-            </a-popover>
+            <a-popconfirm type="warning" content="您确定要删除该项吗?" @ok="delPro(record)">
+              <a-button size="mini" type="text" status="danger">
+                <template #icon><icon-delete :size="13" :stroke-width="3" /></template>
+                <!-- <template #default>删除</template> -->
+              </a-button>
+            </a-popconfirm>
           </template>
         </a-table-column>
       </template>
@@ -89,6 +82,9 @@ const handleRowClick = (row: FileItem) => {
 // 右键菜单点击事件
 const handleRightMenuItemClick = (mode: string, item: FileItem) => {
   emit('right-menu-click', mode, item)
+}
+const delPro = (item: FileItem) => {
+
 }
 </script>
 

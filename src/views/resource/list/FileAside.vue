@@ -18,7 +18,7 @@
             :bordered="false"
             accordion
           >
-            <a-collapse-item  v-for="item in fileTypeList" :key="item.value.toString()">
+            <a-collapse-item v-for="item in fileTypeList" :key="item.value.toString()">
               <template #header>
                 <a-menu-item @click="onClickMenuItem(item)">
                   <template #icon>

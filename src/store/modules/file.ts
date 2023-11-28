@@ -40,6 +40,9 @@ export const useFileStore = defineStore({
       } else {
         this.selectedFileList.push(item)
       }
+    },
+    clearFileItem() {
+      this.selectedFileList = []
     }
   }
 })

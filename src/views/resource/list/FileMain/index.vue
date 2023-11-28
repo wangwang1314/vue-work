@@ -3,17 +3,17 @@
     <!-- 面包屑导航 -->
     <FileNavPath :fileName="fileName"></FileNavPath>
 
-    <a-row justify="space-between" class="row-operate">
+    <a-row justify="space-between" class="row-operate" v-show="fileId == '1'">
       <!-- 左侧区域 -->
       <a-space>
-        <a-button type="primary" shape="round">
+        <a-button type="primary" shape="round" size="small">
           <template #icon><icon-upload /></template>
           <template #default>上传</template>
         </a-button>
 
-        <a-input-group>
-          <a-input placeholder="请输入关键词..." allow-clear> </a-input>
-          <a-button type="primary">
+        <a-input-group size="small">
+          <a-input placeholder="请输入关键词..." allow-clear size="small"> </a-input>
+          <a-button type="primary" size="small">
             <template #icon><icon-search /></template>
             <template #default>搜索</template>
           </a-button>
@@ -22,18 +22,19 @@
       </a-space>
 
       <!-- 右侧区域 -->
-      <a-space v-if="windowWidth > 715">
-        <a-button type="primary" status="warning">
+      <a-space>
+        <a-button type="primary" status="warning" size="small">
           <template #icon>
             <icon-copy />
           </template>
         </a-button>
-        <a-button type="primary" status="success">
+        <a-button type="primary" status="success" size="small">
           <template #icon>
             <icon-download />
           </template>
         </a-button>
         <a-button
+          size="small"
           v-if="isBatchMode"
           :disabled="!fileStore.selectedFileIdList.length"
           type="primary"
@@ -41,13 +42,13 @@
           @click="handleMulDelete"
           ><template #icon><icon-delete /></template
         ></a-button>
-        <a-button type="primary" @click="isBatchMode = !isBatchMode">
+        <a-button type="primary" @click="isBatchMode = !isBatchMode"  size="small">
           <template #icon><icon-select-all /></template>
           <template #default>{{ isBatchMode ? '取消批量' : '批量操作' }}</template>
         </a-button>
         <a-button-group>
           <a-dropdown @select="handleSelect">
-            <a-button>
+            <a-button  size="small">
               <template #icon>
                 <icon-swap style="transform: rotate(90deg);"/>
               </template>
@@ -59,7 +60,7 @@
             </template>
           </a-dropdown>
           <a-dropdown @select="handleSelect2">
-            <a-button>
+            <a-button  size="small">
               <template #icon>
                 <icon-filter />
               </template>
@@ -73,11 +74,114 @@
         </a-button-group>
       </a-space>
     </a-row>
+    <a-row justify="space-between" class="row-operate" v-show="fileId == '2'">
+      <!-- 左侧区域 -->
+      <a-space>
+        <a-button type="primary" shape="round" size="small">
+          <template #icon><icon-upload /></template>
+          <template #default>上传</template>
+        </a-button>
 
-    <!-- 文件列表-宫格模式 -->
+        <a-input-group size="small">
+          <a-input placeholder="请输入关键词..." allow-clear size="small"> </a-input>
+          <a-button type="primary" size="small">
+            <template #icon><icon-search /></template>
+            <template #default>搜索</template>
+          </a-button>
+        </a-input-group>
+        <p>视频数量：2121</p>
+      </a-space>
+
+      <!-- 右侧区域 -->
+      <a-space>
+        <a-button type="primary" status="warning" size="small">
+          <template #icon>
+            <icon-copy />
+          </template>
+        </a-button>
+        <a-button type="primary" status="success" size="small">
+          <template #icon>
+            <icon-download />
+          </template>
+        </a-button>
+        <a-button
+          size="small"
+          v-if="isBatchMode"
+          :disabled="!fileStore.selectedFileIdList.length"
+          type="primary"
+          status="danger"
+          @click="handleMulDelete"
+          ><template #icon><icon-delete /></template
+        ></a-button>
+        <a-button type="primary" @click="isBatchMode = !isBatchMode"  size="small">
+          <template #icon><icon-select-all /></template>
+          <template #default>{{ isBatchMode ? '取消批量' : '批量操作' }}</template>
+        </a-button>
+        <a-button-group>
+          <a-dropdown @select="handleSelect">
+            <a-button  size="small">
+              <template #icon>
+                <icon-swap style="transform: rotate(90deg);"/>
+              </template>
+            </a-button>
+            <template #content>
+              <a-doption value="0" class="cus-select" :class="{'select': sortTag == '0'}">按照时间顺序 <icon-check /></a-doption>
+              <a-doption value="1" class="cus-select" :class="{'select': sortTag == '1'}">按照时间倒序 <icon-check /></a-doption>
+              <a-doption value="2" class="cus-select" :class="{'select': sortTag == '2'}">按照字母顺序 <icon-check /></a-doption>
+            </template>
+          </a-dropdown>
+          <a-dropdown @select="handleSelect2">
+            <a-button size="small">
+              <template #icon>
+                <icon-filter />
+              </template>
+            </a-button>
+            <template #content>
+              <a-doption value="0" class="cus-select" :class="{'select': allTag == '0'}">全部 <icon-check /></a-doption>
+              <a-doption value="1" class="cus-select" :class="{'select': allTag == '1'}">已引用 <icon-check /></a-doption>
+              <a-doption value="2" class="cus-select" :class="{'select': allTag == '2'}">未引用 <icon-check /></a-doption>
+            </template>
+          </a-dropdown>
+        </a-button-group>
+      </a-space>
+    </a-row>
+    <a-row justify="space-between" class="row-operate" v-show="fileId == '3'">
+      <!-- 左侧区域 -->
+      <a-space>
+        <a-button type="primary" size="small" status="success">新增</a-button>
+        <a-button type="text" status="danger" size="small">删除</a-button>
+        <span>From:</span>
+        <a-date-picker
+          style="width: 140px"
+          format="YYYY-MM-DD"
+          @change="onChange"
+          @select="onSelect"
+          @ok="onOk"
+        />
+        <span>To:</span>
+        <a-date-picker
+          style="width: 140px"
+          format="YYYY-MM-DD"
+          @change="onChange"
+          @select="onSelect"
+          @ok="onOk"
+        />
+        </a-space>
+      <!-- 右侧区域 -->
+      <a-space>
+        <a-input-group size="small">
+          <a-input placeholder="请输入关键词..." allow-clear size="small"> </a-input>
+          <a-button type="primary" size="small">
+            <template #icon><icon-search /></template>
+            <template #default>搜索</template>
+          </a-button>
+        </a-input-group>
+      </a-space>
+    </a-row>  
+    <!-- 图片模式 -->
     <section class="file-wrap" v-loading="loading">
       <FileGrid
-        v-show="fileList.length && fileStore.viewMode == 'grid'"
+        v-show="fileList.length && fileId == '1'"
         :data="fileList"
         :isBatchMode="isBatchMode"
         :selectedFileIdList="fileStore.selectedFileIdList"
@@ -85,9 +189,19 @@
         @check="handleCheckFile"
       ></FileGrid>
 
-      <!-- 文件列表-列表模式 -->
+      <!-- 视频模式 -->
+      <FileVideo
+        v-show="fileList.length && fileId == '2'"
+        :data="fileList"
+        :isBatchMode="isBatchMode"
+        :selectedFileIdList="fileStore.selectedFileIdList"
+        @click="handleClickFile"
+        @check="handleCheckFile"
+      ></FileVideo>
+
+      <!-- 文件模式 -->
       <FileList
-        v-show="fileList.length && fileStore.viewMode == 'list'"
+        v-show="fileList.length && fileId == '3'"
         :data="fileList"
         :isBatchMode="isBatchMode"
         @click="handleClickFile"
@@ -111,7 +225,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { Message, Modal } from '@arco-design/web-vue'
 import { fileTypeList, imageTypeList } from '@/libs/file/file-map'
 import { useFileStore } from '@/store'
@@ -121,6 +235,7 @@ import 'viewerjs/dist/viewer.css'
 import FileNavPath from './FileNavPath.vue'
 import FileGrid from './FileGrid.vue'
 import FileList from './FileList.vue'
+import FileVideo from './FileVideo.vue'
 import ThePreviewVideo from '@/views/components/ThePreviewVideo/index'
 import ThePreviewAudio from '@/views/components/ThePreviewAudio/index'
 import TheFileRename from '@/views/components/TheFileRename/index'
@@ -151,6 +266,15 @@ const fileName = computed(() => {
     return item.value == fileType.value
   })
   return citem[0]?.name
+})
+const fileId = computed(() => {
+  const citem = fileTypeList.filter((item) => {
+    return item.value == fileType.value
+  })
+  return citem[0]?.value
+})
+watch(fileType, () => {
+  fileStore.clearFileItem()
 })
 const getListData = async () => {
   try {
@@ -277,6 +401,7 @@ const handleSelect2 = (val: string) => {
   .page-box {
     display: flex;
     justify-content: end;
+    margin-top: 15px;
   }
 }
 

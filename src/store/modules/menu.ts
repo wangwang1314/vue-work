@@ -198,15 +198,15 @@ export const useMenuStore = defineStore({
           level: 1,
           path: '/banner/list'
         },
-        // {
-        //   icon: 'icon-save',
-        //   id: 'ZYGL',
-        //   name: '资源管理',
-        //   keepAlive: false,
-        //   hidden: false,
-        //   level: 1,
-        //   path: '/resource/list'
-        // },
+        {
+          icon: 'icon-save',
+          id: 'ZYGL',
+          name: '资源管理',
+          keepAlive: false,
+          hidden: false,
+          level: 1,
+          path: '/resource/list'
+        },
         {
           icon: 'icon-email',
           id: 'DJZX',

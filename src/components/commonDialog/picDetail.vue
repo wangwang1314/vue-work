@@ -2,7 +2,9 @@
   <div class="dialog-pic-wrap">
     <a-modal v-model:visible="visible" :mask-closable="false" :width="900" title="视频详情">
       <template #footer>
-        <a-button type="primary" @click="handleBeforeOk" :disabled="loading">确定</a-button>
+        <a-button>取消</a-button>
+        <a-button type="primary" @click="handleBeforeOk">更换</a-button>
+        
       </template>
       <template #title>
         <div class="cus-tit">
@@ -37,10 +39,12 @@
                 </a-col>
                 <a-col :span="24">
                   <a-form-item field="tpl" label="正在被引用：">
-                    <div class="item-content">是
-                      <div>共有 0 个产品图片引用了该图片</div>
+                    <div class="item-content"><img class="icon-img" :src="icon" alt="icon">是
+                      <div>共有 <span class="wraning-class">0</span> 个产品图片引用了该图片</div>
+                      <div class="alert-box">
+                        <a-alert type="warning">标注<img class="icon-img" :src="icon" alt="icon">的图片正在被产品详细描述所引用。如果删除这些图片，产品详细描述将无法正常显示。</a-alert>
+                      </div>
                     </div>
-                    
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -58,6 +62,7 @@ import { ref, reactive } from 'vue'
 import { getVideoDetail, setVideoSwitch, pubYoutube, setVideoEdit } from '@/apis'
 import lodash from 'lodash'
 import { Message } from '@arco-design/web-vue'
+import icon from '@/assets/images/right-icon2.png'
 const visible = ref(false)
 const handleCancel = () => {
   visible.value = false
@@ -304,5 +309,17 @@ defineExpose({
 }
 .item-content {
   // margin-top: -10px;
+}
+.icon-img {
+  vertical-align: middle;
+  margin-right: 4px;
+  position: relative;
+  top: -1px;
+}
+.alert-box {
+  margin-top: 8px;
+  .icon-img {
+    margin-left: 4px;
+  }
 }
 </style>
