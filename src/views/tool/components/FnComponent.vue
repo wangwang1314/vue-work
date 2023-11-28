@@ -2,7 +2,7 @@
   <div class="fn-component">
     <a-space>
       <a-button type="primary" status="success" @click="onSuccess">成功</a-button>
-      <a-button type="primary" status="warning" @click="onWarning">警告</a-button>
+      <a-button type="primary" status="warning" @click="onWarning">提示</a-button>
       <a-button type="primary" status="danger" @click="onError">错误</a-button>
     </a-space>
   </div>

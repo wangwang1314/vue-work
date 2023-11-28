@@ -2,7 +2,7 @@
   <div class="file-aside" v-if="windowWidth > 715">
     <a-card title="资源管理" :bordered="false" :body-style="{ padding: 0 }">
       <a-menu
-        :style="{ width: '220px', height: '100%', 'border-radius': '2px' }"
+        :style="{ width: '280px', height: '100%', 'border-radius': '2px' }"
         :default-open-keys="['0']"
         :default-selected-keys="[currentKey]"
       >
@@ -11,12 +11,25 @@
             <icon-apps></icon-apps>
           </template>
           <template #title>文件类型</template>
-          <a-menu-item :key="item.value.toString()" v-for="item in fileTypeList" @click="onClickMenuItem(item)">
-            <template #icon>
-              <GiSvgIcon :size="28" :name="item.menuIcon"></GiSvgIcon>
-            </template>
-            <span>{{ item.name }}</span>
-          </a-menu-item>
+          <a-collapse
+            class="cuscoll"
+            :default-active-key="['1']"
+            :expand-icon-position="'right'"
+            :bordered="false"
+            accordion
+          >
+            <a-collapse-item  v-for="item in fileTypeList" :key="item.value.toString()">
+              <template #header>
+                <a-menu-item @click="onClickMenuItem(item)">
+                  <template #icon>
+                    <GiSvgIcon :size="28" :name="item.menuIcon"></GiSvgIcon>
+                  </template>
+                  <span>{{ item.name }}</span>
+                </a-menu-item>
+              </template>
+              <div class="file-item">Brine Tank/Brine Valve/Chemical Tank</div>
+            </a-collapse-item>
+          </a-collapse>
         </a-sub-menu>
       </a-menu>
     </a-card>
@@ -34,7 +47,6 @@ const router = useRouter()
 const { width: windowWidth } = useWindowSize()
 
 const currentKey = ref('0')
-
 // 监听路由变化
 watch(
   () => route.query,
@@ -64,9 +76,42 @@ const onClickMenuItem = (item: fileTypeListItem) => {
   }
 }
 .file-aside {
-  height: fit-content;
+  // height: fit-content;
   margin: $margin 0 $margin $margin;
   background: var(--color-bg-1);
   border-radius: 2px;
+  overflow: auto;
+}
+.cuscoll {
+  :deep(.arco-collapse-item) {
+    border: none;
+    .arco-collapse-item-header-right {
+      padding: 0;
+      border: none;
+      display: block;
+    }
+    .arco-collapse-item-icon-right {
+      z-index: 2;
+      pointer-events: none;
+    }
+    .arco-menu-vertical .arco-menu-item {
+      margin-bottom: 0;
+    }
+    .arco-collapse-item-content-box {
+      padding-left: 62px;
+    }
+  }
+}
+.file-item {
+  white-space: nowrap;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 24px;
+  padding: 0 4px;
+  cursor: pointer;
+}
+.file-item.active {
+  background-color: var(--color-fill-2);
 }
 </style>

@@ -31,7 +31,7 @@ const TypeMap = {
     icon: IconCheckCircle
   },
   warning: {
-    content: '警告信息',
+    content: '提示信息',
     icon: IconExclamationCircle
   },
   error: {

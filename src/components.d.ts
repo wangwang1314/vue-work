@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    copy: typeof import('./components/commonDialog/videoDetail copy.vue')['default']
     FileDialog: typeof import('./components/commonDialog/fileDialog.vue')['default']
     GiChart: typeof import('./components/GiChart.vue')['default']
     GiContextMenu: typeof import('./components/GiContextMenu.vue')['default']
@@ -29,6 +30,8 @@ declare module '@vue/runtime-core' {
     LoadingIcon2: typeof import('./components/GiLodingIcon/LoadingIcon2.vue')['default']
     LoadingIcon3: typeof import('./components/GiLodingIcon/LoadingIcon3.vue')['default']
     Message: typeof import('./components/CustomMessage/Message.vue')['default']
+    PicDetai: typeof import('./components/commonDialog/picDetai.vue')['default']
+    PicDetail: typeof import('./components/commonDialog/picDetail.vue')['default']
     PicDialog: typeof import('./components/commonDialog/picDialog.vue')['default']
     Productlist: typeof import('./components/commonDialog/productlist.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -29,8 +29,8 @@
           ></a-checkbox>
           <div class="single-mode">
             <a-space :size="6">
-              <icon-delete @click.stop="" :size="18" style="color:rgb(var(--danger-6));"/>
-              <icon-info-circle @click.stop :size="18"/>
+              <icon-delete @click.stop="deletefn(item)" :size="18" style="color:rgb(var(--danger-6));"/>
+              <icon-info-circle @click.stop="showDetail(item)" :size="18"/>
             </a-space>
           </div>
         </section>
@@ -41,14 +41,17 @@
         <!-- <FileRightMenu :file-info="item" @click="handleRightMenuItemClick($event, item)"></FileRightMenu> -->
       </template>
     </a-trigger>
+    <pic-detail ref="picdetailref"></pic-detail>
   </ul>
 </template>
 
 <script setup lang="ts">
+import { nextTick, ref } from 'vue'
 import FileImg from './FileImg.vue'
 import FileRightMenu from './FileRightMenu.vue'
 import type { FileItem } from '@/apis'
-
+import { Message, Modal } from '@arco-design/web-vue'
+import picDetail from '@/components/commonDialog/picDetail.vue'
 interface Props {
   data?: FileItem[]
   selectedFileIdList?: string[]
@@ -81,6 +84,29 @@ const handleCheckFile = (item: FileItem) => {
 // 右键菜单点击事件
 const handleRightMenuItemClick = (mode: string, item: FileItem) => {
   emit('right-menu-click', mode, item)
+}
+
+// 点击事件
+const deletefn = (item: FileItem) => {
+  let tips = '是否删除该文件？'
+  if (item && item.type == '2') {
+    tips = '该图片正在被产品详细描述所引用，如果删除图片，产品详细描述将无法正常显示。'
+  }
+  Modal.warning({
+    title: '提示',
+    content: tips,
+    hideCancel: false,
+    onClose: function () {
+      console.log('关闭')
+    },
+    onOk: function () {
+      console.log('确定')
+    }
+  })
+}
+const picdetailref = ref()
+const showDetail = (item: FileItem) => {
+  picdetailref.value.showDialog(item)
 }
 </script>
 
@@ -129,8 +155,10 @@ const handleRightMenuItemClick = (mode: string, item: FileItem) => {
     margin-top: 20px;
     .img {
       width: auto;
+      max-width: 100%;
       height: 100%;
       transition: all 0.3s;
+      object-fit: contain;
     }
     .svg-img {
       height: 100%;
@@ -143,6 +171,12 @@ const handleRightMenuItemClick = (mode: string, item: FileItem) => {
     margin-top: 6px;
     padding: 0 5px;
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    padding: 0 6px;
+    box-sizing: border-box;
   }
   .check-mode {
     position: absolute;

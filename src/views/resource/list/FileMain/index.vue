@@ -6,12 +6,10 @@
     <a-row justify="space-between" class="row-operate">
       <!-- 左侧区域 -->
       <a-space>
-        <a-dropdown>
-          <a-button type="primary" shape="round">
-            <template #icon><icon-upload /></template>
-            <template #default>上传</template>
-          </a-button>
-        </a-dropdown>
+        <a-button type="primary" shape="round">
+          <template #icon><icon-upload /></template>
+          <template #default>上传</template>
+        </a-button>
 
         <a-input-group>
           <a-input placeholder="请输入关键词..." allow-clear> </a-input>
@@ -96,6 +94,18 @@
       ></FileList>
 
       <a-empty v-show="!fileList.length"></a-empty>
+      <div class="page-box">
+        <a-pagination
+          @change="changeCurrent"
+          @page-size-change="changePageSize"
+          show-page-size
+          :current="current"
+          :total="total"
+          :pageSize="pageSize"
+          :showTotal="true"
+          show-jumper
+        />
+      </div>
     </section>
   </div>
 </template>
@@ -118,12 +128,13 @@ import TheFileMove from '@/views/components/TheFileMove/index'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { getCateDetail } from '@/apis'
 import type { FileItem } from '@/apis'
+import { usePagination } from '@/hooks'
 const route = useRoute()
 const router = useRouter()
 
 const { width: windowWidth } = useWindowSize()
 const fileStore = useFileStore()
-
+const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
 const loading = ref(false)
 // 文件列表数据
 const fileinit = [
@@ -136,7 +147,7 @@ const firstType = fileTypeList[0]?.value
 const fileType = ref(firstType)
 fileType.value = route.query.fileType?.toString() || firstType
 const fileName = computed(() => {
-  let citem = fileTypeList.filter((item) => {
+  const citem = fileTypeList.filter((item) => {
     return item.value == fileType.value
   })
   return citem[0]?.name
@@ -262,6 +273,10 @@ const handleSelect2 = (val: string) => {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+  }
+  .page-box {
+    display: flex;
+    justify-content: end;
   }
 }
 

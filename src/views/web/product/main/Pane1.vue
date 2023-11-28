@@ -242,7 +242,7 @@
       </a-modal>
       <!-- 批量删除弹框 -->
       <a-modal v-model:visible="popup" :width="286">
-        <template #title>警告</template>
+        <template #title>提示</template>
         <div><icon-exclamation-circle-fill size="16" style="color: rgb(var(--orangered-5))" /> 您确定要删除吗？</div>
         <template #footer>
           <a-button @click="popup = false" :disabled="btnloading">取消</a-button>

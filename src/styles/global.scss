@@ -467,3 +467,8 @@ body[arco-theme='dark'] .arco-tabs-nav-type-capsule {
 .arco-form-item-extra {
   color: var(--color-text-4);
 }
+
+// 弹框字体
+.arco-modal-simple .arco-modal-body {
+  font-size: 14px;
+}

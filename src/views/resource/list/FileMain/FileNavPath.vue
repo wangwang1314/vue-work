@@ -14,7 +14,6 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
 const prop = defineProps(['fileName'])
-console.log(prop, '888')
 const showInput = ref(false)
 const InputRef = ref<HTMLInputElement | null>(null)
 
@@ -48,11 +47,13 @@ const onBlur = () => {
     border-radius: var(--border-radius-small);
     cursor: pointer;
     justify-content: space-between;
+    flex-wrap: wrap;
     // &:hover {
     //   background: var(--color-secondary-hover);
     // }
     .nav-tips {
       max-width: 70%;
+      white-space: nowrap;
     }
     .path-item {
       transition: all 0.15s ease-in;
