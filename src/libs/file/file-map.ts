@@ -2,17 +2,18 @@
 
 export interface fileTypeListItem {
   name: string
-  value: string
+  value: number
   menuIcon: string
   icon: string
+  group: Array<any>
 }
 
 // 文件分类
 export const fileTypeList: fileTypeListItem[] = [
   // { name: '全部', value: '0', menuIcon: 'menu-file', icon: 'icon-stamp' },
-  { name: '图片', value: '1', menuIcon: 'file-image', icon: 'icon-file-image' },
-  { name: '视频', value: '2', menuIcon: 'file-video', icon: 'icon-video-camera' },
-  { name: '文档', value: '3', menuIcon: 'file-txt', icon: 'icon-file' },
+  { name: '图片', value: 0, menuIcon: 'file-image', icon: 'icon-file-image', group: [] },
+  { name: '视频', value: 1, menuIcon: 'file-video', icon: 'icon-video-camera', group: [] },
+  { name: '文档', value: 2, menuIcon: 'file-txt', icon: 'icon-file', group: [] }
  
   // { name: '音频', value: '4', menuIcon: 'file-music', icon: 'icon-file-audio' },
   // { name: '其他', value:' 5', menuIcon: 'file-other', icon: 'icon-bulb' }

@@ -2,7 +2,7 @@
   <div class="dialog-pic-wrap">
     <a-modal v-model:visible="visible" :mask-closable="false" :width="900" title="视频详情">
       <template #footer>
-        <a-button>取消</a-button>
+        <a-button @click="handleBeforeOk">取消</a-button>
         <a-button type="primary" @click="handleBeforeOk">更换</a-button>
         
       </template>
@@ -15,7 +15,7 @@
         <a-row>
           <a-col :span="11">
             <div class="video-box">
-              <img :src="videoDetail.video.img_path" alt="" />
+              <img src="https://img0.baidu.com/it/u=2746352008,2041591833&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360" alt="" />
             </div>
           </a-col>
           <a-col :span="12" :offset="1">

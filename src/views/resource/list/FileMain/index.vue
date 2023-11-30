@@ -3,7 +3,7 @@
     <!-- 面包屑导航 -->
     <FileNavPath :fileName="fileName"></FileNavPath>
 
-    <a-row justify="space-between" class="row-operate" v-show="fileId == '1'">
+    <a-row justify="space-between" class="row-operate" v-show="fileId == 0">
       <!-- 左侧区域 -->
       <a-space>
         <a-button type="primary" shape="round" size="small">
@@ -23,7 +23,7 @@
 
       <!-- 右侧区域 -->
       <a-space>
-        <a-button type="primary" status="warning" size="small">
+        <a-button type="primary" status="warning" size="small" @click="changeGroupFn">
           <template #icon>
             <icon-copy />
           </template>
@@ -74,7 +74,7 @@
         </a-button-group>
       </a-space>
     </a-row>
-    <a-row justify="space-between" class="row-operate" v-show="fileId == '2'">
+    <a-row justify="space-between" class="row-operate" v-show="fileId == 1">
       <!-- 左侧区域 -->
       <a-space>
         <a-button type="primary" shape="round" size="small">
@@ -145,7 +145,7 @@
         </a-button-group>
       </a-space>
     </a-row>
-    <a-row justify="space-between" class="row-operate" v-show="fileId == '3'">
+    <a-row justify="space-between" class="row-operate" v-show="fileId == 2">
       <!-- 左侧区域 -->
       <a-space>
         <a-button type="primary" size="small" status="success">新增</a-button>
@@ -181,7 +181,7 @@
     <!-- 图片模式 -->
     <section class="file-wrap" v-loading="loading">
       <FileGrid
-        v-show="fileList.length && fileId == '1'"
+        v-if="fileList.length && fileId == 0"
         :data="fileList"
         :isBatchMode="isBatchMode"
         :selectedFileIdList="fileStore.selectedFileIdList"
@@ -191,7 +191,7 @@
 
       <!-- 视频模式 -->
       <FileVideo
-        v-show="fileList.length && fileId == '2'"
+        v-if="fileList.length && fileId == 1"
         :data="fileList"
         :isBatchMode="isBatchMode"
         :selectedFileIdList="fileStore.selectedFileIdList"
@@ -201,7 +201,7 @@
 
       <!-- 文件模式 -->
       <FileList
-        v-show="fileList.length && fileId == '3'"
+        v-if="fileList.length && fileId == 2"
         :data="fileList"
         :isBatchMode="isBatchMode"
         @click="handleClickFile"
@@ -221,6 +221,22 @@
         />
       </div>
     </section>
+
+    <!-- 分组弹框 -->
+    <a-modal v-model:visible="visible" :mask-closable="false" :width="600" title="调整图片分组">
+      <template #footer>
+        <a-button @click="visible=false">取消</a-button>
+        <a-button type="primary" @click="handleBeforeOk">确认</a-button>
+      </template>
+      <div class="g-box">
+        <a-radio-group direction="vertical">
+          <a-radio value="A">Brine Tank/Brine Valve/Chemical Tank</a-radio>
+          <a-radio value="B">Distributors/Manual Heads</a-radio>
+          <a-radio value="C">Water Softener</a-radio>
+          <a-radio value="D">RO Membranes for Industrial and Residential</a-radio>
+        </a-radio-group>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -241,7 +257,7 @@ import ThePreviewAudio from '@/views/components/ThePreviewAudio/index'
 import TheFileRename from '@/views/components/TheFileRename/index'
 import TheFileMove from '@/views/components/TheFileMove/index'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
-import { getCateDetail } from '@/apis'
+import { proPicList } from '@/apis'
 import type { FileItem } from '@/apis'
 import { usePagination } from '@/hooks'
 const route = useRoute()
@@ -252,15 +268,10 @@ const fileStore = useFileStore()
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
 const loading = ref(false)
 // 文件列表数据
-const fileinit = [
-  {id: 1, name: 'test', src:'https://img0.baidu.com/it/u=2746352008,2041591833&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360'},
-  {id: 2, name: 'test3', src:'https://img2.baidu.com/it/u=304294273,3088990845&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400'},
-  {id: 3, name: 'test4', src:'https://img0.baidu.com/it/u=3745738950,3664021749&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500'},
-]
-const fileList = ref<FileItem[]>(fileinit)
+const fileList = ref<FileItem[]>([])
 const firstType = fileTypeList[0]?.value
 const fileType = ref(firstType)
-fileType.value = route.query.fileType?.toString() || firstType
+fileType.value = route.query.fileType|| firstType
 const fileName = computed(() => {
   const citem = fileTypeList.filter((item) => {
     return item.value == fileType.value
@@ -275,28 +286,34 @@ const fileId = computed(() => {
 })
 watch(fileType, () => {
   fileStore.clearFileItem()
+  current.value = 1
+  total.value = 0
 })
-const getListData = async () => {
-  try {
-    loading.value = true
-    isBatchMode.value = false
-    const res = await getFileList({ fileType: fileType.value })
-    fileList.value = res.data.list
-  } catch (error) {
-    return error
-  } finally {
-    loading.value = false
+const getTableData = async () => {
+  loading.value = true
+  isBatchMode.value = false
+  if (fileType.value == 0) {
+    const res = await proPicList({ 
+      page_no: current.value,
+      page_size: pageSize.value
+    }).finally(() => {
+      loading.value = false
+    })
+    if (res.code == 0) {
+      fileTypeList
+      fileList.value = res.data.list
+    }
+    
   }
 }
-
 onMounted(() => {
-  getListData()
+  getTableData()
 })
 
 onBeforeRouteUpdate((to) => {
   if (!to.query.fileType) return
   fileType.value = to.query.fileType?.toString()
-  getListData()
+  getTableData()
 })
 
 // 批量操作
@@ -371,6 +388,13 @@ const allTag = ref('0')
 const handleSelect2 = (val: string) => {
   allTag.value = val
 }
+const changeGroupFn = () => {
+  visible.value = true
+}
+const visible = ref(false)
+const handleBeforeOk = () => {
+
+}
 </script>
 
 <style lang="scss" scoped>
@@ -404,7 +428,10 @@ const handleSelect2 = (val: string) => {
     margin-top: 15px;
   }
 }
-
+.g-box {
+  max-height: 320px;
+  overflow-y: auto;
+}
 </style>
 <style lang="scss">
 .cus-select.arco-dropdown-option.select {

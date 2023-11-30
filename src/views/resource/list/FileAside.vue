@@ -2,9 +2,10 @@
   <div class="file-aside" v-if="windowWidth > 715">
     <a-card title="资源管理" :bordered="false" :body-style="{ padding: 0 }">
       <a-menu
+        :selected-keys="[currentKey]"
         :style="{ width: '280px', height: '100%', 'border-radius': '2px' }"
         :default-open-keys="['0']"
-        :default-selected-keys="[currentKey]"
+        :default-selected-keys="['0']"
       >
         <a-sub-menu key="0">
           <template #icon>
@@ -12,22 +13,24 @@
           </template>
           <template #title>文件类型</template>
           <a-collapse
+            :active-key="[currentKey]"
             class="cuscoll"
-            :default-active-key="['1']"
+            v-model="currentKey"
+            :default-active-key="['0']"
             :expand-icon-position="'right'"
             :bordered="false"
             accordion
           >
-            <a-collapse-item v-for="item in fileTypeList" :key="item.value.toString()">
+            <a-collapse-item v-for="item in fileTypeList" :key="item.value.toString()" :show-expand-icon="item.value!=2">
               <template #header>
-                <a-menu-item @click="onClickMenuItem(item)">
+                <a-menu-item @click="onClickMenuItem(item)" :key="item.value.toString()">
                   <template #icon>
                     <GiSvgIcon :size="28" :name="item.menuIcon"></GiSvgIcon>
                   </template>
                   <span>{{ item.name }}</span>
                 </a-menu-item>
               </template>
-              <div class="file-item">Brine Tank/Brine Valve/Chemical Tank</div>
+              <div class="file-item" v-if="item.value!=2">Brine Tank/Brine Valve/Chemical Tank</div>
             </a-collapse-item>
           </a-collapse>
         </a-sub-menu>

@@ -2,11 +2,12 @@
   <div class="file-list">
     <a-table
       row-key="id"
+      size="small"
       :scroll="{ x: '100%', y: '100%', minWidth: 600 }"
       :data="props.data"
       :bordered="false"
       :pagination="false"
-      :row-selection="isBatchMode ? rowSelection : undefined"
+      :row-selection="rowSelection"
     >
       <template #columns>
         <a-table-column title="序号" :width="80">
@@ -14,7 +15,7 @@
             {{rowIndex + 1}}
           </template>
         </a-table-column>
-        <a-table-column title="文档名称">
+        <a-table-column title="文档名称" :width="200">
           <template #cell="{ record }">
             <a-trigger
               trigger="contextMenu"
@@ -33,9 +34,22 @@
             </a-trigger>
           </template>
         </a-table-column>
-        <a-table-column title="上传时间" data-index="updateTime" :width="200"></a-table-column>
-        <a-table-column title="引用" data-index="extendName" :width="100"></a-table-column>
-        <a-table-column title="操作" :width="200" align="center">
+        <a-table-column title="文档大小" data-index="updateTime" :width="100">
+          <template #cell="{ record }">
+            3M
+          </template>
+        </a-table-column>
+        <a-table-column title="上传时间" data-index="updateTime" :width="200">
+          <template #cell="{ record }">
+            2023-06-13 14:46:15
+          </template>
+        </a-table-column>
+        <a-table-column title="引用" data-index="extendName" :width="80">
+          <template #cell="{ record }">
+            1
+          </template>
+        </a-table-column>
+        <a-table-column title="操作" :width="120" align="center">
           <template #cell="{ record }">
             <a-popconfirm type="warning" content="您确定要删除该项吗?" @ok="delPro(record)">
               <a-button size="mini" type="text" status="danger">
