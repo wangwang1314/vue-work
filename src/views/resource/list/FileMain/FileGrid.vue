@@ -14,7 +14,7 @@
         <div class="file-image">
           <FileImg :data="item"></FileImg>
         </div>
-        <div class="file-name">{{ getFileName(item) }}</div>
+        <div class="file-name">{{ item.picname }}</div>
 
         <!-- 勾选模式 -->
         <section
@@ -50,6 +50,7 @@ import { nextTick, ref } from 'vue'
 import FileImg from './FileImg.vue'
 import FileRightMenu from './FileRightMenu.vue'
 import type { FileItem } from '@/apis'
+import { proMultiDel } from '@/apis'
 import { Message, Modal } from '@arco-design/web-vue'
 import picDetail from '@/components/commonDialog/picDetail.vue'
 interface Props {
@@ -64,7 +65,7 @@ const props = withDefaults(defineProps<Props>(), {
   isBatchMode: false // 是否是批量模式
 })
 
-const emit = defineEmits(['click', 'check', 'right-menu-click'])
+const emit = defineEmits(['click', 'check', 'right-menu-click', 'update'])
 
 // 文件名称带后缀
 const getFileName = (item: FileItem) => {
@@ -89,7 +90,7 @@ const handleRightMenuItemClick = (mode: string, item: FileItem) => {
 // 点击事件
 const deletefn = (item: FileItem) => {
   let tips = '是否删除该文件？'
-  if (item && item.type == '2') {
+  if (item.isused > 0) {
     tips = '该图片正在被产品详细描述所引用，如果删除图片，产品详细描述将无法正常显示。'
   }
   Modal.warning({
@@ -97,10 +98,14 @@ const deletefn = (item: FileItem) => {
     content: tips,
     hideCancel: false,
     onClose: function () {
-      console.log('关闭')
+      // console.log('关闭')
     },
-    onOk: function () {
-      console.log('确定')
+    onOk: async () => {
+      // console.log('确定')
+      const res = await proMultiDel({ids: [item.id]})
+      if (res.code == 0) {
+        emit('update')
+      }
     }
   })
 }

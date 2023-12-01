@@ -120,7 +120,8 @@ const videoChange = (data) => {
   // border: 1px solid var(--color-border-3);
   position: relative;
   z-index: 1;
-  min-width: 650px;
+  min-width: 350px;
+  width: 100%;
   &.w-e-full-screen-container {
     z-index: 9999;
   }

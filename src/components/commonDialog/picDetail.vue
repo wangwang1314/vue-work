@@ -15,7 +15,7 @@
         <a-row>
           <a-col :span="11">
             <div class="video-box">
-              <img src="https://img0.baidu.com/it/u=2746352008,2041591833&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360" alt="" />
+              <img :src="infodata.picture_url_d" alt="" />
             </div>
           </a-col>
           <a-col :span="12" :offset="1">
@@ -23,24 +23,24 @@
             <a-form label-align="left" :model="form" :class="{'edit-form': isEdit}" ref="formRef" direction="vertical" auto-label-width layout="vertical">
               <a-row>
                 <a-col :span="24">
-                  <div class="pic-name">our-6.png</div>
+                  <div class="pic-name">{{ infodata.picname }}</div>
                 </a-col>
               </a-row>
               <a-row>
                 <a-col :span="24">
                   <a-form-item field="tpl" label="图片分组：">
-                    <div class="item-content">未分组</div>
+                    <div class="item-content">{{ infodata.group_name?infodata.group_name:'未分组' }}</div>
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
                   <a-form-item field="tpl" label="上传日期：">
-                    <div class="item-content">2023-09-25 17:40:49</div>
+                    <div class="item-content">{{ infodata.addtime }}</div>
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
                   <a-form-item field="tpl" label="正在被引用：">
-                    <div class="item-content"><img class="icon-img" :src="icon" alt="icon">是
-                      <div>共有 <span class="wraning-class">0</span> 个产品图片引用了该图片</div>
+                    <div class="item-content"><img class="icon-img" :src="icon" alt="icon">{{infodata.isused=='0'?'否':'是'}}
+                      <div>共有 <span class="wraning-class">{{ infodata.picture_count }}</span> 个产品图片引用了该图片</div>
                       <div class="alert-box">
                         <a-alert type="warning">标注<img class="icon-img" :src="icon" alt="icon">的图片正在被产品详细描述所引用。如果删除这些图片，产品详细描述将无法正常显示。</a-alert>
                       </div>
@@ -67,8 +67,10 @@ const visible = ref(false)
 const handleCancel = () => {
   visible.value = false
 }
+const infodata = ref({})
 const showDialog = (info) => {
   isEdit.value = false
+  infodata.value = info
   videoId.value = info.id
   // getDetail(info.id)
   visible.value = true

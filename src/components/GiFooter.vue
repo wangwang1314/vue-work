@@ -23,6 +23,7 @@ export default {
   align-items: center;
   text-align: center;
   background-color: transparent;
+  display: none;
 }
 </style>
 <script setup lang="ts">

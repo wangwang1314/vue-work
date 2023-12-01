@@ -301,7 +301,9 @@
   background-color: var(--color-bg-2);
   border: 1px solid var(--color-border-2);
 }
-
+.arco-btn-primary:active, .arco-btn-primary[type='button']:active, .arco-btn-primary[type='submit']:active {
+  background-color: rgb(var(--primary-6));
+}
 // tab样式
 // .arco-tabs-nav-type-capsule .arco-tabs-nav-tab:not(.arco-tabs-nav-tab-scroll) {
 //   justify-content: start;

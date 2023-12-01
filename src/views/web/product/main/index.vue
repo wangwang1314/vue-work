@@ -1,5 +1,11 @@
 <template>
   <div class="manage">
+    <div class="man-tit">
+      <div class="m-left">产品管理</div>
+      <div class="m-right">
+        <a-button type="primary" size="large" @click="goAdd">添加产品</a-button>
+      </div>
+    </div>
     <section class="tab">
       <a-tabs hide-content size="medium" type="capsule" v-model:active-key="activeKey">
         <a-tab-pane :key="1">
@@ -12,11 +18,11 @@
             <div class="tit">已删除产品<span class="s-span">({{titArray.count2}})</span></div>
           </template>
         </a-tab-pane>
-        <a-tab-pane :key="3">
+        <!-- <a-tab-pane :key="3">
           <template #title>
             <div class="tit">卖点产品<span class="s-span">({{titArray.count3}})</span></div>
           </template>
-        </a-tab-pane>
+        </a-tab-pane> -->
       </a-tabs>
     </section>
     <transition name="zoom-fade" mode="out-in" appear>
@@ -27,10 +33,11 @@
 
 <script setup lang="ts" name="productlist">
 import { ref, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import Pane1 from './Pane1.vue'
 import Pane2 from './Pane2.vue'
 import Pane3 from './Pane3.vue'
-
+const router = useRouter()
 const PaneMap: any = {
   1: Pane1,
   2: Pane2,
@@ -46,6 +53,9 @@ const updateFn = (data) => {
 }
 const changeTab = (val: number) => {
   activeKey.value = val
+}
+const goAdd = () => {
+  router.push({ path: '/web/webproduct/detail' })
 }
 </script>
 
@@ -86,6 +96,12 @@ const changeTab = (val: number) => {
       }
     }
     padding: 12px 0 0 24px;
+  }
+  .man-tit {
+    padding: 10px var(--inner-padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 

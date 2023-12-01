@@ -13,7 +13,7 @@
           :label-col-style="{ display: 'none' }"
           :wrapper-col-style="{ flex: 1 }"
         >
-          <h3 class="login-form-title"><img class="logo" src="@/assets/images/logo.gif" /><span>Admin Pro</span></h3>
+          <h3 class="login-form-title"><img class="logo" src="@/assets/images/logo.gif" /><span>ECWEB</span></h3>
           <a-form-item field="username">
             <a-input v-model="form.username" placeholder="账号" size="medium" allow-clear>
               <template #prefix><icon-user :stroke-width="1" :style="{ fontSize: '20px' }" /></template>

@@ -1,74 +1,40 @@
 <template>
   <a-layout-header>
     <section class="system-logo">
-      <span>宜选建站平台</span>
+      <a-button @click="goback">返回</a-button>
     </section>
     <a-space class="system-head" size="medium">
-      <div class="text-wrap">
-        <div class="left">
-          <a-link
-            class="addr-span"
-            target="_blank"
-            :href="'http://' + (userStore.userInfo.homeInfo?.company?.domain || '')"
-          >
-            <template #icon><icon-link :size="18" /></template>
-            {{ 'http://' + (userStore.userInfo.homeInfo?.company?.domain || '') }}
-          </a-link>
-          <!-- <span class="addr-span"><a href="http://www.ryderelectronics.com" target="_blank">http://www.ryderelectronics.com</a></span> -->
-          <!-- <a class="link-addr" target="_blank" href="http://mao.ecer.com/test/ryderelectronics.com/">制作环境</a> -->
-          <a-link class="link-addr" target="_blank" :href="userStore.userInfo.homeInfo?.prod_env_url">
-            <template #icon>
-              <icon-camera :size="18" />
+      <a-checkbox-group v-model="checkdata">
+        <a-checkbox value="1">AI优化发布
+          <a-popover title="Title">
+            <icon-exclamation-circle-fill size="16" />
+            <template #title><span></span></template>  
+            <template #content>
+              <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al优化，优化完成后发布。<a>了解更多>></a></p>
             </template>
-            预览
-          </a-link>
-          <a-link
-            class="addr-span"
-            target="_blank"
-            :href="'http://' + (userStore.userInfo.homeInfo?.company?.domain || '')"
-          >
-            <template #icon><icon-customer-service :size="18" /></template>
-            帮助中心
-          </a-link>
-        </div>
-      </div>
-      <!-- 管理员账户 -->
-      <a-dropdown trigger="hover" class="coustom">
-        <a-row align="center" class="user">
-          <!-- 管理员头像 -->
-          <a-avatar :size="32" class="avatar-cous">
-            <icon-user :size="16" />
-          </a-avatar>
-          <span class="username">{{ userStore.userInfo.homeInfo?.user.name }}</span>
-          <icon-down />
-        </a-row>
-        <template #content>
-          <a-doption>
-            <template #icon>
-              <span class="doption-icon" style="background: rgba(var(--primary-6))"><icon-user /></span>
+          </a-popover>
+        </a-checkbox>
+        <a-checkbox value="2">AI产品扩展
+          <a-popover title="Title">
+            <icon-exclamation-circle-fill size="16" />
+            <template #title><span></span></template>  
+            <template #content>
+              <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al优化，优化完成后发布。<a>了解更多>></a></p>
             </template>
-            <template #default>{{ '账号设置' }}</template>
-          </a-doption>
-          <!-- <a-divider style="margin: 0" /> -->
-          <a-doption @click="logout">
-            <template #icon>
-              <span class="doption-icon" style="background: rgba(var(--warning-6))"><icon-export /></span>
-            </template>
-            <template #default>{{ $t('退出登录') }}</template>
-          </a-doption>
-          <!-- <a-divider style="margin: 0" /> -->
-        </template>
-      </a-dropdown>
+          </a-popover>
+        </a-checkbox>
+      </a-checkbox-group>
+      <a-button type="primary" @click="confirm">发布</a-button>
+      <a-button @click="cancel">取消</a-button>
     </a-space>
-    <SettingDrawer ref="SettingDrawerRef"></SettingDrawer>
   </a-layout-header>
 </template>
 
-<script setup lang="ts" name="Header">
+<script setup lang="ts" name="productHeader">
 import { ref } from 'vue'
 import { Modal } from '@arco-design/web-vue'
 import { useRouter } from 'vue-router'
-import { useUserStore, useAppStore } from '@/store'
+import { useUserStore, useAppStore, useFileStore } from '@/store'
 import { useFullScreen } from '@/hooks'
 import SettingDrawer from './SettingDrawer.vue'
 import Message from './Message.vue'
@@ -78,17 +44,22 @@ import $t from '@/i18n/use'
 
 const router = useRouter()
 const userStore = useUserStore()
+const fileStore = useFileStore()
 const { isFullScreen, onToggleFullScreen } = useFullScreen()
 const SettingDrawerRef = ref<InstanceType<typeof SettingDrawer>>()
 const appStore = useAppStore()
+const checkdata = ref([])
 const changeColl = () => {
   appStore.setMenuCollapse(!appStore.menuCollapse)
 }
-// 切换语言
-const { t, locale } = useI18n()
-const changeLang = (type: string) => {
-  locale.value = type
-  window.localStorage.setItem('lang', locale.value)
+const goback = () => {
+  router.go(-1)
+}
+const confirm = () => {
+  fileStore.confirm()
+}
+const cancel = () => {
+  fileStore.cancel()
 }
 // 跳转首页
 const toHome = () => {
@@ -100,19 +71,7 @@ const toUser = () => {
   router.push('/system/user-center')
 }
 
-// 退出登录
-const logout = () => {
-  Modal.warning({
-    title: '提示',
-    content: '确认退出登录？',
-    hideCancel: false,
-    closable: true,
-    onOk: () => {
-      userStore.logout()
-      router.replace('/login')
-    }
-  })
-}
+
 </script>
 
 <style lang="scss" scoped>

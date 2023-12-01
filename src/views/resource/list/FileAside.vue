@@ -30,7 +30,9 @@
                   <span>{{ item.name }}</span>
                 </a-menu-item>
               </template>
-              <div class="file-item" v-if="item.value!=2">Brine Tank/Brine Valve/Chemical Tank</div>
+              <div class="file-box" v-if="item.value!=2">
+                <div class="file-item" v-for="(sub, ind) in fileStore.grouplist[item.value]" :key="item.id" @click="groupFn(item, sub)" :class="{'active': sub.id == groupId}">{{ sub.name }}</div>
+              </div>
             </a-collapse-item>
           </a-collapse>
         </a-sub-menu>
@@ -44,12 +46,14 @@ import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useWindowSize } from '@vueuse/core'
 import { fileTypeList, type fileTypeListItem } from '@/libs/file/file-map'
+import { useFileStore } from '@/store'
 const route = useRoute()
 const router = useRouter()
-
+const fileStore = useFileStore()
 const { width: windowWidth } = useWindowSize()
 
 const currentKey = ref('0')
+const groupId = ref('0')
 // 监听路由变化
 watch(
   () => route.query,
@@ -57,6 +61,7 @@ watch(
     if (route.query.fileType) {
       currentKey.value = route.query.fileType.toString()
     }
+    groupId.value = route.query.groupId && route.query.groupId.toString() || '0'
   },
   {
     immediate: true
@@ -66,6 +71,10 @@ watch(
 // 点击事件
 const onClickMenuItem = (item: fileTypeListItem) => {
   router.push({ path: '/resource/list', query: { fileType: item.value } })
+}
+const groupFn = (item: fileTypeListItem, sub) => {
+  groupId.value = sub.id
+  router.push({ path: '/resource/list', query: { fileType: item.value, groupId: sub.id} })
 }
 </script>
 

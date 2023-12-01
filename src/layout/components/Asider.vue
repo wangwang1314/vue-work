@@ -1,11 +1,16 @@
 <template>
   <a-layout-sider :collapsed="appStore.menuCollapse" breakpoint="xl" :width="232" class="asider">
+   
     <a-menu
       :selected-keys="[activeKey]"
       :default-open-keys="['Workplace']"
       :auto-open-selected="true"
       :style="{ width: '100%', height: '100%' }"
     >
+      <div class="logo-box">
+        <img @click="toHome" src="@/assets/images/logo.png" />
+        <span>ECWEB</span>
+      </div>
       <LoopMenuItem
         v-for="item in menuStore.menuTree"
         :key="item.name"
@@ -93,7 +98,6 @@ const handleClickItem = (item: MenuItem) => {
 }
 
 .asider {
-  background: red;
   z-index: 1000;
   :deep(.arco-menu-title) {
     text-transform: capitalize;
@@ -103,6 +107,18 @@ const handleClickItem = (item: MenuItem) => {
   }
   :deep(.arco-menu-inner::-webkit-scrollbar-thumb) {
     background:rgba(255,255,255,0.16);
+  }
+  .logo-box {
+    display: flex;
+    padding: 20px 0 20px 30px;
+    align-items: center;
+    img {
+      height: 40px;
+      width: 40px;
+      border-radius: 4px;
+      object-fit: contain;
+      margin-right: 10px;
+    }
   }
 }
 </style>

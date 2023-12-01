@@ -4,7 +4,7 @@
     <template #icon>
       <component :is="data.icon" :size="18"></component>
     </template>
-    <template #title>{{ $t(data.name) }}</template>
+    <template #title>{{ data.name }}</template>
     <MenuItem  v-for="item in data.children" :key="item.id" :data="item"
       @click="onClickMenuItem">
     </MenuItem>

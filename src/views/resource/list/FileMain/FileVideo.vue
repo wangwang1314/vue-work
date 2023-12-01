@@ -14,7 +14,7 @@
         <div class="file-image">
           <GiSvgIcon size="100%" name="file-video"></GiSvgIcon>
         </div>
-        <div class="file-name">{{ getFileName(item) }}</div>
+        <div class="file-name">{{ item.title }}</div>
 
         <!-- 勾选模式 -->
         <section
@@ -51,6 +51,7 @@ import FileRightMenu from './FileRightMenu.vue'
 import type { FileItem } from '@/apis'
 import { Message, Modal } from '@arco-design/web-vue'
 import videoDetail from '@/components/commonDialog/videoDetail.vue'
+import { proVideoDel } from '@/apis'
 interface Props {
   data?: FileItem[]
   selectedFileIdList?: string[]
@@ -63,7 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
   isBatchMode: false // 是否是批量模式
 })
 
-const emit = defineEmits(['click', 'check', 'right-menu-click'])
+const emit = defineEmits(['click', 'check', 'right-menu-click', 'update'])
 
 // 文件名称带后缀
 const getFileName = (item: FileItem) => {
@@ -87,19 +88,23 @@ const handleRightMenuItemClick = (mode: string, item: FileItem) => {
 
 // 点击事件
 const deletefn = (item: FileItem) => {
-  let tips = '是否删除该文件？'
-  if (item && item.type == '2') {
-    tips = '该图片正在被产品详细描述所引用，如果删除图片，产品详细描述将无法正常显示。'
+  let tips = '您确定要删除所选的视频吗？'
+  if (item.isused > 0) {
+    tips = '包含正在被使用的视频，删除后相关的引用都将被清除。确定要删除吗？'
   }
   Modal.warning({
     title: '提示',
     content: tips,
     hideCancel: false,
     onClose: function () {
-      console.log('关闭')
+      // console.log('关闭')
     },
-    onOk: function () {
-      console.log('确定')
+    onOk: async () => {
+      // console.log('确定')
+      const res = await proVideoDel({ids: [item.id]})
+      if (res.code == 0) {
+        emit('update')
+      }
     }
   })
 }

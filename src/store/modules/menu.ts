@@ -9,48 +9,47 @@ export const useMenuStore = defineStore({
   state: (): MenuState => {
     return {
       menuTree: [
-        {
-          icon: 'IconHome',
-          id: 'SY',
-          name: '首页',
-          path: '/dashboard/workplace',
-          keepAlive: false,
-          hidden: false,
-          level: 1
-        },
+        // {
+        //   icon: 'IconHome',
+        //   id: 'SY',
+        //   name: '首页',
+        //   path: '/dashboard/workplace',
+        //   keepAlive: false,
+        //   hidden: false,
+        //   level: 1
+        // },
         {
           icon: 'IconDesktop',
-          id: 'WZZL',
-          name: '网站资料',
+          id: 'CP',
+          name: '产品',
           path: '/web',
           keepAlive: false,
           hidden: false,
           level: 1,
           children: [
-            {
-              id: 'CPGL',
-              name: '产品管理',
-              path: '/web/webproduct',
-              keepAlive: false,
-              hidden: false,
-              icon: 'menu-detail',
-              level: 2,
-              children: [
                 {
                   id: 'CPGL',
-                  name: '产品列表',
+                  name: '产品管理',
                   path: '/web/webproduct/list',
                   keepAlive: false,
                   hidden: false,
-                  level: 3
+                  level: 2
                 },
+                // {
+                //   id: 'YXZS',
+                //   name: '优先展示',
+                //   path: '/web/webproduct/orderlist',
+                //   keepAlive: true,
+                //   hidden: false,
+                //   level: 3
+                // },
                 {
-                  id: 'YXZS',
-                  name: '优先展示',
-                  path: '/web/webproduct/orderlist',
+                  id: 'FLGL',
+                  name: '分类管理',
+                  path: '/web/webcate/list',
                   keepAlive: true,
                   hidden: false,
-                  level: 3
+                  level: 2
                 },
                 {
                   id: 'PLSZ',
@@ -58,88 +57,87 @@ export const useMenuStore = defineStore({
                   path: '/web/webproduct/proset',
                   keepAlive: true,
                   hidden: false,
-                  level: 3
+                  level: 2
                 },
-                {
-                  id: 'HGBM',
-                  name: '海关编码',
-                  path: '/web/webproduct/hscode',
-                  keepAlive: true,
-                  hidden: false,
-                  level: 3
-                }
-              ]
-            },
-            {
-              id: 'GSZL',
-              name: '公司资料',
-              path: '/web/company',
-              keepAlive: false,
-              hidden: false,
-              icon: 'menu-detail',
-              level: 2,
-              children: [
-                {
-                  id: 'GSJS',
-                  name: '公司介绍',
-                  path: '/web/company/intro',
-                  keepAlive: false,
-                  hidden: false,
-                  level: 3
-                },
-                {
-                  id: 'GSYS',
-                  name: '公司优势',
-                  path: '/web/company/adv',
-                  keepAlive: false,
-                  hidden: false,
-                  level: 3
-                },
-                {
-                  id: 'HZPP',
-                  name: '合作品牌',
-                  path: '/web/company/brand',
-                  keepAlive: false,
-                  hidden: false,
-                  level: 3
-                },
-                {
-                  id: 'KHZY',
-                  name: '客户赠言',
-                  path: '/web/company/message',
-                  keepAlive: false,
-                  hidden: false,
-                  level: 3
-                },
-                {
-                  id: 'GCZS',
-                  name: '工厂展示',
-                  path: '/web/company/factory',
-                  keepAlive: false,
-                  hidden: false,
-                  level: 3
-                },
-              ]
-            },
-            {
-              id: 'FLGL',
-              name: '分类管理',
-              path: '',
-              keepAlive: false,
-              hidden: false,
-              icon: 'menu-detail',
-              level: 2,
-              children: [
-                {
-                  id: 'FLLB',
-                  name: '分类列表',
-                  path: '/web/webcate/list',
-                  keepAlive: true,
-                  hidden: false,
-                  level: 3
-                }
-              ]
-            }
+                // {
+                //   id: 'HGBM',
+                //   name: '海关编码',
+                //   path: '/web/webproduct/hscode',
+                //   keepAlive: true,
+                //   hidden: false,
+                //   level: 3
+                // }
+  
+            // {
+            //   id: 'GSZL',
+            //   name: '公司资料',
+            //   path: '/web/company',
+            //   keepAlive: false,
+            //   hidden: false,
+            //   icon: 'menu-detail',
+            //   level: 2,
+            //   children: [
+            //     {
+            //       id: 'GSJS',
+            //       name: '公司介绍',
+            //       path: '/web/company/intro',
+            //       keepAlive: false,
+            //       hidden: false,
+            //       level: 3
+            //     },
+            //     {
+            //       id: 'GSYS',
+            //       name: '公司优势',
+            //       path: '/web/company/adv',
+            //       keepAlive: false,
+            //       hidden: false,
+            //       level: 3
+            //     },
+            //     {
+            //       id: 'HZPP',
+            //       name: '合作品牌',
+            //       path: '/web/company/brand',
+            //       keepAlive: false,
+            //       hidden: false,
+            //       level: 3
+            //     },
+            //     {
+            //       id: 'KHZY',
+            //       name: '客户赠言',
+            //       path: '/web/company/message',
+            //       keepAlive: false,
+            //       hidden: false,
+            //       level: 3
+            //     },
+            //     {
+            //       id: 'GCZS',
+            //       name: '工厂展示',
+            //       path: '/web/company/factory',
+            //       keepAlive: false,
+            //       hidden: false,
+            //       level: 3
+            //     },
+            //   ]
+            // },
+            // {
+            //   id: 'FLGL',
+            //   name: '分类管理',
+            //   path: '',
+            //   keepAlive: false,
+            //   hidden: false,
+            //   icon: 'menu-detail',
+            //   level: 2,
+            //   children: [
+            //     {
+            //       id: 'FLLB',
+            //       name: '分类列表',
+            //       path: '/web/webcate/list',
+            //       keepAlive: true,
+            //       hidden: false,
+            //       level: 3
+            //     }
+            //   ]
+            // }
           ]
         },
         {
@@ -169,24 +167,24 @@ export const useMenuStore = defineStore({
               icon: 'menu-detail',
               level: 2
             },
-            {
-              id: 'FAQS',
-              name: 'Faqs',
-              path: '/file/faqs',
-              keepAlive: false,
-              hidden: false,
-              icon: 'menu-detail',
-              level: 2
-            },
-            {
-              id: 'ZDYYM',
-              name: '自定义页面',
-              path: '/file/custom',
-              keepAlive: false,
-              hidden: false,
-              icon: 'menu-detail',
-              level: 2
-            }
+            // {
+            //   id: 'FAQS',
+            //   name: 'Faqs',
+            //   path: '/file/faqs',
+            //   keepAlive: false,
+            //   hidden: false,
+            //   icon: 'menu-detail',
+            //   level: 2
+            // },
+            // {
+            //   id: 'ZDYYM',
+            //   name: '自定义页面',
+            //   path: '/file/custom',
+            //   keepAlive: false,
+            //   hidden: false,
+            //   icon: 'menu-detail',
+            //   level: 2
+            // }
           ]
         },
         {
@@ -231,24 +229,6 @@ export const useMenuStore = defineStore({
           hidden: false,
           level: 1
         },
-        {
-          icon: 'icon-send',
-          id: 'WYFH',
-          name: '我要发货',
-          keepAlive: false,
-          hidden: false,
-          level: 1
-        },
-        {
-          icon: 'icon-brush',
-          id: 'KSHJZ',
-          name: '可视化建站',
-          keepAlive: false,
-          hidden: false,
-          path: 'link',
-          link: 'https://www.maoyt.com/feitian/store/page-design/',
-          level: 1
-        }
         // {
         //   icon: 'menu-form',
         //   id: 'BDGL',

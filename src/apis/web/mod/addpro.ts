@@ -12,7 +12,30 @@ export function proPublishInit(params) {
 export function proPicList(params) {
   return axios.get<ApiRes<productdata>>(`${baseURL}?r=picture/list`, params)
 }
-
+/** @desc 调整图片分组 */
+export function proAdjustGroup(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=picture/adjust-group`, qs.stringify(params))
+}
+/** @desc 删除图片*/
+export function proMultiDel(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=picture/multi-del`, qs.stringify(params))
+}
+/** @desc 图片打包*/
+export function proPicArchive(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=picture/archive`, qs.stringify(params))
+}
+/** @desc 图片下载*/
+export function proPicDownload(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=picture/download`, qs.stringify(params))
+}
+/** @desc 删除视频*/
+export function proVideoDel(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=video/del`, qs.stringify(params))
+}
+/** @desc 删除文档*/
+export function proDocumentDel(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=document/del`, qs.stringify(params))
+}
 /** @desc 视频中心获取视频列表 */
 export function provideList(params) {
   return axios.get<ApiRes<productdata>>(`${baseURL}?r=video/list`, params)

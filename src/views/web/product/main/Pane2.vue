@@ -19,7 +19,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :xs="12" :md="12" :lg="8" :xl="5" :xxl="6" v-show="collapsed">
+          <!-- <a-col :xs="12" :md="12" :lg="8" :xl="5" :xxl="6" v-show="collapsed">
             <a-form-item field="product_id" label="产品ID">
               <a-input v-model="form.product_id" placeholder="" :allow-clear="true" />
             </a-form-item>
@@ -40,7 +40,7 @@
                 <a-option value="2">单独指定</a-option>
               </a-select>
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col :xs="8" :md="8" :lg="6" :xl="6" :xxl="5">
             <a-form-item :hide-label="true">
               <a-space>
@@ -50,9 +50,9 @@
                 <a-button @click="resetFn">
                   <template #default>重置</template>
                 </a-button>
-                <a-button type="text" class="collapsed-btn" @click="collapsed = !collapsed">
+                <!-- <a-button type="text" class="collapsed-btn" @click="collapsed = !collapsed">
                   <template #default>{{ !collapsed ? '展开' : '收起' }}更多搜索</template>
-                </a-button>
+                </a-button> -->
               </a-space>
             </a-form-item>
           </a-col>
@@ -125,7 +125,7 @@
                   </a-link>
                 </template>
               </a-table-column>
-              <a-table-column title="产品关键字" :width="160">
+              <!-- <a-table-column title="产品关键字" :width="160">
                 <template #cell="{ record }">
                   <ul class="normal-ul">
                     <template v-for="(item, index) in record.keyword">
@@ -141,7 +141,7 @@
                   <a-link @click="showCode(record)" class="link-class">{{ record.hs_code }}</a-link>
                 </template>
               </a-table-column>
-              <a-table-column title="负责人" data-index="p_username" :width="100" align="left"></a-table-column>
+              <a-table-column title="负责人" data-index="p_username" :width="100" align="left"></a-table-column> -->
               <a-table-column title="发布时间" data-index="addtime" :width="105" align="left">
                 <template #title>
                   <div @click="sortFn('uptime')">
@@ -164,7 +164,7 @@
                   </div>
                 </template>
               </a-table-column>
-              <a-table-column title="相似度" data-index="similarity_detected" :width="100" align="right">
+              <!-- <a-table-column title="相似度" data-index="similarity_detected" :width="100" align="right">
                 <template #cell="{ record }">
                   <div v-if="record.similarity_detect_status == 1">
                     <div @click="goReport(record.id)" class="cursor">
@@ -194,7 +194,7 @@
                     </li>
                   </ul>
                 </template>
-              </a-table-column>
+              </a-table-column> -->
               <a-table-column title="操作" :width="100" align="center" fixed="right">
                 <template #cell="{ record }">
                   <a-space :size="4">

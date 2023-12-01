@@ -1,12 +1,11 @@
 <template>
   <a-layout class="layout">
-    <Header></Header>
-    <a-layout class="sub-layout">
-      <Asider></Asider>
-      <a-layout>
-        <NavTab></NavTab>
-        <Main></Main>
-      </a-layout>
+    <Asider></Asider>
+    <a-layout>
+      <!-- <NavTab></NavTab> -->
+      <Header v-if="!routeNameArr.includes(route.name)"></Header>
+      <productHeader v-if="route.name === 'productadd'"></productHeader>
+      <Main></Main>
     </a-layout>
     <!-- <a-layout-header>Header</a-layout-header>
       <a-layout>
@@ -18,10 +17,25 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import Asider from './components/Asider.vue'
 import Header from './components/Header.vue'
+import productHeader from './components/productHeader.vue'
 import Main from './components/Main.vue'
 import NavTab from './components/NavTab.vue'
+const route = useRoute()
+const routeNameArr = ['productadd']
+const routename = ref()
+watch(
+  () => route.query,
+  () => {
+    routename.value = route.name
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <style lang="scss" scoped>

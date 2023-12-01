@@ -1,6 +1,6 @@
 <template>
-  <img class="img" :src="props.data.src || ''" v-if="isImg" />
-  <GiSvgIcon size="100%" :name="props.data.name" v-else></GiSvgIcon>
+  <img class="img" :src="props.data.picture_url_d || ''" />
+  <!-- <GiSvgIcon size="100%" :name="props.data.name" v-else></GiSvgIcon> -->
 </template>
 
 <script setup lang="ts">

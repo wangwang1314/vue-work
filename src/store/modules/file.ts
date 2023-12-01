@@ -7,6 +7,7 @@ interface FileState {
   viewMode: ViewMode
   selectedFileList: FileItem[]
   isBatchMode: boolean
+  grouplist: any
 }
 
 export const useFileStore = defineStore({
@@ -18,7 +19,11 @@ export const useFileStore = defineStore({
       // 是否批量操作: true:批量 false:单文件
       isBatchMode: false,
       // 当前批量勾选的文件列表
-      selectedFileList: []
+      selectedFileList: [],
+      grouplist: {
+        '0': [],
+        '1': []
+      }
     }
   },
   getters: {
@@ -43,6 +48,12 @@ export const useFileStore = defineStore({
     },
     clearFileItem() {
       this.selectedFileList = []
-    }
+    },
+    setGrouplist(index, data) {
+      this.grouplist[index] = data
+    },
+    // 返回事件触发
+    confirm() {},
+    cancel () {}
   }
 })
