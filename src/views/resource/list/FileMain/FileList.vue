@@ -8,6 +8,7 @@
       :bordered="false"
       :pagination="false"
       :row-selection="rowSelection"
+      @selection-change="selectionChange"
     >
       <template #columns>
         <a-table-column title="序号" :width="80">
@@ -17,36 +18,24 @@
         </a-table-column>
         <a-table-column title="文档名称" :width="200">
           <template #cell="{ record }">
-            <a-trigger
-              trigger="contextMenu"
-              align-point
-              animation-name="slide-dynamic-origin"
-              auto-fit-transform-origin
-              position="bl"
-              update-at-scroll
-            >
-              <div class="file-name" @click="handleRowClick(record)">
-                <span>{{ record.name }}</span>
-              </div>
-              <template #content>
-                <FileRightMenu :file-info="record" @click="handleRightMenuItemClick($event, record)"></FileRightMenu>
-              </template>
-            </a-trigger>
+            <div class="file-name" @click="handleRowClick(record)">
+                <span>{{ record.docname }}</span>
+            </div>
           </template>
         </a-table-column>
         <a-table-column title="文档大小" data-index="updateTime" :width="100">
           <template #cell="{ record }">
-            3M
+            {{ record.docsize }}
           </template>
         </a-table-column>
         <a-table-column title="上传时间" data-index="updateTime" :width="200">
           <template #cell="{ record }">
-            2023-06-13 14:46:15
+            {{ record.addtime }}
           </template>
         </a-table-column>
         <a-table-column title="引用" data-index="extendName" :width="80">
           <template #cell="{ record }">
-            1
+            {{ record.usedcnt }}
           </template>
         </a-table-column>
         <a-table-column title="操作" :width="120" align="center">
@@ -70,7 +59,8 @@ import FileImg from './FileImg.vue'
 import FileRightMenu from './FileRightMenu.vue'
 import type { FileItem } from '@/apis'
 import type { TableInstance, TableRowSelection } from '@arco-design/web-vue'
-
+import { proDocumentDel } from '@/apis'
+import { Message, Modal } from '@arco-design/web-vue'
 interface Props {
   data?: FileItem[]
   isBatchMode?: boolean
@@ -86,7 +76,7 @@ const rowSelection: TableRowSelection = reactive({
   showCheckedAll: true
 })
 
-const emit = defineEmits(['click', 'right-menu-click'])
+const emit = defineEmits(['click', 'right-menu-click', 'update', 'selectchange'])
 
 // 行点击事件
 const handleRowClick = (row: FileItem) => {
@@ -98,7 +88,25 @@ const handleRightMenuItemClick = (mode: string, item: FileItem) => {
   emit('right-menu-click', mode, item)
 }
 const delPro = (item: FileItem) => {
-
+  const tips = '删除文档后，插入文档超链接处不能再选择此文档，确认删除吗？'
+  Modal.warning({
+    title: '提示',
+    content: tips,
+    hideCancel: false,
+    onClose: function () {
+      // console.log('关闭')
+    },
+    onOk: async () => {
+      // console.log('确定')
+      const res = await proDocumentDel({ids: [item.id]})
+      if (res.code == 0) {
+        emit('update')
+      }
+    }
+  })
+}
+const selectionChange = (list) => {
+  emit('selectchange', list)
 }
 </script>
 
