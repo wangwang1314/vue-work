@@ -1,4 +1,8 @@
-
+.proset-inner {
+  display: flex;
+  flex-direction: column;
+  
+}
 .proset-head {
   padding: 16px var(--inner-padding) 0px var(--inner-padding);
   
@@ -69,6 +73,8 @@
 }
 .proset {
   background: var(--color-bg-1);
+  border-radius: 8px;
+  margin: 16px var(--inner-padding) 28px var(--inner-padding);
   :deep(.arco-form-item) {
     margin-bottom: 6px;
   }

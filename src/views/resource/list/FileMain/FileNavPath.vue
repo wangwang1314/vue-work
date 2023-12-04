@@ -7,7 +7,7 @@
         <a-breadcrumb-item><span class="path-item">{{ prop.fileName }}</span></a-breadcrumb-item>
       </a-breadcrumb>
       <div class="nav-tips" v-if="prop.fileName=='文档'">建议上传PDF格式文档，每份文档不超过10M，您已上传了10个文档,使用了16%的100M空间</div>
-      <div class="nav-tips" v-if="prop.fileName=='视频'">剩余上传视频数量：19</div>
+      <div class="nav-tips" v-else-if="prop.fileName=='视频'">剩余上传视频数量：19</div>
       <div class="nav-tips" v-else>建议根据模板使用1:1或7:5 比例，600像素以上，JPEG、JPG格式，200K以下图片。</div>
       
     </section>

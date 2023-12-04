@@ -1,137 +1,149 @@
 <template>
-  <div class="proset detail">
-    <div class="proset-head">
-      <a-alert type="warning" class="top-alert"
-        >提示：选中分类后可以批量设置选中分类下所有产品的产品属性和交易信息</a-alert
-      >
+  <div class="proset-inner">
+    <div class="top-nav-tit">
+      <div class="m-left">批量设置</div>
+      <div class="m-right">
+        <!-- <a-button type="primary" size="large" @click="goAdd">
+          <template #icon><icon-plus /></template>
+          添加产品
+        </a-button> -->
+      </div>
     </div>
-    <a-form :model="cusform" label-align="left">
-      <div class="cont-box">
-        <div class="left">
-          <div class="left-tit">
-            <a-checkbox v-model="cusform.allCheck" @change="checkChange">分类选择</a-checkbox>
+    <div class="proset detail">
+      <div class="proset-head">
+        <a-alert type="warning" class="top-alert"
+          >提示：选中分类后可以批量设置选中分类下所有产品的产品属性和交易信息</a-alert
+        >
+      </div>
+      <a-form :model="cusform" label-align="left">
+        <div class="cont-box">
+          <div class="left">
+            <div class="left-tit">
+              <a-checkbox v-model="cusform.allCheck" @change="checkChange">分类选择</a-checkbox>
+            </div>
+            <a-tree
+              :checkable="true"
+              class="tree-list"
+              v-model:checked-keys="cusform.checkedKeys"
+              :check-strictly="true"
+              :data="treeData"
+              :fieldNames="{
+                key: 'id',
+                title: 'name'
+              }"
+              ref="tree"
+              @select="onSelect"
+            />
           </div>
-          <a-tree
-            :checkable="true"
-            class="tree-list"
-            v-model:checked-keys="cusform.checkedKeys"
-            :check-strictly="true"
-            :data="treeData"
-            :fieldNames="{
-              key: 'id',
-              title: 'name'
-            }"
-            ref="tree"
-            @select="onSelect"
-          />
-        </div>
-        <div class="right">
-          <div class="arco-card-header"><div class="arco-card-header-title">属性修改</div></div>
-          <div class="right-content">
-            <a-form-item :label="item.name" v-for="(item, index) in cusform.itemList" :key="item.name">
-              <div class="item">
-                <a-radio-group v-model="item.checked">
-                  <a-radio :value="false">不处理</a-radio>
-                  <a-radio :value="true">修改</a-radio>
-                </a-radio-group>
-                <a-input class="ipt-with" :disabled="!item.checked" v-model="item.value"></a-input>
-                <icon-delete class="del-icon" @click="delRow(item)"></icon-delete>
-              </div>
-            </a-form-item>
-            <div class="arco-card-header"><div class="arco-card-header-title">自定义属性</div></div>
-            <a-form-item label="自定义属性" :content-flex="false" :hide-label="true" style="position: relative">
-              <div class="loading-wrap" v-show="ailoading">
-                <div class="loading">
-                  <div class="shape shape-1"></div>
-                  <div class="shape shape-2"></div>
-                  <div class="shape shape-3"></div>
-                  <div class="shape shape-4"></div>
+          <div class="right">
+            <div class="arco-card-header"><div class="arco-card-header-title">属性修改</div></div>
+            <div class="right-content">
+              <a-form-item :label="item.name" v-for="(item, index) in cusform.itemList" :key="item.name">
+                <div class="item">
+                  <a-radio-group v-model="item.checked">
+                    <a-radio :value="false">不处理</a-radio>
+                    <a-radio :value="true">修改</a-radio>
+                  </a-radio-group>
+                  <a-input class="ipt-with" :disabled="!item.checked" v-model="item.value"></a-input>
+                  <icon-delete class="del-icon" @click="delRow(item)"></icon-delete>
                 </div>
-              </div>
-              <a-row class="full-width" :gutter="10">
-                <a-col :span="16">
-                  <a-space style="margin-top: 6px">
-                    <a-button size="mini" type="text" @click="getAiFn">AI计算自定义属性</a-button>
-                  </a-space>
-                </a-col>
-                <a-col :span="24">
-                  <div style="padding-top: 4px; color: var(--color-text-7); font-size: 12px">
-                    属性名和属性值必须同时填写，例：Color:Red；长按左侧锚点可调整顺序。
+              </a-form-item>
+              <div class="arco-card-header"><div class="arco-card-header-title">自定义属性</div></div>
+              <a-form-item label="自定义属性" :content-flex="false" :hide-label="true" style="position: relative">
+                <div class="loading-wrap" v-show="ailoading">
+                  <div class="loading">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                    <div class="shape shape-4"></div>
                   </div>
-                </a-col>
-              </a-row>
-              <a-table
-                :data="couArr"
-                :pagination="false"
-                @change="handleChange"
-                :draggable="{ type: 'handle', width: 40 }"
-                class="dra-table"
-                size="small"
-                v-show="couArr.length"
-              >
-                <template #empty>
-                  <div style="text-align: center; padding: 10px 0; color: #666">请添加自定义属性</div>
-                </template>
-                <template #columns>
-                  <a-table-column title="属性名称" align="center" :width="140">
-                    <template #cell="{ record, rowIndex }">
-                      <a-input placeholder="Material" :key="rowIndex" v-model="record.attr_key" allow-clear />
-                    </template>
-                  </a-table-column>
-                  <a-table-column title="属性值" align="center">
-                    <template #cell="{ record }">
-                      <a-input placeholder="Blank or Printed" v-model="record.attr_val" allow-clear />
-                    </template>
-                  </a-table-column>
-                  <a-table-column align="left" :width="30">
-                    <template #title>
-                      <div>
+                </div>
+                <a-row class="full-width" :gutter="10">
+                  <a-col :span="16">
+                    <a-space style="margin-top: 6px">
+                      <a-button size="mini" type="text" @click="getAiFn">AI计算自定义属性</a-button>
+                    </a-space>
+                  </a-col>
+                  <a-col :span="24">
+                    <div style="padding-top: 4px; color: var(--color-text-7); font-size: 12px">
+                      属性名和属性值必须同时填写，例：Color:Red；长按左侧锚点可调整顺序。
+                    </div>
+                  </a-col>
+                </a-row>
+                <a-table
+                  :data="couArr"
+                  :pagination="false"
+                  @change="handleChange"
+                  :draggable="{ type: 'handle', width: 40 }"
+                  class="dra-table"
+                  size="small"
+                  v-show="couArr.length"
+                >
+                  <template #empty>
+                    <div style="text-align: center; padding: 10px 0; color: #666">请添加自定义属性</div>
+                  </template>
+                  <template #columns>
+                    <a-table-column title="属性名称" align="center" :width="140">
+                      <template #cell="{ record, rowIndex }">
+                        <a-input placeholder="Material" :key="rowIndex" v-model="record.attr_key" allow-clear />
+                      </template>
+                    </a-table-column>
+                    <a-table-column title="属性值" align="center">
+                      <template #cell="{ record }">
+                        <a-input placeholder="Blank or Printed" v-model="record.attr_val" allow-clear />
+                      </template>
+                    </a-table-column>
+                    <a-table-column align="left" :width="30">
+                      <template #title>
+                        <div>
+                          <a-space>
+                            <a-button size="mini" type="primary" @click="addCou(-1)"><icon-plus size="12" /></a-button>
+                            <!-- <a-button size="mini" status="danger" type="primary" @click="delCous(couArr.length - 1)"><icon-delete size="12" /></a-button> -->
+                          </a-space>
+                        </div>
+                      </template>
+                      <template #cell="{ record, rowIndex }">
                         <a-space>
-                          <a-button size="mini" type="primary" @click="addCou(-1)"><icon-plus size="12" /></a-button>
-                          <!-- <a-button size="mini" status="danger" type="primary" @click="delCous(couArr.length - 1)"><icon-delete size="12" /></a-button> -->
+                          <!-- <a-button size="mini" type="primary" @click="addCou(rowIndex)"
+                                ><icon-plus size="12"
+                              /></a-button> -->
+                          <icon-close-circle-fill class="del-class" size="16" @click="delCous(rowIndex)" />
+                          <!-- <a-button size="mini" status="danger" type="primary" @click="delCous(rowIndex)"
+                                ><icon-delete size="12"
+                              /></a-button> -->
                         </a-space>
-                      </div>
-                    </template>
-                    <template #cell="{ record, rowIndex }">
-                      <a-space>
-                        <!-- <a-button size="mini" type="primary" @click="addCou(rowIndex)"
-                              ><icon-plus size="12"
-                            /></a-button> -->
-                        <icon-close-circle-fill class="del-class" size="16" @click="delCous(rowIndex)" />
-                        <!-- <a-button size="mini" status="danger" type="primary" @click="delCous(rowIndex)"
-                              ><icon-delete size="12"
-                            /></a-button> -->
-                      </a-space>
-                    </template>
-                  </a-table-column>
-                </template>
-              </a-table>
-              <template #extra> </template>
-              <div class="table-add">
-                <a-button @click="addCou(-1)"><Icon-plus></Icon-plus></a-button><span>请添加自定义属性</span>
+                      </template>
+                    </a-table-column>
+                  </template>
+                </a-table>
+                <template #extra> </template>
+                <div class="table-add">
+                  <a-button @click="addCou(-1)"><Icon-plus></Icon-plus></a-button><span>请添加自定义属性</span>
+                </div>
+              </a-form-item>
+              <div class="btn-wrap">
+                <a-space>
+                  <a-button type="primary" @click="confirmFn" :loading="btnloading">确定</a-button>
+                  <a-button :disabled="btnloading" @click="cancelFn">取消</a-button>
+                </a-space>
               </div>
-            </a-form-item>
-            <div class="btn-wrap">
-              <a-space>
-                <a-button type="primary" @click="confirmFn" :loading="btnloading">确定</a-button>
-                <a-button :disabled="btnloading" @click="cancelFn">取消</a-button>
-              </a-space>
             </div>
           </div>
         </div>
-      </div>
-    </a-form>
-    <GiFooter bgcolor="#fff"></GiFooter>
-    <!-- 二次确认弹框 -->
-    <a-modal v-model:visible="popup" :width="286">
-      <template #title>提示</template>
-      <div><icon-exclamation-circle-fill size="16" style="color: rgb(var(--orangered-5))" /> 确认要对 {{ cateName }}, 分类产品 {{ currentProp.name }} 属性进行批量删除吗？</div>
-      <template #footer>
-        <a-button @click="popup = false" :disabled="btnloading">取消</a-button>
-        <a-button type="primary" @click="batchDel" :loading="btnloading">确定</a-button>
-      </template>
-    </a-modal>
-  </div>
+      </a-form>
+      <GiFooter bgcolor="#fff"></GiFooter>
+      <!-- 二次确认弹框 -->
+      <a-modal v-model:visible="popup" :width="286">
+        <template #title>提示</template>
+        <div><icon-exclamation-circle-fill size="16" style="color: rgb(var(--orangered-5))" /> 确认要对 {{ cateName }}, 分类产品 {{ currentProp.name }} 属性进行批量删除吗？</div>
+        <template #footer>
+          <a-button @click="popup = false" :disabled="btnloading">取消</a-button>
+          <a-button type="primary" @click="batchDel" :loading="btnloading">确定</a-button>
+        </template>
+      </a-modal>
+    </div>
+  </div> 
+  
 </template>
 <script setup lang="ts" name="proset">
 import type { setform, listItem } from './type'

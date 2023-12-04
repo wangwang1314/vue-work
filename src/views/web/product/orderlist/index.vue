@@ -1,7 +1,12 @@
 <template>
   <div class="manage">
+    <div class="top-nav-tit">
+      <div class="m-left">产品优先展示</div>
+      <div class="m-right">
+      </div>
+    </div>
     <section class="tab">
-      <a-tabs hide-content size="medium" type="capsule" v-model:active-key="activeKey">
+      <a-tabs hide-content size="large" type="capsule" v-model:active-key="activeKey">
         <a-tab-pane :key="1">
           <template #title>
             <div class="tit">首页置顶<span class="s-span">({{titArray.count1}})</span></div>
@@ -75,10 +80,10 @@ const updateFn = (data) => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--color-bg-1);
+  // background: var(--color-bg-1);
   .tab {
     .tit {
-      color: var(--color-text-1);
+      color: var(--color-text-8);
       .s-span {
         font-size: 12px;
         color: var(--color-text-3);
@@ -96,7 +101,7 @@ const updateFn = (data) => {
         }
       }
     }
-    padding: 12px 0 0 24px;
+    padding: 18px 0 0 20px;
   }
 }
 

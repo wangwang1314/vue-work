@@ -21,7 +21,7 @@
       <!-- <div class="item-width" v-else></div> -->
       <component :is="data.icon" :size="18"></component>
     </template>
-    {{ $t(data.name) }}
+    {{ data.name }}
   </a-menu-item>
 </template>
 

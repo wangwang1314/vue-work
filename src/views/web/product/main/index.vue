@@ -1,13 +1,16 @@
 <template>
   <div class="manage">
-    <div class="man-tit">
+    <div class="top-nav-tit">
       <div class="m-left">产品管理</div>
       <div class="m-right">
-        <a-button type="primary" size="large" @click="goAdd">添加产品</a-button>
+        <a-button type="primary" size="large" @click="goAdd">
+          <template #icon><icon-plus /></template>
+          添加产品
+        </a-button>
       </div>
     </div>
     <section class="tab">
-      <a-tabs hide-content size="medium" type="capsule" v-model:active-key="activeKey">
+      <a-tabs hide-content size="large" type="capsule" v-model:active-key="activeKey">
         <a-tab-pane :key="1">
           <template #title>
             <div class="tit">普通产品<span class="s-span">({{titArray.count1}})</span></div>
@@ -74,10 +77,10 @@ const goAdd = () => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--color-bg-1);
+  // background: var(--color-bg-1);
   .tab {
     .tit {
-      color: var(--color-text-1);
+      color: var(--color-text-8);
       .s-span {
         font-size: 12px;
         color: var(--color-text-3);
@@ -95,13 +98,7 @@ const goAdd = () => {
         }
       }
     }
-    padding: 12px 0 0 24px;
-  }
-  .man-tit {
-    padding: 10px var(--inner-padding);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 18px 0 0 20px;
   }
 }
 

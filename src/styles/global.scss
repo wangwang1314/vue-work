@@ -125,6 +125,9 @@
   font-size: var(--m-size);
 }
 .asider {
+  .arco-menu-light .arco-menu-inline-header.arco-menu-selected:hover {
+    background-color: transparent;
+  }
   .menu-level-1 {
     &.no-child {
       border-left: 2px solid transparent;
@@ -139,8 +142,13 @@
       border-left: 2px solid rgb(var(--primary-6));
     }
   }
+  .menu-level-1 {
+    margin-left: 8px;
+    border-radius: 20px 0 0 20px;
+  }
   .menu-level-2 {
-    margin-left: 25px;
+    padding-left: 36px;
+    border-radius: 20px 0 0 20px;
   }
   .menu-level-3:last-child {
     &::before {
@@ -153,78 +161,44 @@
       top: 0;
     }
   }
-  .menu-level-3 {
-    margin-left: 30px;
-    position: relative;
-    &::before {
-      content: '';
-      display: block;
-      height: 44px;
-      border-left: 1px solid rgb(var(--fill-6));
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    &::after {
-      content: '';
-      display: block;
-      width: 16px;
-      border-top: 1px solid rgb(var(--fill-6));
-      position: absolute;
-      left: 0;
-      top: 48%;
-    }
-    .arco-menu-title {
-      width: 132px;
-      height: 32px;
-      padding-left: 12px;
-      box-sizing: border-box;
-      line-height: 32px;
-      
-      
-    }
-    &.arco-menu-selected {
-      .arco-menu-title {
-        background :rgb(var(--primary-6));
-        color: #fff;
-        border-radius: 4px;
-      }
-    }
-  }
-  .arco-menu-light .arco-menu-inline-header {
+  .arco-menu-inline {
     .arco-menu-icon-suffix {
       svg {
-        color: inherit;
+        color: inherit!important;
         margin-right: 0;
       }
     }
     .arco-menu-icon{
-      color: #fff;
+      color: inherit!important;
       svg {
-        color: inherit;
+        color: inherit!important;
       }
     }
     &.arco-menu-selected {
       .arco-menu-icon{
-        color: rgb(var(--primary-6));
+       
         svg {
-          color: inherit;
+          color: inherit!important;
         }
       }
     }
   }
+  .menu-level-2.arco-menu-selected,.menu-level-1.no-child.arco-menu-selected  {
+    background: #fff!important;
+    color: rgb(var(--primary-6))!important;
+  }
   .arco-menu-vertical .arco-menu-has-icon{
     .arco-menu-icon {
-      color: #fff;
+     
       svg {
-        color: inherit;
+        color: inherit!important;
       }
     }
     &.arco-menu-selected {
       .arco-menu-icon{
-        color: rgb(var(--primary-6));
+       
         svg {
-          color: inherit;
+          color: inherit!important;
         }
       }
     }
@@ -233,23 +207,19 @@
     color: #fff;
     background: transparent;
   }
-  .arco-menu-light .arco-menu-item.arco-menu-selected, .arco-menu-light .arco-menu-group-title.arco-menu-selected, .arco-menu-light .arco-menu-pop-header.arco-menu-selected, .arco-menu-light .arco-menu-inline-header.arco-menu-selected {
-    color: rgb(var(--primary-6));
-  }
+
   .arco-menu-indent {
     width: 0;
   }
 
   .arco-menu .arco-menu-item .arco-icon, .arco-menu .arco-menu-group-title .arco-icon, .arco-menu .arco-menu-pop-header .arco-icon, .arco-menu .arco-menu-inline-header .arco-icon, .arco-menu .arco-menu-item .arco-menu-icon, .arco-menu .arco-menu-group-title .arco-menu-icon, .arco-menu .arco-menu-pop-header .arco-menu-icon, .arco-menu .arco-menu-inline-header .arco-menu-icon {
     margin-right: 4px;
+    color: inherit;
     // width: 10px;
   }
-  .arco-menu-light .arco-menu-inline-header.arco-menu-selected:hover {
-      background-color: var(--slider-left);
-  }
-  .arco-menu-vertical .arco-menu-inner {
-    padding: 16px 8px 4px 0px;
 
+  .arco-menu-vertical .arco-menu-inner {
+    padding: 0 0 4px 0px;
   }
 }
 
@@ -371,12 +341,16 @@ body[arco-theme='dark'] .arco-tabs-nav-type-capsule {
 .arco-select-view-single {
   background-color: var(--color-fill-2);
   border: 1px solid transparent;
+  border-radius: 2px;
+  color: var(--color-text-6);
 }
 .arco-select-view-multiple {
   background-color: var(--color-fill-2);
   border: 1px solid transparent;
 }
-
+.arco-input-wrapper .arco-input::placeholder {
+  color: var(--color-border-2)
+}
 
 // 重置下上传组件样式
 // .arco-upload-list-picture-error-tip .arco-upload-icon-error {
@@ -474,3 +448,28 @@ body[arco-theme='dark'] .arco-tabs-nav-type-capsule {
 .arco-modal-simple .arco-modal-body {
   font-size: 14px;
 }
+
+
+//内页操作栏
+.top-nav-tit {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px var(--inner-padding) 0px var(--inner-padding);
+  align-items: center;
+  height: 36px;
+  .m-left {
+    color: var(--color-text-1);
+    font-size: 20px;
+  }
+}
+
+//tab样式重置
+.arco-tabs-nav-type-capsule .arco-tabs-nav-tab-list {
+  background-color: var(--fill-3);
+  border-radius: 8px;
+  padding: 3px;
+}
+.arco-tabs-nav-type-capsule .arco-tabs-tab {
+  border-radius: 6px;
+}
+

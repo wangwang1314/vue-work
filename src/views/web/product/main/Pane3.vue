@@ -60,7 +60,7 @@
       </a-form>
 
       <section class="table-box">
-        <a-row :gutter="16" wrap style="margin-bottom: 12px">
+        <a-row :gutter="16" wrap style="margin-bottom: 16px">
           <a-col :span="12">
             <a-space>
               <!-- <a-button type="primary" @click="goAdd" size="small" status="success">
@@ -142,7 +142,7 @@
                 </template>
               </a-table-column>
               <a-table-column title="负责人" data-index="p_username" :width="100" align="left"></a-table-column>
-              <a-table-column title="发布时间" data-index="addtime" :width="105" align="left">
+              <a-table-column title="发布时间" data-index="addtime" :width="96" align="left">
                 <template #title>
                   <div @click="sortFn('uptime')">
                     {{ '发布时间' }}
@@ -153,7 +153,7 @@
                   </div>
                 </template>
               </a-table-column>
-              <a-table-column title="更新时间" data-index="uptime" :width="105" align="left">
+              <a-table-column title="更新时间" data-index="uptime" :width="96" align="left">
                 <template #title>
                   <div @click="sortFn('addtime')">
                     {{ '更新时间' }}

@@ -22,13 +22,13 @@
             </template>
             预览
           </a-link>
+          <span class="line-span"></span>
           <a-link
-            class="addr-span"
+            class="addr-span service"
             target="_blank"
-            :href="'http://' + (userStore.userInfo.homeInfo?.company?.domain || '')"
+            href=""
           >
             <template #icon><icon-customer-service :size="18" /></template>
-            帮助中心
           </a-link>
         </div>
       </div>
@@ -39,8 +39,8 @@
           <a-avatar :size="32" class="avatar-cous">
             <icon-user :size="16" />
           </a-avatar>
-          <span class="username">{{ userStore.userInfo.homeInfo?.user.name }}</span>
-          <icon-down />
+          <!-- <span class="username">{{ userStore.userInfo.homeInfo?.user.name }}</span>
+          <icon-down /> -->
         </a-row>
         <template #content>
           <a-doption>
@@ -127,21 +127,35 @@ const logout = () => {
   justify-content: space-between;
   .left {
     white-space: nowrap;
+    display: flex;
+    align-items: center;
     .addr-span {
-      margin-left: 12px;
-      color: var(--color-white);
+     
+      // margin-left: 12px;
+      color: var(--color-text-8);
       text-decoration: none;
       &:hover {
         background: none;
       }
     }
+    
     .link-addr {
-      color: var(--color-white);
-      margin-left: 10px;
+      color: var(--color-text-8);
+      margin-left: 22px;
       text-decoration: none;
       &:hover {
-        text-decoration: underline;
+        // text-decoration: underline;
         background: none;
+      }
+    }
+    .service {
+      :deep(.arco-link-icon) {
+        background: var(--fill-3);
+        border-radius: 50%;
+        padding: 0;
+        height: 24px;
+        width: 24px;
+        justify-content: center;
       }
     }
   }
@@ -200,14 +214,14 @@ const logout = () => {
 
 .arco-layout-header {
   padding: 0 $padding;
-  height: 64px;
-  background: var(--header-black);
+  height: 60px;
+  background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   // border-bottom: 1px solid var(--color-neutral-3);
   .system-logo {
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1;
     color: var(--color-text-1);
     display: flex;
@@ -233,7 +247,6 @@ const logout = () => {
     align-items: center;
   }
   .user {
-    color: #fff;
     cursor: pointer;
     .username {
       margin-left: 10px;
@@ -269,7 +282,6 @@ const logout = () => {
   text-align: center;
 }
 .change-menu {
-  color: #fff;
   margin-right: 16px;
   cursor: pointer;
   display: none;
@@ -279,5 +291,13 @@ const logout = () => {
   width: 40px;
   border-radius: 50%;
   background: rgb(201, 205, 212);
+}
+.line-span {
+  display: inline-block;
+  height: 16px;
+  width: 1px;
+  background: var(--line-2);
+  vertical-align: middle;
+  margin: 0 24px;
 }
 </style>

@@ -103,21 +103,30 @@ const handleClickItem = (item: MenuItem) => {
     text-transform: capitalize;
   }
   :deep(.arco-menu-light) {
-    background: var(--slider-left);
+    background: rgb(var(--primary-6));
   }
   :deep(.arco-menu-inner::-webkit-scrollbar-thumb) {
     background:rgba(255,255,255,0.16);
   }
   .logo-box {
     display: flex;
-    padding: 20px 0 20px 30px;
+    padding: 14px 16px;
+    background: #fff;
     align-items: center;
+    border-right: 1px solid var(--fill-3);
     img {
-      height: 40px;
-      width: 40px;
+      height: 32px;
+      width: 48px;
       border-radius: 4px;
       object-fit: contain;
-      margin-right: 10px;
+      margin-right: 8px;
+    }
+    span {
+      font-size: 14px;
+      color: var(--color-text-1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

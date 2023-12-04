@@ -1,7 +1,9 @@
 .banner-detail {
   overflow: auto;
   padding: 15px 20px 0 20px;
+  margin: 16px var(--inner-padding) 28px var(--inner-padding);
   background-color: var(--color-bg-1);
+  border-radius: 8px;
 }
 .full-width {
   width: 100%;

@@ -1,13 +1,15 @@
 <template>
   <a-layout-header>
     <section class="system-logo">
-      <a-button @click="goback">返回</a-button>
+      <div class="goback-class" @click="goback"><icon-arrow-left /><span>返回</span></div>
     </section>
-    <a-space class="system-head" size="medium">
-      <a-checkbox-group v-model="checkdata">
+    <a-space class="system-head">
+      <a-button @click="cancel">取消</a-button>
+      <a-button @click="save">保存</a-button>
+      <a-checkbox-group v-model="checkdata" style="margin: 0 0 0 48px;">
         <a-checkbox value="1">AI优化发布
           <a-popover title="Title">
-            <icon-exclamation-circle-fill size="16" />
+            <icon-exclamation-circle size="16"/>
             <template #title><span></span></template>  
             <template #content>
               <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al优化，优化完成后发布。<a>了解更多>></a></p>
@@ -16,7 +18,7 @@
         </a-checkbox>
         <a-checkbox value="2">AI产品扩展
           <a-popover title="Title">
-            <icon-exclamation-circle-fill size="16" />
+            <icon-exclamation-circle size="16"/>
             <template #title><span></span></template>  
             <template #content>
               <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al优化，优化完成后发布。<a>了解更多>></a></p>
@@ -24,8 +26,10 @@
           </a-popover>
         </a-checkbox>
       </a-checkbox-group>
-      <a-button type="primary" @click="confirm">发布</a-button>
-      <a-button @click="cancel">取消</a-button>
+      <a-button type="primary" @click="confirm">
+        发布
+        <template #icon><icon-send /></template>
+      </a-button>
     </a-space>
   </a-layout-header>
 </template>
@@ -71,7 +75,9 @@ const toUser = () => {
   router.push('/system/user-center')
 }
 
+const save = () => {
 
+}
 </script>
 
 <style lang="scss" scoped>
@@ -88,18 +94,18 @@ const toUser = () => {
     white-space: nowrap;
     .addr-span {
       margin-left: 12px;
-      color: var(--color-white);
+      color: var(--color-text-8);
       text-decoration: none;
       &:hover {
         background: none;
       }
     }
     .link-addr {
-      color: var(--color-white);
+      color: var(--color-text-8);
       margin-left: 10px;
       text-decoration: none;
       &:hover {
-        text-decoration: underline;
+        // text-decoration: underline;
         background: none;
       }
     }
@@ -159,8 +165,8 @@ const toUser = () => {
 
 .arco-layout-header {
   padding: 0 $padding;
-  height: 64px;
-  background: var(--header-black);
+  height: 60px;
+  background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -168,7 +174,7 @@ const toUser = () => {
   .system-logo {
     font-size: 20px;
     line-height: 1;
-    color: var(--color-text-1);
+    color: var(--color-text-8);
     display: flex;
     align-items: center;
     user-select: none;
@@ -192,7 +198,6 @@ const toUser = () => {
     align-items: center;
   }
   .user {
-    color: #fff;
     cursor: pointer;
     .username {
       margin-left: 10px;
@@ -228,7 +233,6 @@ const toUser = () => {
   text-align: center;
 }
 .change-menu {
-  color: #fff;
   margin-right: 16px;
   cursor: pointer;
   display: none;
@@ -238,5 +242,13 @@ const toUser = () => {
   width: 40px;
   border-radius: 50%;
   background: rgb(201, 205, 212);
+}
+.goback-class {
+  color: var(--color-text-4);
+  cursor: pointer;
+  font-size: 16px;
+  span {
+    margin-left: 6px;
+  }
 }
 </style>

@@ -189,12 +189,32 @@ export const useMenuStore = defineStore({
         },
         {
           icon: 'IconApps',
-          id: 'CTGL',
-          name: '插图管理',
+          id: 'WZZX',
+          name: '网站装修',
           keepAlive: false,
           hidden: false,
           level: 1,
-          path: '/banner/list'
+          path: '',
+          children: [
+            {
+              id: 'XWZX',
+              name: '幻灯',
+              path: '/banner/list',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'ALZX',
+              name: '产品优先展示',
+              path: '/web/webproduct/orderlist',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            }
+          ]
         },
         {
           icon: 'icon-save',
