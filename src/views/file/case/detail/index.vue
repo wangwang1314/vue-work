@@ -1,124 +1,48 @@
 <template>
-  <div class="cate-edit detail">
-    <a-form ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
-      <div class="card-wrap">
-        <a-card title="案例详细信息编辑" :bordered="false">
-          <a-form-item
-            field="pubtime"
-            label="发布时间"
-            :content-flex="false"
-            :rules="[{required: true, message: '请选择时间', type: 'string'}]"
-          >
-            <a-row class="full-width">
-              <a-col :span="15">
-                <a-date-picker
-                  show-time
-                  format="YYYY-MM-DD hh:mm:ss"
-                  value-format="YYYY-MM-DD hh:mm:ss"
-                  v-model="form.pubtime"
-                />
-              </a-col>
-            </a-row>
-          </a-form-item>
-          <a-form-item
-            field="name"
-            label="案例标题"
-            :content-flex="false"
-            :rules="[{required: true, message: '请填写案例标题', type: 'string'}]"
-          >
-            <a-row class="full-width">
-              <a-col :span="15">
+  <div class="cate-edit-out">
+    <div class="top-nav-tit">
+      <div class="m-left">案例编辑</div>
+      <div class="m-right"></div>
+    </div>
+    <div class="cate-edit detail">
+      <a-form ref="formRef" size="medium" :model="form" layout="vertical" :auto-label-width="true">
+        <a-row :gutter="16">
+          <a-col :span="16">
+            <a-card title="案例详细信息编辑" :bordered="false">
+              <a-form-item
+                field="name"
+                label="案例标题"
+                :content-flex="false"
+                :rules="[{ required: true, message: '请填写案例标题', type: 'string' }]"
+              >
                 <a-input placeholder="请输入" v-model.trim="form.name" allow-clear />
-              </a-col>
-            </a-row>
-          </a-form-item>
-          <a-form-item field="cate" label="案例图片" :content-flex="false">
-            <!-- <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="showPicCenter(2)"
+              </a-form-item>
+              <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
+              <a-form-item label="案例内容" :content-flex="false">
+                <a-row class="full-width">
+                  <a-col :span="22">
+                    <uedit v-model="form.remark"></uedit>
+                  </a-col>
+                </a-row>
+              </a-form-item>
+            </a-card>
+            <a-card title="案例图片" :bordered="false">
+              <a-form-item field="cate" label="案例图片" :content-flex="false" :hide-label="true">
+                <!-- <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="showPicCenter(2)"
               >图片中心选择</a-button
             > -->
-            <a-upload
-              :on-before-remove="(data)=> picRemove(data, '6')"
-              list-type="picture-card"
-              :action="picUploadUrl"
-              :data="{ type: uploadType }"
-              :file-list="fileList2"
-              image-preview
-              :limit="1"
-              @success="successUpload"
-              @change="
-                (res) => {
-                  picUploadChange(res, 2)
-                }
-              "
-            >
-              <template #upload-button>
-                <div class="arco-upload-picture-card">
-                  <div class="arco-upload-picture-card-text">
-                    <IconPlus />
-                    <div style="margin-top: 10px; color: var(--color-text-4); font-size: 14px">上传</div>
-                  </div>
-                </div>
-              </template>
-              <template #extra-button>
-                  <span class="rco-upload-icon" @click="editImg">
-                    <IconEdit ></IconEdit>
-                  </span>
-              </template>
-            </a-upload>
-            <template #extra>
-              <!-- <div style="line-height: 18px">分类图片建议上传尺寸288px*288px，JPEG、JPG格式，并小于100K</div> -->
-            </template>
-          </a-form-item>
-          <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
-          <a-form-item label="案例内容" :content-flex="false">
-            <a-row class="full-width">
-              <a-col :span="22">
-                <uedit v-model="form.remark"></uedit>
-              </a-col>
-            </a-row>
-          </a-form-item>
-          <a-form-item>
-            <div class="btn-wrap">
-              <a-button type="primary" @click="saveFn" :loading="loading">保存</a-button>
-              <a-button style="margin-left: 10px" @click="cancelFn" :disabled="loading">取消</a-button>
-            </div>
-          </a-form-item>
-        </a-card>
-      </div>
-      
-    </a-form>
-    <!-- 分类介绍弹框 -->
-    <a-modal v-model:visible="catevisi" :width="800">
-      <template #title>上传图片</template>
-      <a-row class="full-width">
-        <a-col :span="22">
-          <div v-loading="btnloading" gi-loading-type="circle">
-            <a-form ref="dialogFormRef" :model="dialogForm" class="init-form">
-              <a-form-item field="title" label="图片名称" >
-                <a-input v-model="dialogForm.title" placeholder="" />
-                <!-- <template #extra>建议 2-5 个单词之间</template> -->
-              </a-form-item>
-              <a-form-item field="remark" label="图片描述">
-                <a-textarea type="textarea" v-model="dialogForm.picturedesc" placeholder="" />
-                <!-- <template #extra> 分类描述，建议 300-350 个字符</template> -->
-              </a-form-item>
-              <a-form-item field="link" label="图片">
-                <a-input name="link" style="display: none" v-model="dialogForm.link" placeholder="" />
                 <a-upload
+                  :on-before-remove="(data) => picRemove(data, '6')"
                   list-type="picture-card"
-                  :on-before-remove="(data)=> picRemove(data, '6')"
                   :action="picUploadUrl"
-                  :data="{ type: uploadType, title: dialogForm.title, picturedesc: dialogForm.picturedesc }"
-                  :file-list="fileList3"
-                  :auto-upload="false"
+                  :data="{ type: uploadType }"
+                  :file-list="fileList2"
                   image-preview
                   :limit="1"
-                  :show-retry-button="false"
-                  @success="successUploadfile"
-                  ref="uploadref"
+                  @success="successUpload"
                   @change="
                     (res) => {
-                      picUploadChange(res, 3)
+                      picUploadChange(res, 2)
                     }
                   "
                 >
@@ -130,20 +54,129 @@
                       </div>
                     </div>
                   </template>
+                  <template #extra-button>
+                    <span class="rco-upload-icon" @click="editImg">
+                      <IconEdit></IconEdit>
+                    </span>
+                  </template>
                 </a-upload>
-                <!-- <template #extra>
+                <template #extra>
+                  <!-- <div style="line-height: 18px">分类图片建议上传尺寸288px*288px，JPEG、JPG格式，并小于100K</div> -->
+                </template>
+              </a-form-item>
+            </a-card>
+          </a-col>
+          <a-col :span="8">
+            <div ref="step1div">
+              <a-card title="发布时间" :bordered="false" class="item" id="step1">
+                <a-form-item
+                  field="pubtime"
+                  label="发布时间"
+                  :content-flex="false"
+                  :hide-label="true"
+                  :rules="[{ required: true, message: '请选择时间', type: 'string' }]"
+                >
+                  <a-date-picker
+                    style="width: 100%"
+                    show-time
+                    format="YYYY-MM-DD hh:mm:ss"
+                    value-format="YYYY-MM-DD hh:mm:ss"
+                    v-model="form.pubtime"
+                  />
+                </a-form-item>
+              </a-card>
+              <a-card title="SEO" :bordered="false" class="item">
+                <a-form-item label="SEO标题">
+                  <a-textarea
+                    :auto-size="{ minRows: 4 }"
+                    placeholder="建议在60 - 120个字符之间。"
+                    :min-length="{ length: 60, errorOnly: true }"
+                    :max-length="{ length: 120, errorOnly: true }"
+                    allow-clear
+                  />
+                </a-form-item>
+                <a-form-item label="SEO关键词">
+                  <a-textarea
+                    :auto-size="{ minRows: 5 }"
+                    placeholder="建议设置3-5个单词，以英文逗号“,”分隔。"
+                    allow-clear
+                  />
+                </a-form-item>
+                <a-form-item label="SEO描述">
+                  <a-textarea :auto-size="{ minRows: 6 }" placeholder="建议在140 - 160个字符之间。" allow-clear />
+                </a-form-item>
+                <a-form-item label="Tag词">
+                  <a-input placeholder="请输入TAG词1"></a-input>
+                </a-form-item>
+                <a-form-item :hide-label="true">
+                  <a-input placeholder="请输入TAG词2"></a-input>
+                </a-form-item>
+                <a-form-item :hide-label="true">
+                  <a-input placeholder="请输入TAG词3"></a-input>
+                </a-form-item>
+              </a-card>
+            </div>
+          </a-col>
+        </a-row>
+      </a-form>
+      <!-- 分类介绍弹框 -->
+      <a-modal v-model:visible="catevisi" :width="800">
+        <template #title>上传图片</template>
+        <a-row class="full-width">
+          <a-col :span="22">
+            <div v-loading="btnloading" gi-loading-type="circle">
+              <a-form ref="dialogFormRef" :model="dialogForm" class="init-form">
+                <a-form-item field="title" label="图片名称">
+                  <a-input v-model="dialogForm.title" placeholder="" />
+                  <!-- <template #extra>建议 2-5 个单词之间</template> -->
+                </a-form-item>
+                <a-form-item field="remark" label="图片描述">
+                  <a-textarea type="textarea" v-model="dialogForm.picturedesc" placeholder="" />
+                  <!-- <template #extra> 分类描述，建议 300-350 个字符</template> -->
+                </a-form-item>
+                <a-form-item field="link" label="图片">
+                  <a-input name="link" style="display: none" v-model="dialogForm.link" placeholder="" />
+                  <a-upload
+                    list-type="picture-card"
+                    :on-before-remove="(data) => picRemove(data, '6')"
+                    :action="picUploadUrl"
+                    :data="{ type: uploadType, title: dialogForm.title, picturedesc: dialogForm.picturedesc }"
+                    :file-list="fileList3"
+                    :auto-upload="false"
+                    image-preview
+                    :limit="1"
+                    :show-retry-button="false"
+                    @success="successUploadfile"
+                    ref="uploadref"
+                    @change="
+                      (res) => {
+                        picUploadChange(res, 3)
+                      }
+                    "
+                  >
+                    <template #upload-button>
+                      <div class="arco-upload-picture-card">
+                        <div class="arco-upload-picture-card-text">
+                          <IconPlus />
+                          <div style="margin-top: 10px; color: var(--color-text-4); font-size: 14px">上传</div>
+                        </div>
+                      </div>
+                    </template>
+                  </a-upload>
+                  <!-- <template #extra>
                   <a-button type="primary" size="mini" @click="showPicCenter(3)">图片中心选择</a-button>
                   <div style="margin-top: 10px">分类图片建议上传尺寸422px*238px，JPEG、JPG格式，并小于100K。</div>
                 </template> -->
-              </a-form-item>
-            </a-form>
-          </div>
-        </a-col>
-      </a-row>
-      <template #footer>
-        <a-button type="primary" @click="cateconfirm" :disabled="btnloading">确定</a-button>
-      </template>
-    </a-modal>
+                </a-form-item>
+              </a-form>
+            </div>
+          </a-col>
+        </a-row>
+        <template #footer>
+          <a-button type="primary" @click="cateconfirm" :disabled="btnloading">确定</a-button>
+        </template>
+      </a-modal>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -160,6 +193,8 @@ import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { dateFt } from '@/utils/common'
 import { fileCaseAdd, fileCaseEdit, fileCaseInit, pictureDdel } from '@/apis'
+import { useFileStore } from '@/store'
+const fileStore = useFileStore()
 const route = useRoute()
 const router = useRouter()
 const baseURL = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX
@@ -175,7 +210,7 @@ const form = reactive({
 if (!route.query.id) {
   form.pubtime = dateFt('yyyy-MM-dd hh:mm:ss', new Date())
 }
-const delPicAjax = async(id, type) => {
+const delPicAjax = async (id, type) => {
   if (!route.query.id) {
     return
   }
@@ -205,7 +240,7 @@ const getDetail = async () => {
   if (!form.id) {
     return
   }
-  const {code, data} = await fileCaseInit({ id: form.id, type: form.type })
+  const { code, data } = await fileCaseInit({ id: form.id, type: form.type })
   if (code === 0) {
     const caseobj = data.case
     form.name = caseobj.name
@@ -252,7 +287,6 @@ const picUploadChange = (arr, type) => {
   }
 }
 
-
 // 富文本相关
 const ueditorTempRef = ref()
 const showUeditor = () => {
@@ -264,9 +298,11 @@ const loading = ref(false)
 const saveFn = () => {
   formRef.value.validate(async (err) => {
     if (!err) {
-      loading.value = true
+      fileStore.setloading(true)
       const { id, pubtime, remark, name, type } = form
-      const picture_info = fileList2.value.map((item) => { return item.id })
+      const picture_info = fileList2.value.map((item) => {
+        return item.id
+      })
       let res
       if (!id) {
         res = await fileCaseAdd({
@@ -274,11 +310,11 @@ const saveFn = () => {
           name,
           remark,
           picture_info: {
-            id: picture_info.length?picture_info[0]:''
+            id: picture_info.length ? picture_info[0] : ''
           },
           type
         }).finally(() => {
-          loading.value = false
+          fileStore.setloading(false)
         })
       } else {
         res = await fileCaseEdit({
@@ -287,16 +323,16 @@ const saveFn = () => {
           name,
           remark,
           picture_info: {
-            id: picture_info.length?picture_info[0]:''
+            id: picture_info.length ? picture_info[0] : ''
           },
           type
         }).finally(() => {
-          loading.value = false
+          fileStore.setloading(false)
         })
       }
       if (res.code === 0) {
         Message.success(res.message || '提交成功')
-        router.push({path: '/file/case'})
+        router.push({ path: '/file/case' })
       }
     }
   })
@@ -323,7 +359,7 @@ const catevisi = ref(false)
 const btnloading = ref(false)
 const cateconfirm = () => {
   // catevisi.value = false
-  if (fileList3.value.length <= 0 ) {
+  if (fileList3.value.length <= 0) {
     return Message.warning('请选择图片')
   }
   uploadref.value?.submit()
@@ -361,14 +397,25 @@ watch(
 const editImg = () => {
   catevisi.value = true
   if (fileList2.value.length) {
-    fileList3.value = [{
-      ...fileList2.value[0],
-      status: 'init'
-    }]
+    fileList3.value = [
+      {
+        ...fileList2.value[0],
+        status: 'init'
+      }
+    ]
     dialogForm.title = fileList2.value[0].title
     dialogForm.picturedesc = fileList2.value[0].picturedesc
   }
 }
+
+fileStore.$onAction(({name}) => {
+  console.log(name)
+  if (name === 'cancel') {
+    cancelFn()
+  } else if (name === 'save') {
+    saveFn()
+  }
+})
 </script>
 <style lang="scss" scoped>
 @import '../mod/add.scss';

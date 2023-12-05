@@ -35,6 +35,24 @@ const routes = [
     }
   },
   {
+    path: '/guide1',
+    name: 'Guide1',
+    component: () => import('@/views/guide/step1.vue'),
+    meta: {
+      title: '引导页1',
+      keepAlive: false
+    }
+  },
+  {
+    path: '/guide2',
+    name: 'guide2',
+    component: () => import('@/views/guide/step2.vue'),
+    meta: {
+      title: '引导页2',
+      keepAlive: false
+    }
+  },
+  {
     path: '/layout',
     name: 'Layout',
     component: DEFAULT_LAYOUT,

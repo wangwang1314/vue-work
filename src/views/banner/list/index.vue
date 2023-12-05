@@ -24,9 +24,11 @@
         </a-tab-pane>
       </a-tabs>
     </section>
-    <transition name="zoom-fade" mode="out-in" appear>
+    <div class="banner-detail-out">
+      <transition name="zoom-fade" mode="out-in" appear>
         <component :is="PaneMap[activeKey]" @update="updateFn" @changeTab="changeTab"></component>
-    </transition>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -55,6 +57,15 @@ const changeTab = (val: number) => {
 </script>
 
 <style lang="scss" scoped>
+.banner-detail-out {
+  padding: 16px 0px 16px 20px;
+  background-color: var(--color-bg-1);
+  margin: 16px var(--inner-padding) 28px var(--inner-padding);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex: 1;
+}
 :deep(.arco-card) {
   .arco-card-header {
     border-bottom-style: dashed;

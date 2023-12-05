@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-wrap">
+  <div class="detail-wrap-out">
     <div class="top-nav-tit">
       <div class="m-left">设置产品信息</div>
       <div class="m-right"></div>
@@ -11,10 +11,10 @@
           size="medium"
           :model="form"
           @submit="handleSubmit"
-          layout="horizontal"
+          layout="vertical"
           :auto-label-width="true"
         >
-          <a-row class="full-width" :gutter="12">
+          <a-row :gutter="16">
             <a-col :span="16">
               <div ref="step1div">
                 <a-card title="产品名称&描述" :bordered="false" class="item" id="step1">
@@ -39,14 +39,12 @@
                     </a-row>
                   </a-form-item>
                 </a-card>
-                <a-row :gutter="12">
+                <a-row :gutter="12" class="media-class">
                   <a-col :span="16">
                     <a-card class="item">
                       <div class="label-class">
                         <span>产品图片</span>
-                        <a-button type="primary" size="mini" style="margin: 4px 0 0 24px" @click="showPicCenter"
-                          >图片中心选择</a-button
-                        >
+                        <a-button type="primary" size="mini" @click="showPicCenter">图片中心选择</a-button>
                       </div>
                       <a-form-item label="产品图片" :hide-label="true">
                         <a-row class="full-width">
@@ -135,9 +133,7 @@
                     <a-card class="item">
                       <div class="label-class">
                         <span>产品视频</span>
-                        <a-button type="primary" size="mini" @click="showVideoCenter" style="margin: 4px 0 0 24px"
-                          >视频中心选择</a-button
-                        >
+                        <a-button type="primary" size="mini" @click="showVideoCenter">视频中心选择</a-button>
                       </div>
                       <a-form-item label="产品视频" :hide-label="true">
                         <a-row class="full-width">
@@ -145,23 +141,12 @@
                             <video-dialog ref="videoDialogRef" @change="videoChange"></video-dialog>
                             <div class="video-chose-list nor-v-list" v-if="videoChosed.length">
                               <div v-for="(item, index) in videoChosed" :key="index">
-                                <div
-                                  class="arco-image arco-image-with-footer-inner nor-pri"
-                                  style="width: 160px; height: 90px; vertical-align: top"
-                                >
+                                <div class="arco-image arco-image-with-footer-inner nor-pri video-upload">
                                   <img class="arco-image-img" :src="item.img_path" style="width: 100%; height: 100%" />
                                   <span class="del-span" @click="delVideo(index)"><icon-close-circle /></span>
                                   <div class="arco-image-footer" prefix-cls="arco-image">
                                     <div class="arco-image-footer-caption">
-                                      <div
-                                        class="arco-image-footer-caption-description"
-                                        style="
-                                          width: 106px;
-                                          overflow: hidden;
-                                          text-overflow: ellipsis;
-                                          white-space: nowrap;
-                                        "
-                                      >
+                                      <div class="arco-image-footer-caption-description">
                                         {{ item.title }}
                                       </div>
                                     </div>
@@ -177,9 +162,9 @@
                               </div>
                               <video-detail ref="videoDetailRef"></video-detail>
                             </div>
-                            <a-upload v-else>
+                            <a-upload :show-file-list="false" v-else>
                               <template #upload-button>
-                                <div class="arco-upload-picture-card" style="margin-bottom: 15px">
+                                <div class="arco-upload-picture-card video-upload">
                                   <div class="arco-upload-picture-card-text">
                                     <IconPlus />
                                     <div style="margin-top: 10px; color: var(--color-text-4); font-size: 14px">
@@ -201,13 +186,13 @@
               </div>
               <div ref="step2div">
                 <a-card title="产品属性" :bordered="false" class="item" id="step2">
-                  <a-row class="full-width">
-                    <a-col :span="24">
+                  <a-row class="full-width" :gutter="12">
+                    <a-col :span="12">
                       <a-form-item label="品牌">
                         <a-input placeholder="请输入品牌" v-model="form.details[0]['Brand Name'].value" allow-clear />
                       </a-form-item>
                     </a-col>
-                    <a-col :span="24">
+                    <a-col :span="12">
                       <a-form-item label="认证证书">
                         <a-input
                           placeholder="请输入认证证书"
@@ -217,8 +202,8 @@
                       </a-form-item>
                     </a-col>
                   </a-row>
-                  <a-row class="full-width">
-                    <a-col :span="24">
+                  <a-row class="full-width" :gutter="12">
+                    <a-col :span="12">
                       <a-form-item label="型号">
                         <a-input
                           placeholder="请输入型号"
@@ -227,7 +212,7 @@
                         />
                       </a-form-item>
                     </a-col>
-                    <a-col :span="24">
+                    <a-col :span="12">
                       <a-form-item label="原产地">
                         <a-input
                           placeholder="请输入原产地"
@@ -242,70 +227,62 @@
                       <a-form-item label="自定义属性" :content-flex="false">
                         <a-row class="full-width" :gutter="10">
                           <a-col :span="24">
-                            <a-space style="margin-top: 6px">
-                              <a-button size="mini" type="text" @click="showTableFn2"
-                                ><icon-thumb-up-fill /> 智能推荐</a-button
+                            <a-space :size="16">
+                              <a-button size="mini" type="primary" @click="showTableFn2"
+                                ><template #icon><icon-thumb-up-fill /></template> 智能推荐</a-button
                               >
-
-                              <a-modal v-model:visible="showTable2" :width="700">
-                                <template #title> 智能推荐 </template>
-                                <template #footer>
-                                  <a-button @click="handleCancel2">取消</a-button>
-                                  <a-button type="primary" @click="handleOk2">确定</a-button>
-                                </template>
-                                <div style="height: 500px; overflow: hidden">
-                                  <a-table
-                                    :data="attrData"
-                                    :loading="reloading"
-                                    style="width: 100%"
-                                    :scroll="{ y: '100%' }"
-                                    :pagination="false"
-                                    class="select-table"
-                                  >
-                                    <template #columns>
-                                      <a-table-column
-                                        title="推荐属性名"
-                                        data-index="attr_name"
-                                        align="center"
-                                        :width="120"
-                                      >
-                                        <template #cell="{ record }">
-                                          <div
-                                            class="padding-cell cursor"
-                                            @click="selectCellFn(record.attr_name)"
-                                            :class="selectKeyFn(record.attr_name)"
-                                          >
-                                            {{ record.attr_name }}
-                                          </div>
-                                        </template>
-                                      </a-table-column>
-                                      <a-table-column title="推荐属性值" data-index="value" align="center">
-                                        <template #cell="{ record }">
-                                          <div class="padding-cell">
-                                            <span v-for="(item, index) in record.attr_value" :key="item"
-                                              ><span
-                                                class="cursor"
-                                                :class="selectValue(record.attr_name, item)"
-                                                @click="selectValClick(record.attr_name, item)"
-                                                >{{ item }}</span
-                                              ><template v-if="index != record.attr_value.length - 1">,</template>
-                                            </span>
-                                            <!-- {{ record.attr_value && record.attr_value.toString() }} -->
-                                          </div>
-                                        </template>
-                                      </a-table-column>
-                                    </template>
-                                  </a-table>
-                                </div>
-                              </a-modal>
+                              <div style="padding-top: 4px; color: var(--color-text-4); font-size: 12px">
+                                属性名和属性值必须同时填写，例：Color:Red；长按左侧锚点可调整顺序。
+                              </div>
                             </a-space>
                           </a-col>
-                          <a-col :span="24">
-                            <div style="padding-top: 4px; color: var(--color-text-7); font-size: 12px">
-                              属性名和属性值必须同时填写，例：Color:Red；长按左侧锚点可调整顺序。
-                            </div>
-                          </a-col>
                         </a-row>
+                        <a-modal v-model:visible="showTable2" :width="700">
+                          <template #title> 智能推荐 </template>
+                          <template #footer>
+                            <a-button @click="handleCancel2">取消</a-button>
+                            <a-button type="primary" @click="handleOk2">确定</a-button>
+                          </template>
+                          <div style="height: 500px; overflow: hidden">
+                            <a-table
+                              :data="attrData"
+                              :loading="reloading"
+                              style="width: 100%"
+                              :scroll="{ y: '100%' }"
+                              :pagination="false"
+                              class="select-table"
+                            >
+                              <template #columns>
+                                <a-table-column title="推荐属性名" data-index="attr_name" align="center" :width="120">
+                                  <template #cell="{ record }">
+                                    <div
+                                      class="padding-cell cursor"
+                                      @click="selectCellFn(record.attr_name)"
+                                      :class="selectKeyFn(record.attr_name)"
+                                    >
+                                      {{ record.attr_name }}
+                                    </div>
+                                  </template>
+                                </a-table-column>
+                                <a-table-column title="推荐属性值" data-index="value" align="center">
+                                  <template #cell="{ record }">
+                                    <div class="padding-cell">
+                                      <span v-for="(item, index) in record.attr_value" :key="item"
+                                        ><span
+                                          class="cursor"
+                                          :class="selectValue(record.attr_name, item)"
+                                          @click="selectValClick(record.attr_name, item)"
+                                          >{{ item }}</span
+                                        ><template v-if="index != record.attr_value.length - 1">,</template>
+                                      </span>
+                                      <!-- {{ record.attr_value && record.attr_value.toString() }} -->
+                                    </div>
+                                  </template>
+                                </a-table-column>
+                              </template>
+                            </a-table>
+                          </div>
+                        </a-modal>
                         <a-table
                           :data="couArr"
                           :pagination="false"
@@ -364,8 +341,8 @@
               </div>
               <div ref="step3div">
                 <a-card title="交易信息" :bordered="false" class="item" id="step3">
-                  <a-row class="full-width">
-                    <a-col :span="24">
+                  <a-row class="full-width" :gutter="16">
+                    <a-col :span="8">
                       <a-form-item field="detail[1]['Minimum Order Quantity']" label="最小起订量">
                         <a-input
                           placeholder="请同时填写数值和单位"
@@ -373,13 +350,19 @@
                           allow-clear
                         />
                       </a-form-item>
+                    </a-col>
+                    <a-col :span="16">
                       <a-form-item field="detail[1]['Price']" label="价格">
                         <a-input
-                          placeholder="请同时填写数值和单位。建议填写方位为：货币类型 + 价格区间 + 计量单位"
+                          placeholder="请同时填写数值和单位。建议填写 货币类型+价格区间+计量单位"
                           v-model="form.details[1]['Price'].value"
                           allow-clear
                         />
                       </a-form-item>
+                    </a-col>
+                  </a-row>
+                  <a-row class="full-width" :gutter="16">
+                    <a-col :span="8">
                       <a-form-item field="detail[1]['Payment Terms'].value" label="付款方式">
                         <a-select
                           :options="selectList2"
@@ -389,13 +372,19 @@
                           allow-clear
                         ></a-select>
                       </a-form-item>
+                    </a-col>
+                    <a-col :span="16">
                       <a-form-item field="detail[1]['Supply Ability'].value" label="供货能力">
                         <a-input
-                          placeholder="请同时填写数值和单位。建议填写方式为：数量 + 计量单位 + per 时间单位"
+                          placeholder="请同时填写数值和单位。建议填写 数量+计量单位+per时间单位"
                           v-model="form.details[1]['Supply Ability'].value"
                           allow-clear
                         />
                       </a-form-item>
+                    </a-col>
+                  </a-row>
+                  <a-row class="full-width" :gutter="16">
+                    <a-col :span="8">
                       <a-form-item field="details[1]['Delivery Time'].value" label="发货期限">
                         <a-input
                           placeholder="5-8 work days"
@@ -403,9 +392,11 @@
                           allow-clear
                         />
                       </a-form-item>
+                    </a-col>
+                    <a-col :span="16">
                       <a-form-item field="details[1]['Packaging Details'].value" label="常规包装">
                         <a-input
-                          placeholder="建议填写包装形式、尺寸，各类集装箱能装载的产品件数等信息，便于买家了解。"
+                          placeholder="建议填写包装形式、尺寸，各类集装箱能装载的产品件数等信息"
                           v-model="form.details[1]['Packaging Details'].value"
                           allow-clear
                         />
@@ -416,12 +407,15 @@
               </div>
               <div ref="step4div">
                 <a-card :bordered="false" class="item" id="step4">
+                  <div class="label-class">
+                    <span>产品附件</span>
+                    <a-button size="mini" class="chose-btn" type="primary" @click="showFileDialog"
+                      >文件中心选择</a-button
+                    >
+                  </div>
                   <a-row class="full-width">
                     <a-col :span="24">
-                      <a-form-item label="产品附件" :content-flex="false">
-                        <a-button size="mini" class="chose-btn" type="primary" @click="showFileDialog"
-                          >文件中心选择</a-button
-                        >
+                      <a-form-item :hide-label="true" :content-flex="false">
                         <div style="margin-top: 6px; position: relative; width: 100%">
                           <a-upload
                             :action="baseURL + '?r=document/upload'"
@@ -487,9 +481,9 @@
                       </a-col>
                     </a-row>
                   </a-form-item>
-                  <p class="de-tit">SEO</p>
-                  <p class="de-subtit">SEO标题</p>
-                  <a-form-item :hide-label="true">
+                </a-card>
+                <a-card title="SEO" :bordered="false" class="item">
+                  <a-form-item label="SEO标题">
                     <a-textarea
                       :auto-size="{ minRows: 4 }"
                       placeholder="建议在60 - 120个字符之间。"
@@ -498,27 +492,24 @@
                       allow-clear
                     />
                   </a-form-item>
-                  <p class="de-subtit">SEO关键词</p>
-                  <a-form-item :hide-label="true">
+                  <a-form-item label="SEO关键词">
                     <a-textarea
                       :auto-size="{ minRows: 5 }"
                       placeholder="建议设置3-5个单词，以英文逗号“,”分隔。"
                       allow-clear
                     />
                   </a-form-item>
-                  <p class="de-subtit">SEO描述</p>
-                  <a-form-item :hide-label="true">
+                  <a-form-item label="SEO描述">
                     <a-textarea :auto-size="{ minRows: 6 }" placeholder="建议在140 - 160个字符之间。" allow-clear />
                   </a-form-item>
-                  <p class="de-subtit">Tag词</p>
-                  <a-form-item :hide-label="true">
-                    <a-input></a-input>
+                  <a-form-item label="Tag词">
+                    <a-input placeholder="请输入TAG词1"></a-input>
                   </a-form-item>
                   <a-form-item :hide-label="true">
-                    <a-input></a-input>
+                    <a-input placeholder="请输入TAG词2"></a-input>
                   </a-form-item>
                   <a-form-item :hide-label="true">
-                    <a-input></a-input>
+                    <a-input placeholder="请输入TAG词3"></a-input>
                   </a-form-item>
                 </a-card>
               </div>
@@ -574,7 +565,11 @@ const step3div = ref<HTMLElement | null>()
 const step4div = ref<HTMLElement | null>()
 
 fileStore.$onAction(({ name }) => {
-  console.log(name)
+  if (name === 'cancel') {
+    
+  } else if (name === 'confirm') {
+    saveFn('pro')
+  }
 })
 // 产品名称事件
 const proNameType = ref<string>('0')
@@ -785,14 +780,9 @@ const delPicAjax = async (id) => {
 // 文件上传
 const getCustomIcon = () => {
   return {
-    retryIcon: () => h(IconUpload),
-    cancelIcon: () => h(IconClose),
+    cancelIcon: () => h(''),
     fileIcon: () => h(IconFileAudio),
-    removeIcon: () => h(IconClose),
-    errorIcon: () => h(IconFaceFrownFill),
-    fileName: (file) => {
-      return `文件名： ${file.name}`
-    }
+    errorIcon: () => h(IconFaceFrownFill)
   }
 }
 // 文件默认列表
@@ -972,13 +962,16 @@ const addProSub = async (priview: string) => {
     if (priview == 'priview') {
       window.open(res.data.preview_url, '_blank')
     } else {
+      setTimeout(() => {
+        router.push({ path: '/web/webproduct/list' })
+      })
       // router.push({ path: '/web/webproduct/list' })
-      proInfo.id = res.data.id
-      proInfo.cateid = res.data.cateid || form.category_id
-      proInfo.url = res.data.preview_url
-      proInfo.star = res.data.star
-      proInfo.reason = res.data.reason
-      publish.value = true
+      // proInfo.id = res.data.id
+      // proInfo.cateid = res.data.cateid || form.category_id
+      // proInfo.url = res.data.preview_url
+      // proInfo.star = res.data.star
+      // proInfo.reason = res.data.reason
+      // publish.value = true
     }
   }
 }
@@ -1005,7 +998,8 @@ const editProSub = async (priview: string) => {
 const proInfo = reactive({
   id: '',
   cateid: '',
-  url: ''
+  url: '',
+  reason: {}
 })
 const loading1 = ref(false)
 

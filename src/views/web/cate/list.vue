@@ -63,29 +63,25 @@
               @page-size-change="changePageSize"
             >
               <template #columns>
-                <a-table-column :cellClass="'cell-cous'" title="分类名称" data-index="address" :width="250" align="left">
+                <a-table-column :cellClass="'cell-cous'" title="分类名称" data-index="address" :width="300" align="left">
                   <template #cell="{ record }">
                     <div :class="'cell-cous-lever-' + record.level">{{ record.name }}</div>
                   </template>
                 </a-table-column>
-                <a-table-column title="产品数量" data-index="name" :width="100" align="right">
+                <a-table-column title="产品数量" data-index="name" :width="200" align="right">
                   <template #cell="{ record }">{{ record.productcount }}</template>
                 </a-table-column>
-                <a-table-column title="更新时间" data-index="time" :width="145" align="left">
+                <a-table-column title="更新时间" data-index="time" :width="150" align="left">
                   <template #cell="{ record }">{{ record.uptime }}</template>
                 </a-table-column>
-                <a-table-column title="操作" :width="400" align="center">
+                <a-table-column title="操作" :width="300" align="center">
                   <template #cell="{ record }">
                     <a-space :size="4">
                       <a-button size="mini" type="text" @click="addSubCate(record)">
                         <!-- <template #icon><icon-plus :size="13" :stroke-width="3" /></template> -->
                         <template #default>添加子分类</template>
                       </a-button>
-                      <a-button type="text" size="mini" @click="goEdit(record)" status="warning" v-if="isEdit">
-                        <template #icon><icon-edit :size="13" :stroke-width="3" /></template>
-                        <template #default>编辑</template>
-                      </a-button>
-                      <a-button type="text" size="mini" @click="editFn(record)" status="warning" v-else>
+                      <a-button type="text" size="mini" @click="editFn(record)" status="warning">
                         <template #icon><icon-edit :size="13" :stroke-width="3" /></template>
                         <template #default>编辑</template>
                       </a-button>

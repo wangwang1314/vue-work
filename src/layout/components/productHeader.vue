@@ -3,9 +3,8 @@
     <section class="system-logo">
       <div class="goback-class" @click="goback"><icon-arrow-left /><span>返回</span></div>
     </section>
-    <a-space class="system-head">
-      <a-button @click="cancel">取消</a-button>
-      <a-button @click="save">保存</a-button>
+    <a-space class="system-head" v-if="route.name === 'productadd'">
+      <a-button @click="cancel" :disabled="fileStore.loading">取消</a-button>
       <a-checkbox-group v-model="checkdata" style="margin: 0 0 0 48px;">
         <a-checkbox value="1">AI优化发布
           <a-popover title="Title">
@@ -26,18 +25,22 @@
           </a-popover>
         </a-checkbox>
       </a-checkbox-group>
-      <a-button type="primary" @click="confirm">
+      <a-button type="primary" @click="confirm" :loading="fileStore.loading">
         发布
         <template #icon><icon-send /></template>
       </a-button>
+    </a-space>
+    <a-space :size="16" v-else-if="route.name === 'NewsDetail' || route.name ==='CaseDetail'">
+      <a-button type="primary" @click="save" :loading="fileStore.loading">保存</a-button>
+      <a-button @click="cancel" :disabled="fileStore.loading">取消</a-button>
     </a-space>
   </a-layout-header>
 </template>
 
 <script setup lang="ts" name="productHeader">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Modal } from '@arco-design/web-vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore, useAppStore, useFileStore } from '@/store'
 import { useFullScreen } from '@/hooks'
 import SettingDrawer from './SettingDrawer.vue'
@@ -47,6 +50,7 @@ import { useI18n } from 'vue-i18n'
 import $t from '@/i18n/use'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 const fileStore = useFileStore()
 const { isFullScreen, onToggleFullScreen } = useFullScreen()
@@ -76,8 +80,11 @@ const toUser = () => {
 }
 
 const save = () => {
-
+  fileStore.save()
 }
+onMounted(() => {
+  fileStore.setloading(false)
+})
 </script>
 
 <style lang="scss" scoped>

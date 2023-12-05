@@ -1,7 +1,10 @@
-.cate-edit {
+.cate-edit-out {
   overflow: auto;
+}
+.cate-edit {
+  margin-bottom: 20px;
   padding: 15px 20px 0 20px;
-  background-color: var(--color-bg-1);
+  // background-color: var(--color-bg-1);
 }
 .card-wrap {
   // margin: var(--margin);

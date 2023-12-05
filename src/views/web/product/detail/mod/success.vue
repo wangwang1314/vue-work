@@ -5,17 +5,17 @@
         <span class="su-tit"><icon-check-circle-fill class="icon" />恭喜！产品发布成功</span>
         <a-button type="text" class="font-14" @click="preview">预览</a-button>
       </div>
-      <div class="sub-tit">
+      <!-- <div class="sub-tit">
         产品信息还有如下改进空间：<a-button type="text" @click="goPro('edit')">返回修改</a-button>
-      </div>
-      <div class="item-wrap">
+      </div> -->
+      <!-- <div class="item-wrap">
         <div class="item" v-show="!info.reason.title">产品标题：包含卖点过少；产品标题过短；</div>
         <div class="item" v-show="!info.reason.picture">产品图片：建议您通过多张、多维度的产品图片向卖家介绍产品；</div>
         <div class="item" v-show="!info.reason.details">产品属性：建议您设置热门产品属性，方便卖家阅读；</div>
         <div class="item" v-show="!info.reason.remark">
           产品描述：建议您通过表格丰富产品描述形态；建议您在描述中增加图片；建议您增加产品描述文字；
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="su-bottom">
       <div class="edit-set">
@@ -94,7 +94,7 @@ const preview = () => {
 <style lang="scss" scoped>
 .pub-success {
   background: var(--color-bg-1);
-  margin: var(--margin);
+  margin: 0 0 var(--margin) 0;
   padding: var(--padding);
   border-radius: 2px;
   font-size: 12px;

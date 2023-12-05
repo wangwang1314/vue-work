@@ -19,7 +19,7 @@ export const useMenuStore = defineStore({
         //   level: 1
         // },
         {
-          icon: 'IconDesktop',
+          icon: 'icon-file',
           id: 'CP',
           name: '产品',
           path: '/web',
@@ -141,7 +141,7 @@ export const useMenuStore = defineStore({
           ]
         },
         {
-          icon: 'icon-file',
+          icon: 'icon-book',
           id: 'XWAL',
           name: '新闻案例',
           path: '/file',
@@ -188,7 +188,7 @@ export const useMenuStore = defineStore({
           ]
         },
         {
-          icon: 'IconApps',
+          icon: 'icon-bg-colors',
           id: 'WZZX',
           name: '网站装修',
           keepAlive: false,
@@ -215,36 +215,28 @@ export const useMenuStore = defineStore({
               level: 2
             }
           ]
+        // },
+        // {
+        //   icon: 'icon-save',
+        //   id: 'ZYGL',
+        //   name: '资源管理',
+        //   keepAlive: false,
+        //   hidden: false,
+        //   level: 1,
+        //   path: '/resource/list'
         },
+        // {
+        //   icon: 'icon-fire',
+        //   id: 'YXTG',
+        //   name: '营销推广',
+        //   keepAlive: false,
+        //   hidden: false,
+        //   level: 1
+        // },
         {
-          icon: 'icon-save',
-          id: 'ZYGL',
-          name: '资源管理',
-          keepAlive: false,
-          hidden: false,
-          level: 1,
-          path: '/resource/list'
-        },
-        {
-          icon: 'icon-email',
-          id: 'DJZX',
-          name: '商机中心',
-          keepAlive: false,
-          hidden: false,
-          level: 1
-        },
-        {
-          icon: 'icon-fire',
-          id: 'YXTG',
-          name: '营销推广',
-          keepAlive: false,
-          hidden: false,
-          level: 1
-        },
-        {
-          icon: 'icon-settings',
-          id: 'ZHGL',
-          name: '账号管理',
+          icon: 'IconDesktop',
+          id: 'WZSZ',
+          name: '网站设置',
           keepAlive: false,
           hidden: false,
           level: 1

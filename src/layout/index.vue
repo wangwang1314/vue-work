@@ -4,7 +4,7 @@
     <a-layout>
       <!-- <NavTab></NavTab> -->
       <Header v-if="!routeNameArr.includes(route.name)"></Header>
-      <productHeader v-if="route.name === 'productadd'"></productHeader>
+      <productHeader v-if="routeNameArr.includes(route.name)"></productHeader>
       <Main></Main>
     </a-layout>
     <!-- <a-layout-header>Header</a-layout-header>
@@ -25,12 +25,10 @@ import productHeader from './components/productHeader.vue'
 import Main from './components/Main.vue'
 import NavTab from './components/NavTab.vue'
 const route = useRoute()
-const routeNameArr = ['productadd']
-const routename = ref()
+const routeNameArr = ['productadd', 'NewsDetail', 'CaseDetail']
 watch(
   () => route.query,
   () => {
-    routename.value = route.name
   },
   {
     immediate: true

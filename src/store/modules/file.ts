@@ -8,6 +8,7 @@ interface FileState {
   selectedFileList: FileItem[]
   isBatchMode: boolean
   grouplist: any
+  loading: boolean
 }
 
 export const useFileStore = defineStore({
@@ -23,7 +24,8 @@ export const useFileStore = defineStore({
       grouplist: {
         '0': [],
         '1': []
-      }
+      },
+      loading: false
     }
   },
   getters: {
@@ -54,6 +56,10 @@ export const useFileStore = defineStore({
     },
     // 返回事件触发
     confirm() {},
-    cancel () {}
+    cancel () {},
+    save () {},
+    setloading (bool: boolean) {
+      this.loading = bool
+    }
   }
 })

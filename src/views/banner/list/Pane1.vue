@@ -63,7 +63,7 @@
       <a-row class="full-width">
         <a-col :span="22">
           <a-form ref="dialogFormRef" :model="dialogForm" class="init-form">
-            <a-form-item field="title" label="标题" :label-col-style="{'flex-basis': '76px'}">
+            <a-form-item field="title" label="标题" :label-col-style="{ 'flex-basis': '76px' }">
               <a-input
                 v-model="dialogForm.title"
                 placeholder=""
@@ -72,7 +72,7 @@
               />
               <template #extra>建议填写<span class="warning-color">10-20</span>个字符</template>
             </a-form-item>
-            <a-form-item field="remark" label="描述" :label-col-style="{'flex-basis': '76px'}">
+            <a-form-item field="remark" label="描述" :label-col-style="{ 'flex-basis': '76px' }">
               <a-textarea
                 type="textarea"
                 :auto-size="{
@@ -128,12 +128,15 @@ const successUpload = (res) => {
   }
 }
 const loading = ref(false)
-const saveFn = async() => {
+const saveFn = async () => {
   loading.value = true
   const params = fileList.value.map((item, index) => {
-    const {id, title, picturedesc} = item
+    const { id, title, picturedesc } = item
     return {
-      id, title, picturedesc, sort: index
+      id,
+      title,
+      picturedesc,
+      sort: index
     }
   })
   const res = await saveHomeBanner({
