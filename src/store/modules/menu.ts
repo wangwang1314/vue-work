@@ -9,15 +9,15 @@ export const useMenuStore = defineStore({
   state: (): MenuState => {
     return {
       menuTree: [
-        // {
-        //   icon: 'IconHome',
-        //   id: 'SY',
-        //   name: '首页',
-        //   path: '/dashboard/workplace',
-        //   keepAlive: false,
-        //   hidden: false,
-        //   level: 1
-        // },
+        {
+          icon: 'icon-apps',
+          id: 'GK',
+          name: '概况',
+          path: '/overview',
+          keepAlive: false,
+          hidden: false,
+          level: 1
+        },
         {
           icon: 'icon-file',
           id: 'CP',

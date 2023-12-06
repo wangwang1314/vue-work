@@ -114,6 +114,7 @@ const handleClickItem = (item: MenuItem) => {
     background: #fff;
     align-items: center;
     border-right: 1px solid var(--fill-3);
+    margin-bottom: 24px;
     img {
       height: 32px;
       width: 48px;

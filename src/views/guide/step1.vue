@@ -2,19 +2,33 @@
   <div class="guide">
     <div class="guide-box">
       <div class="guide-box-top">
-        <img src="@/assets/images/ecer-logo.png" alt="">
+        <img src="@/assets/images/ecer-logo.png" alt="" />
         <div>宜选网建站平台</div>
       </div>
       <div class="guide-inner-box">
         <div class="guide-inner-top">
-          <img src="@/assets/images/guide-text.png" alt="">
+          <img src="@/assets/images/guide-text.png" alt="" />
+          <div>开启您的网站出海之旅</div>
+        </div>
+        <div class="guide-inner-content">
+          <a-form :model="form" layout="vertical" ref="formref">
+            <a-form-item field="name1" label="您想建立的网站名称" :rules="rules">
+              <a-input v-model.trim="form.name1" placeholder="6~20个英文字符" />
+            </a-form-item>
+            <a-form-item field="name2" label="您的英文公司名称" :rules="rules2">
+              <a-input v-model.trim="form.name2" placeholder="40个以内英文字符" />
+            </a-form-item>
+            <div class="l-btn" v-loading="disabled" :class="{'disabled': disabled}" @click="submit" gi-loading-type="circle">
+              <span>下一步</span><icon-arrow-right />
+            </div>
+          </a-form>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts" name="Login">
+<script setup lang="ts" name="Guide1">
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
@@ -24,7 +38,42 @@ import type { LoginParams } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
 const navTabStore = useNavTabStore()
-
+const form = ref({
+  name1: '',
+  name2: ''
+})
+const rules = [
+  {
+    validator: (value, cb) => {
+      if (!/^[^\u4e00-\u9fa5]{6,20}$/.test(value) || value === undefined) {
+        cb('6~20个英文字符')
+      }
+    }
+  }
+]
+const rules2 = [
+  {
+    validator: (value, cb) => {
+      if (!/^[^\u4e00-\u9fa5]{1,40}$/.test(value) || value === undefined) {
+        cb('40个以内英文字符')
+      }
+    }
+  }
+]
+const disabled = ref(false)
+const formref = ref()
+const submit = () => {
+  formref.value.validate((res) => {
+    if (res) {
+      return
+    }
+    disabled.value = true
+    setTimeout(() => {
+      router.push({ path: '/guide2' })
+      disabled.value = false
+    }, 2000)
+  })
+}
 </script>
 
 <style lang="scss" scoped>

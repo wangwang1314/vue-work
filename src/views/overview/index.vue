@@ -1,0 +1,34 @@
+<template>
+  <div class="overview-out">
+    <div class="top-nav-tit">
+      <div class="m-left">网站初始上线步骤</div>
+      <div class="m-right">
+      </div>
+    </div>
+    <div class="overview">
+      <init-step></init-step>
+      <overcenter></overcenter>
+      <overbot></overbot>
+    </div>
+  </div>
+</template>
+<script setup lang="ts" name="Overview">
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore, useNavTabStore } from '@/store'
+import type { LoginParams } from '@/apis'
+import initStep from './mod/init-step.vue'
+import overcenter from './mod/overcenter.vue'
+import overbot from './mod/overbot.vue'
+const router = useRouter()
+const userStore = useUserStore()
+
+</script>
+<style lang="scss" scoped>
+.overview-out {
+  overflow: auto;
+}
+.overview {
+  padding: 0 20px 30px 20px;
+}
+</style>

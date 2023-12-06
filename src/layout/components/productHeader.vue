@@ -177,6 +177,8 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0px 4px 10px 0px rgba(78, 89, 105, 0.06);
+    z-index: 10;
   // border-bottom: 1px solid var(--color-neutral-3);
   .system-logo {
     font-size: 20px;
