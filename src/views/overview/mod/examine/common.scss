@@ -1,0 +1,23 @@
+.e-btn {
+  border-radius: 2px;
+/* #265AFF */
+  background: rgb(38, 90, 255);
+  user-select: none;
+  cursor: pointer;
+  width: 240px;
+  height: 36px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  justify-content: center;
+  span {
+    margin-left: 10px;
+  }
+}
+.e-btn:hover {
+  background: rgb(167, 86, 255);
+}
+.e-btn.disabled {
+  pointer-events: none;
+}
