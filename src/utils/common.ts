@@ -272,3 +272,42 @@ export function dateFt(fmt, date) {
       fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length))
   return fmt
 }
+
+
+// cookie跳转登录
+export const uc_login_sdk = {
+  getCookie: function (cname) {
+    var name = cname + '='
+    var ca = document.cookie.split(';')
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i].trim()
+      if (c.indexOf(name) == 0) return c.substring(name.length, c.length)
+    }
+    return ''
+  },
+  setCookie: function (name, value, hour = 24) {
+    var ck_domain = document.domain.replace('www.', '.')
+    var exp = new Date()
+    exp.setTime(exp.getTime() + hour * 60 * 60 * 1000)
+    document.cookie = name + '=' + escape(value) + ';expires=' + exp.toGMTString() + ';path=/' + '; domain=' + ck_domain
+  },
+  local_reload: function () {
+    window.location.href =
+      'https://uc.ecer.com/home/site/get-client-tag?callback=' + encodeURIComponent(document.location.href)
+  },
+  getUrlParam: function (name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+    var r = window.location.search.substr(1).match(reg)
+    if (r != null) return unescape(r[2])
+    return null
+  },
+  init: function () {
+    var _xxxide = this.getUrlParam('xxxide')
+    if (_xxxide != null && _xxxide.length == 32) {
+      this.setCookie('app_ueid', _xxxide)
+    }
+    if (this.getCookie('app_ueid') == '') {
+      this.local_reload()
+    }
+  }
+}

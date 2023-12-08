@@ -70,7 +70,7 @@
           <div class="chart-wrap">
             <div class="c-tit">最近15天获取商机情况</div>
             <div class="chart-box">
-              <GiChart height="234px" :option="chartOption"></GiChart>
+              <GiChart height="244px" :option="chartOption"></GiChart>
             </div>
           </div>
         </a-col>
@@ -78,7 +78,7 @@
           <div class="chart-wrap">
             <div class="c-tit">最近15天获取商机情况</div>
             <div class="chart-box">
-              <GiChart height="234px" :option="chartOption2"></GiChart>
+              <GiChart height="244px" :option="chartOption2"></GiChart>
             </div>
           </div>
         </a-col>
@@ -389,6 +389,7 @@ fetchData()
       font-size: 20px;
       font-weight: 400;
       line-height: 28px;
+      font-weight: bold;
     }
   }
   .c-right {
@@ -489,6 +490,7 @@ a {
       font-size: 16px;
       font-weight: 400;
       line-height: 24px;
+      font-weight: bold;
     }
     .chart-box {
       height: 234.57px;

@@ -21,3 +21,10 @@
 .e-btn.disabled {
   pointer-events: none;
 }
+.e-btn.grash {
+  background: rgb(201, 205, 212);
+  pointer-events: none;
+}
+.e-btn.grash:hover {
+  opacity: 0.9;
+}

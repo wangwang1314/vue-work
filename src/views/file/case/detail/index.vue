@@ -18,7 +18,7 @@
                 <a-input placeholder="请输入" v-model.trim="form.name" allow-clear />
               </a-form-item>
               <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
-              <a-form-item label="案例内容" :content-flex="false">
+              <a-form-item label="案例内容" :content-flex="false" class="no-bot">
                 <a-row class="full-width">
                   <a-col :span="22">
                     <uedit v-model="form.remark"></uedit>
@@ -27,7 +27,7 @@
               </a-form-item>
             </a-card>
             <a-card title="案例图片" :bordered="false">
-              <a-form-item field="cate" label="案例图片" :content-flex="false" :hide-label="true">
+              <a-form-item field="cate" label="案例图片" :content-flex="false" :hide-label="true" class="no-bot">
                 <!-- <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="showPicCenter(2)"
               >图片中心选择</a-button
             > -->
@@ -74,6 +74,7 @@
                   label="发布时间"
                   :content-flex="false"
                   :hide-label="true"
+                  class="no-bot"
                   :rules="[{ required: true, message: '请选择时间', type: 'string' }]"
                 >
                   <a-date-picker
@@ -111,7 +112,7 @@
                 <a-form-item :hide-label="true">
                   <a-input placeholder="请输入TAG词2"></a-input>
                 </a-form-item>
-                <a-form-item :hide-label="true">
+                <a-form-item :hide-label="true" class="no-bot">
                   <a-input placeholder="请输入TAG词3"></a-input>
                 </a-form-item>
               </a-card>

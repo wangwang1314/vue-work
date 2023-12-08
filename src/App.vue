@@ -13,6 +13,7 @@
 import { useUserStore } from '@/store'
 import { onMounted } from 'vue'
 import router from './router/index'
+import { uc_login_sdk } from '@/utils/common'
 const userStore = useUserStore()
 // 没有首页信息 & 不是登录页面的时候请求首页信息接口
 onMounted(() => {
@@ -22,6 +23,13 @@ onMounted(() => {
     }
   }, 500)
 })
+
+
+
+if (uc_login_sdk.getCookie('app_ueid') == '') {
+  uc_login_sdk.init()
+}
+
 </script>
 <style lang="scss" scoped>
 .loading-box {

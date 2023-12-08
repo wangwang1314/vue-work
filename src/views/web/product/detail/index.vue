@@ -224,7 +224,7 @@
                   </a-row>
                   <a-row class="full-width">
                     <a-col :span="24">
-                      <a-form-item label="自定义属性" :content-flex="false">
+                      <a-form-item label="自定义属性" :content-flex="false" class="no-bot">
                         <a-row class="full-width" :gutter="10">
                           <a-col :span="24">
                             <a-space :size="16">
@@ -385,7 +385,7 @@
                   </a-row>
                   <a-row class="full-width" :gutter="16">
                     <a-col :span="8">
-                      <a-form-item field="details[1]['Delivery Time'].value" label="发货期限">
+                      <a-form-item class="no-bot" field="details[1]['Delivery Time'].value" label="发货期限">
                         <a-input
                           placeholder="5-8 work days"
                           v-model="form.details[1]['Delivery Time'].value"
@@ -394,7 +394,7 @@
                       </a-form-item>
                     </a-col>
                     <a-col :span="16">
-                      <a-form-item field="details[1]['Packaging Details'].value" label="常规包装">
+                      <a-form-item class="no-bot" field="details[1]['Packaging Details'].value" label="常规包装">
                         <a-input
                           placeholder="建议填写包装形式、尺寸，各类集装箱能装载的产品件数等信息"
                           v-model="form.details[1]['Packaging Details'].value"
@@ -415,7 +415,7 @@
                   </div>
                   <a-row class="full-width">
                     <a-col :span="24">
-                      <a-form-item :hide-label="true" :content-flex="false">
+                      <a-form-item :hide-label="true" :content-flex="false" class="no-bot">
                         <div style="margin-top: 6px; position: relative; width: 100%">
                           <a-upload
                             :action="baseURL + '?r=document/upload'"
@@ -464,7 +464,7 @@
             <a-col :span="8">
               <div ref="step1div">
                 <a-card title="分类" :bordered="false" class="item" id="step1">
-                  <a-form-item field="cate" label="产品分类" :hide-label="true">
+                  <a-form-item field="cate" label="产品分类" :hide-label="true" class="no-bot">
                     <a-row class="full-width">
                       <a-col :span="24">
                         <a-cascader
@@ -508,7 +508,7 @@
                   <a-form-item :hide-label="true">
                     <a-input placeholder="请输入TAG词2"></a-input>
                   </a-form-item>
-                  <a-form-item :hide-label="true">
+                  <a-form-item :hide-label="true" class="no-bot">
                     <a-input placeholder="请输入TAG词3"></a-input>
                   </a-form-item>
                 </a-card>

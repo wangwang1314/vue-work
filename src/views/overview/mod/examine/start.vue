@@ -25,7 +25,16 @@
             ><span class="label-box"><i></i><span>Alibaba 展厅获取</span></span></a-radio
           >
           <div class="input-wrap" v-show="choseType == '1'">
-            <a-input class="nor-input" plcaceholder="填写展厅地址 例：xxxx.en.made-in-china.com"></a-input>
+            <a-input-search @search="searchFn" v-if="status[choseType] == '2'" class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com" search-button>
+              <template #button-default>
+                <span >开始获取</span>
+              </template>
+              <template #icon>
+                <span></span>
+              </template>
+            </a-input-search>
+            <a-input v-else class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com">
+            </a-input>
             <div class="status-box-wrap">
               <div class="status-box" v-if="status[choseType] == '1'">
                 <div class="loading">
@@ -48,7 +57,16 @@
             ><span class="label-box"><i></i><span>Made-in-China 展厅获取</span></span></a-radio
           >
           <div class="input-wrap" v-show="choseType == '2'">
-            <a-input class="nor-input" plcaceholder="填写展厅地址 例：xxxx.en.made-in-china.com"></a-input>
+            <a-input-search @search="searchFn" v-if="status[choseType] == '2'" class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com" search-button>
+              <template #button-default>
+                <span >开始获取</span>
+              </template>
+              <template #icon>
+                <span ></span>
+              </template>
+            </a-input-search>
+            <a-input v-else class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com">
+            </a-input>
             <div class="status-box-wrap">
               <div class="status-box" v-if="status[choseType] == '1'">
                 <div class="loading">
@@ -68,7 +86,106 @@
           </div>
           <a-radio value="3"><span class="label-box">自主创建</span></a-radio>
         </a-radio-group>
-        <div class="e-btn"><span>下一步</span><icon-arrow-right /></div>
+        <div class="e-btn fix-b" @click="goNext" v-show="choseType!='3' && isstartcheck"><span>下一步</span><icon-arrow-right /></div>
+        <div class="e-btn fix-b" v-show="choseType == '3'"><span>立即前往</span><icon-arrow-right /></div>
+        <div class="count-box" v-if="isstartcheck">
+          <a-space :size="40" v-if="!fetchloading">
+            <div class="cate-label">分类数量
+              <span>0</span>
+            </div>
+            <div class="cate-label">产品数量
+              <span>0</span>
+            </div>
+            <div class="cate-label">公司介绍未录入
+            </div>
+          </a-space>
+          <a-space :size="40" v-else>
+            <div class="cate-label">分类数量
+              <span><icon-loading /></span>
+            </div>
+            <div class="cate-label">产品数量
+              <span><icon-loading /></span>
+            </div>
+            <div class="cate-label">公司介绍
+              <span><icon-loading /></span>
+            </div>
+          </a-space>
+        </div> 
+      </div>
+      <div class="s-box" v-if="tabCurrent == 3">
+        <div class="s-tit">选择要让网站使用的域名：</div>
+        <div class="tabs-wrap">
+          <a-tabs hide-content size="large" type="capsule" v-model:active-key="activeKey">
+            <a-tab-pane :key="1">
+              <template #title>
+                <div class="tit">宜选建站赠送</div>
+              </template>
+            </a-tab-pane>
+            <a-tab-pane :key="2">
+              <template #title>
+                <div class="tit">您已经拥有的域名</div>
+              </template>
+            </a-tab-pane>
+          </a-tabs>
+        </div>
+        <div class="web-box" v-if="activeKey == 1">
+          <a-radio-group v-model="checkedValue" style="width: 664px;margin-top: 10px;">
+            <a-grid :cols="3" :colGap="24" :rowGap="12">
+              <a-grid-item>
+                <a-radio value="1">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+              <a-grid-item>
+                <a-radio value="2">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+              <a-grid-item>
+                <a-radio value="3">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+              <a-grid-item>
+                <a-radio value="4">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+              <a-grid-item>
+                <a-radio value="5">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+              <a-grid-item>
+                <a-radio value="6">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+              <a-grid-item>
+                <a-radio value="7">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+              <a-grid-item>
+                <a-radio value="8">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+              <a-grid-item>
+                <a-radio value="9">xxxxxxxxx.com</a-radio>
+              </a-grid-item>
+            </a-grid>
+          </a-radio-group>
+          <div class="e-btn fix-b" style="margin-top: 20px;"><icon-upload /><span style="margin: 0px 0px 0 8px;">申请上线</span></div>
+        </div>
+        <div class="self-web-box" v-else>
+          <div class="input-wrap">
+            <a-input class="nor-input" placeholder="输入您的域名 例：mydomain.com">
+            </a-input>
+            <div class="status-box-wrap">
+              <div class="status-box" v-if="domainCheck == '1'">
+                <div class="loading">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+                <span>校验中</span>
+              </div>
+              <div class="status-box success" v-else-if="domainCheck == '2'">
+                <icon-check-circle-fill /><span>校验通过</span>
+              </div>
+              <div class="status-box error" v-else-if="domainCheck == '3'">
+                <icon-exclamation-circle-fill /><span>校验异常</span>
+              </div>
+            </div>
+          </div>
+          <div class="self-tips">请确保您拥有域名管理权限，上线时将需要您进行域名解析记录的添加。</div> 
+          <div class="e-btn fix-b" style="margin-top: 20px;"><icon-upload /><span style="margin: 0px 0px 0 8px;">申请上线</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -88,10 +205,22 @@ const form = ref({
 })
 // 0 无状态 1 校验中 2 成功 3 失败
 const status = reactive({
-  '1': '3',
+  '1': '2',
   '2': '2',
   '3': '0'
 })
+const fetchloading = ref(true)
+const isstartcheck = ref(false)
+const searchFn = () => {
+  isstartcheck.value = true
+}
+const goNext = () => {
+  tabCurrent.value = 3
+}
+const activeKey = ref(1)
+       
+const checkedValue = ref('1')
+const domainCheck = ref('2')
 </script>
 <style lang="scss" scoped>
 @import './common.scss';
@@ -103,6 +232,67 @@ const status = reactive({
   .s-right {
     flex: 1;
     color: rgb(255, 255, 255);
+    position: relative;
+    height: 229px;
+    :deep(.arco-radio) {
+      .arco-icon-hover {
+        width: 16px;
+        height: 16px;
+      }
+      &.arco-radio-checked {
+        .arco-radio-icon {
+          width: 18px;
+          height: 18px;
+          &::after {
+            top: 0px;
+            left: 0px;
+          }
+        }
+      }
+    }
+    .fix-b {
+      position: absolute;
+      bottom: 0;
+    }
+    .self-web-box {
+      margin-top: 16px;
+      .self-tips {
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        margin-top: 16px;
+      }
+      :deep(.nor-input) { 
+        margin: 0;
+      }
+    }
+    .web-box {
+      margin-top: 10px;
+      :deep(.arco-radio-label) {
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+    .tabs-wrap {
+      height: 36px;
+      margin-top: 8px;
+      :deep(.arco-tabs) {
+        float: left;
+      }
+    }
+    .count-box {
+      position: absolute;
+      right: 0;
+      bottom: 3px;
+      .cate-label {
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+      }
+    }
     .e-btn {
       margin-top: 16px;
       span {
@@ -119,7 +309,15 @@ const status = reactive({
       border: 1px solid rgb(255, 255, 255);
       border-radius: 2px;
       background: rgba(255, 255, 255, 0.4);
-
+      ::-webkit-input-placeholder {
+        color: rgba(255, 255, 255, 0.64);
+        font-size: 14px;
+      }
+      .arco-input-wrapper {
+        // border: 1px solid rgb(255, 255, 255);
+        // border-radius: 2px;
+        background: rgba(255, 255, 255, 0.4);
+      }
       &.arco-input-focus {
         border: 1px solid rgb(38, 90, 255);
       }
@@ -143,7 +341,7 @@ const status = reactive({
     }
     :deep(.arco-radio-group) {
       .arco-radio {
-        margin-top: 10px;
+        // margin-top: 10px;
       }
     }
   }

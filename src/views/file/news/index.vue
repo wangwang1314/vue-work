@@ -13,27 +13,27 @@
       <div class="table-page">
         <a-form label-align="right" ref="formRef" auto-label-width :model="searchForm" class="form" direction="inline">
           <a-row :gutter="16" wrap>
-            <a-col :span="8">
-              <a-space style="padding-top: 4px">
-                <!-- <a-button type="primary" @click="addContent" size="small" status="success">
+            <a-col :span="12">
+              <a-form-item field="search_name" :hide-label="true">
+                <a-space style="padding-top: 4px" :size="8">
+                  <a-input-search
+                    @search="searchFn"
+                    placeholder="请输入新闻名称"
+                    v-model="searchForm.search_name"
+                    search-button
+                  >
+                  </a-input-search>
+                  <a-button size="small" status="danger" type="text" @click="showPopFn">
+                    <template #default>删除</template>
+                  </a-button>
+                </a-space>
+              </a-form-item>
+
+              <!-- <a-button type="primary" @click="addContent" size="small" status="success">
                   <template #default>新增</template>
                 </a-button> -->
-                <a-button size="small" status="danger" type="text" @click="showPopFn">
-                  <template #default>删除</template>
-                </a-button>
-              </a-space>
             </a-col>
-            <a-col :span="6" :offset="10">
-              <a-form-item field="search_name">
-                <a-input-search
-                  @search="searchFn"
-                  placeholder="请输入新闻名称"
-                  v-model="searchForm.search_name"
-                  search-button
-                >
-                </a-input-search>
-              </a-form-item>
-            </a-col>
+            <a-col :span="6" :offset="10"> </a-col>
           </a-row>
         </a-form>
         <div class="table-box">
@@ -61,7 +61,13 @@
               @page-size-change="changePageSize"
             >
               <template #columns>
-                <a-table-column :cellClass="'cell-cous'" title="新闻名称" data-index="address" :width="280" align="left">
+                <a-table-column
+                  :cellClass="'cell-cous'"
+                  title="新闻名称"
+                  data-index="address"
+                  :width="280"
+                  align="left"
+                >
                   <template #cell="{ record }">
                     <a-link class="link-class" @click="goEdit(record)">{{ record.name }}</a-link>
                   </template>
@@ -79,7 +85,13 @@
                         <template #icon><icon-edit :size="13" :stroke-width="3" /></template>
                         <template #default>编辑</template>
                       </a-button>
-                      <icon-arrow-rise @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }" size="16" :strokeWidth="7" class="up-icon" />
+                      <icon-arrow-rise
+                        @click="sortFn(0, record)"
+                        :class="{ disabled: rowIndex == 0 }"
+                        size="16"
+                        :strokeWidth="7"
+                        class="up-icon"
+                      />
                       <icon-arrow-fall
                         @click="sortFn(1, record)"
                         :class="{ disabled: tableData.length - 1 == rowIndex }"
@@ -121,19 +133,12 @@
       </div>
       <GiFooter></GiFooter>
     </div>
-  </div> 
-  
+  </div>
 </template>
 <script setup lang="ts" name="catelist">
 import { reactive, ref, h } from 'vue'
 import { usePagination } from '@/hooks'
-import {
-  fileNewsList,
-  fileNewsDel,
-  fileNewsUp,
-  fileNewsDown
-
-} from '@/apis'
+import { fileNewsList, fileNewsDel, fileNewsUp, fileNewsDown } from '@/apis'
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getTreeDate } from '@/utils/common'
