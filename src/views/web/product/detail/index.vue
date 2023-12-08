@@ -31,7 +31,7 @@
                       </a-col>
                     </a-row>
                   </a-form-item>
-                  <a-form-item label="描述内容" :content-flex="false">
+                  <a-form-item label="描述内容" field="remark" :content-flex="false">
                     <a-row class="full-width" style="margin-top: 10px">
                       <a-col :span="24">
                         <uedit v-model="form.remark"></uedit>
@@ -464,7 +464,7 @@
             <a-col :span="8">
               <div ref="step1div">
                 <a-card title="分类" :bordered="false" class="item" id="step1">
-                  <a-form-item field="cate" label="产品分类" :hide-label="true" class="no-bot">
+                  <a-form-item field="category_id" label="产品分类" :hide-label="true" class="no-bot">
                     <a-row class="full-width">
                       <a-col :span="24">
                         <a-cascader
@@ -566,7 +566,61 @@ const step4div = ref<HTMLElement | null>()
 
 fileStore.$onAction(({ name }) => {
   if (name === 'cancel') {
-    
+    if (pid.value) {
+      initProduct()
+    } else {
+      formRef.value.resetFields()
+      defaultfilelist.value = []
+      videoChosed.value = []
+      fileList.value = []
+      form.details = {
+        '0': {
+          'Brand Name': {
+            id: '',
+            value: ''
+          },
+          'Model Number': {
+            id: '',
+            value: ''
+          },
+          Certification: {
+            id: '',
+            value: ''
+          },
+          'Place of Origin': {
+            id: '',
+            value: ''
+          }
+        },
+        '1': {
+          'Minimum Order Quantity': {
+            value: '',
+            id: ''
+          },
+          Price: {
+            value: '',
+            id: ''
+          },
+          'Payment Terms': {
+            value: [],
+            id: ''
+          },
+          'Supply Ability': {
+            value: '',
+            id: ''
+          },
+          'Delivery Time': {
+            value: '',
+            id: ''
+          },
+          'Packaging Details': {
+            value: '',
+            id: ''
+          }
+        },
+        '2': {}
+      }
+    }
   } else if (name === 'confirm') {
     saveFn('pro')
   }
@@ -771,6 +825,9 @@ const cropperChange = (data) => {
   })
 }
 const delPicAjax = async (id) => {
+  if (!route.query.id) {
+    return
+  }
   const res = await pictureDdel({
     id,
     sid: route.query.id,

@@ -58,9 +58,9 @@ http.interceptors.response.use(
     const { message, code } = data
     if (code == 401) {
       NProgress.done()
-      console.log(666)
-      router.push({ path: '/login' })
+      // router.push({ path: '/login' })
       Notification.error(message || '登录失效')
+      location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent('https://ecweb.maoyt.com/newmyt/overview')
       return Promise.reject(new Error('Error'))
     }
     if (code != 0) {

@@ -34,6 +34,15 @@ const routes = [
     }
   },
   {
+    path: '/agreement',
+    name: 'Agreement',
+    component: () => import('@/views/guide/agreement.vue'),
+    meta: {
+      title: '协议',
+      keepAlive: false
+    }
+  },
+  {
     path: '/guide1',
     name: 'Guide1',
     component: () => import('@/views/guide/step1.vue'),

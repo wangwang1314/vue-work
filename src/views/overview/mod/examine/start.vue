@@ -21,7 +21,7 @@
       <div class="s-box" v-if="tabCurrent == 2">
         <div class="s-tit">选择信息录入方式：</div>
         <a-radio-group direction="vertical" v-model="choseType">
-          <a-radio value="1"
+          <a-radio class="mar-radio" value="1"
             ><span class="label-box"><i></i><span>Alibaba 展厅获取</span></span></a-radio
           >
           <div class="input-wrap" v-show="choseType == '1'">
@@ -53,7 +53,7 @@
             </div>
           </div>
 
-          <a-radio value="2"
+          <a-radio class="mar-radio" value="2"
             ><span class="label-box"><i></i><span>Made-in-China 展厅获取</span></span></a-radio
           >
           <div class="input-wrap" v-show="choseType == '2'">
@@ -84,7 +84,7 @@
               </div>
             </div>
           </div>
-          <a-radio value="3"><span class="label-box">自主创建</span></a-radio>
+          <a-radio class="mar-radio" value="3"><span class="label-box">自主创建</span></a-radio>
         </a-radio-group>
         <div class="e-btn fix-b" @click="goNext" v-show="choseType!='3' && isstartcheck"><span>下一步</span><icon-arrow-right /></div>
         <div class="e-btn fix-b" v-show="choseType == '3'"><span>立即前往</span><icon-arrow-right /></div>
@@ -229,11 +229,15 @@ const domainCheck = ref('2')
   display: flex;
   --primary-6: 8, 90, 255 !important;
   --color-neutral-3: rgba(229, 230, 235, 0.4);
+  --primary-5: 167, 86, 255;
   .s-right {
     flex: 1;
     color: rgb(255, 255, 255);
     position: relative;
     height: 229px;
+    :deep(.mar-radio) {
+      margin-top: 10px;
+    }
     :deep(.arco-radio) {
       .arco-icon-hover {
         width: 16px;

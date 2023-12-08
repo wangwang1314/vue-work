@@ -109,7 +109,8 @@ const logout = () => {
     closable: true,
     onOk: () => {
       userStore.logout()
-      router.replace('/login')
+      location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent('https://ecweb.maoyt.com/newmyt/overview')
+      // router.replace('/login')
     }
   })
 }

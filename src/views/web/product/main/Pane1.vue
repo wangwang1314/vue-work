@@ -105,7 +105,13 @@
             class="coustom-table"
           >
             <template #columns>
-              <a-table-column title="产品ID" data-index="id" :width="100" align="left"></a-table-column>
+              <a-table-column title="产品ID" data-index="id" :width="100" align="left">
+                <template #cell="{ record }">
+                  <div class="pro-id">{{ record.id }}</div>
+                  <div class="tag-ai" v-if="record.ai_optimization"><i></i><span>AI优化</span></div>
+                  <div class="tag-ai" v-if="record.ai_extend"><i></i><span>AI扩展</span></div>
+                </template>
+              </a-table-column>
               <a-table-column title="产品图片" data-index="name" :width="100" align="center">
                 <template #cell="{ record }">
                   <div class="img-cell-box">
