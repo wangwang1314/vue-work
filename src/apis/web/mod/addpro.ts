@@ -73,7 +73,7 @@ export function proAddProduct(params) {
 
 /** @desc 页面发布编辑 */
 export function proEditProduct(params) {
-  return axios.post<ApiRes<productdata>>(`${baseURL}?r=product/edit`, qs.stringify(params))
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=product/publish`, qs.stringify(params))
 }
 
 /** @desc 获取视频详情 */

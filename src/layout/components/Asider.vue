@@ -8,8 +8,8 @@
       :style="{ width: '100%', height: '100%' }"
     >
       <div class="logo-box">
-        <img @click="toHome" src="@/assets/images/logo.png" />
-        <span>ECWEB</span>
+        <img @click="toHome" :src="userStore.userInfo.homeInfo?.company?.logo_url" />
+        <span>{{ userStore.userInfo.homeInfo?.company?.name }}</span>
       </div>
       <LoopMenuItem
         v-for="item in menuStore.menuTree"
@@ -26,12 +26,13 @@
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import LoopMenuItem from './MenuItem.vue'
-import { useMenuStore, useAppStore } from '@/store'
+import { useMenuStore, useAppStore, useUserStore } from '@/store'
 const route = useRoute()
 const router = useRouter()
 
 const menuStore = useMenuStore()
 const appStore = useAppStore()
+const userStore = useUserStore()
 const getMenuKeys = (params: MenuItem[]) => {
   const data: string[] = []
   function forTree(arr: MenuItem[]) {

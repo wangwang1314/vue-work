@@ -13,36 +13,23 @@
       <div class="table-page">
         <a-form label-align="right" ref="formRef" auto-label-width :model="searchForm" class="form" direction="inline">
           <a-row :gutter="16" wrap style="margin-top: 14px">
-            <a-col :span="8">
-              <a-space style="padding-top: 4px">
-                <!-- <a-button size="small" type="primary" @click="addCate">
-                  <template #default><icon-plus /></template>
-                </a-button> -->
-                <!-- <a-button type="primary" @click="addCate" size="small" status="success">
-                  <template #default>新增</template>
-                </a-button> -->
-                <!-- <a-button size="small" @click="exportFn">
-                  <template #default>导入</template>
-                </a-button>
-                <a-button size="small" @click="goAllPage">
-                  <template #default>查看全部优化方案</template>
-                </a-button> -->
-                <a-button size="small" status="danger" type="text" @click="showPopFn">
-                  <template #default>删除</template>
-                </a-button>
-              </a-space>
-            </a-col>
-            <a-col :span="6" :offset="10">
+            <a-col :span="12">
               <a-form-item field="search_name">
-                <a-input-search
-                  @search="searchFn"
-                  placeholder="请输入分类名称"
-                  v-model="searchForm.search_name"
-                  search-button
-                >
-                </a-input-search>
+                <a-space style="padding-top: 4px" :size="8">
+                  <a-input-search
+                    @search="searchFn"
+                    placeholder="请输入分类名称"
+                    v-model="searchForm.search_name"
+                    search-button
+                  >
+                  </a-input-search>
+                  <a-button size="small" status="danger" type="text" @click="showPopFn">
+                    <template #default>删除</template>
+                  </a-button>
+                </a-space>
               </a-form-item>
             </a-col>
+            <a-col :span="6" :offset="10"> </a-col>
           </a-row>
         </a-form>
         <div class="table-box">
@@ -63,7 +50,13 @@
               @page-size-change="changePageSize"
             >
               <template #columns>
-                <a-table-column :cellClass="'cell-cous'" title="分类名称" data-index="address" :width="300" align="left">
+                <a-table-column
+                  :cellClass="'cell-cous'"
+                  title="分类名称"
+                  data-index="address"
+                  :width="300"
+                  align="left"
+                >
                   <template #cell="{ record }">
                     <div :class="'cell-cous-lever-' + record.level">{{ record.name }}</div>
                   </template>
@@ -338,16 +331,7 @@ const singeBatchDel = async () => {
     getTableData()
   }
 }
-// 优化方案
-const goCase = (row: CateItem) => {
-  window.open(`https://www.maoyt.com/index.php?r=cate/optimizecate&cateid=${row.id}&keyword=Cartridges`, '_blank')
-}
-const editData = (row: CateItem) => {
-  window.open(`https://www.maoyt.com/index.php?r=product/qualitydata&cateid=${row.id}&type=edit`, '_blank')
-}
-const goAllPage = () => {
-  window.open(`https://www.maoyt.com/index.php?r=cate/allOptimize&soid=${soid.value}`, '_blank')
-}
+
 // 新增分类
 const addPopup = ref(false)
 const cateObj = reactive({ id: '', name: '', pid: '', pname: '' })
@@ -370,7 +354,7 @@ const addCateFn = async () => {
   btnloading.value = true
   // 编辑或者新增
   if (cateObj.id) {
-    const res = await editCateName({
+    const res = await addCategory({
       name: cateObj.name,
       category_id: cateObj.id
     }).finally(() => {

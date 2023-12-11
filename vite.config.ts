@@ -72,7 +72,7 @@ export default defineConfig(({ command, mode }) => {
           changeOrigin: true, // 是否允许不同源
           secure: false, // 支持https
           rewrite: (path) => {
-            return path.replace(/^\/api/, '/api')
+            return path.replace(/^\/api/, '')
           }
           // configure: (proxy, options) => {
           //   // proxy 是 'http-proxy' 的实例

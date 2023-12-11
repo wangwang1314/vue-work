@@ -134,14 +134,6 @@ const getDetail = async (id) => {
     }
   }
 }
-const goPlay = () => {
-  localStorage.setItem('videoSrc', videoDetail.value.video?.ecer_play_url)
-  window.open(
-    '//www.maoyt.com/video/ecerplay.html',
-    'newwindow',
-    'height=500, width=900, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no'
-  )
-}
 const download = () => {}
 const emit = defineEmits(['change', 'delete'])
 const form = ref({

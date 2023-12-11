@@ -5,22 +5,22 @@
     </section>
     <a-space class="system-head" v-if="route.name === 'productadd'">
       <a-button @click="cancel" :disabled="fileStore.loading">取消</a-button>
-      <a-checkbox-group v-model="checkdata" style="margin: 0 0 0 48px;">
-        <a-checkbox value="1">AI优化发布
+      <a-checkbox-group v-model="fileStore.checkdata" style="margin: 0 0 0 48px;">
+        <a-checkbox :value="1">AI优化发布
           <a-popover title="Title">
             <icon-exclamation-circle size="16"/>
-            <template #title><span></span></template>  
+            <template #title><span></span></template>
             <template #content>
               <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al优化，优化完成后发布。<a>了解更多>></a></p>
             </template>
           </a-popover>
         </a-checkbox>
-        <a-checkbox value="2">AI产品扩展
+        <a-checkbox :value="2">AI产品扩展
           <a-popover title="Title">
             <icon-exclamation-circle size="16"/>
             <template #title><span></span></template>  
             <template #content>
-              <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al优化，优化完成后发布。<a>了解更多>></a></p>
+              <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al扩展，扩展完成后发布。<a>了解更多>></a></p>
             </template>
           </a-popover>
         </a-checkbox>
@@ -85,6 +85,7 @@ const save = () => {
 onMounted(() => {
   fileStore.setloading(false)
 })
+const checkbox = ref(1)
 </script>
 
 <style lang="scss" scoped>

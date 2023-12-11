@@ -87,8 +87,9 @@
                 </a-form-item>
               </a-card>
               <a-card title="SEO" :bordered="false" class="item">
-                <a-form-item label="SEO标题">
+                <a-form-item label="SEO标题" field="seo.title">
                   <a-textarea
+                    v-model="form.seo.title"
                     :auto-size="{ minRows: 4 }"
                     placeholder="建议在60 - 120个字符之间。"
                     :min-length="{ length: 60, errorOnly: true }"
@@ -96,24 +97,18 @@
                     allow-clear
                   />
                 </a-form-item>
-                <a-form-item label="SEO关键词">
+                <a-form-item label="SEO关键词" field="seo.keyword">
                   <a-textarea
+                    v-model="form.seo.keyword"
                     :auto-size="{ minRows: 5 }"
                     placeholder="建议设置3-5个单词，以英文逗号“,”分隔。"
                     allow-clear
                   />
                 </a-form-item>
-                <a-form-item label="SEO描述">
-                  <a-textarea :auto-size="{ minRows: 6 }" placeholder="建议在140 - 160个字符之间。" allow-clear />
-                </a-form-item>
-                <a-form-item label="Tag词">
-                  <a-input placeholder="请输入TAG词1"></a-input>
-                </a-form-item>
-                <a-form-item :hide-label="true">
-                  <a-input placeholder="请输入TAG词2"></a-input>
-                </a-form-item>
-                <a-form-item :hide-label="true" class="no-bot">
-                  <a-input placeholder="请输入TAG词3"></a-input>
+                <a-form-item label="SEO描述" class="no-bot" field="seo.description">
+                  <a-textarea
+                  v-model="form.seo.description" 
+                  :auto-size="{ minRows: 6 }" placeholder="建议在140 - 160个字符之间。" allow-clear />
                 </a-form-item>
               </a-card>
             </div>
@@ -206,7 +201,12 @@ const form = reactive({
   pubtime: '',
   remark: '',
   id: route.query.id || '',
-  name: ''
+  name: '',
+  seo: {
+    title: '',
+    keyword: '',
+    description: ''
+  }
 })
 if (!route.query.id) {
   form.pubtime = dateFt('yyyy-MM-dd hh:mm:ss', new Date())
@@ -247,6 +247,13 @@ const getDetail = async () => {
     form.name = caseobj.name
     form.pubtime = caseobj.pubtime
     form.remark = caseobj.remark
+    if (caseobj.seo) {
+      form.seo = {
+        title: caseobj.seo.title,
+        keyword: caseobj.seo.keyword,
+        description: caseobj.seo.description
+      }
+    }
     if (caseobj.picture_info && caseobj.picture_info.id) {
       caseobj.picture_info.url = caseobj.picture_info.picture_url_d
       fileList2.value = [caseobj.picture_info]
@@ -300,7 +307,7 @@ const saveFn = () => {
   formRef.value.validate(async (err) => {
     if (!err) {
       fileStore.setloading(true)
-      const { id, pubtime, remark, name, type } = form
+      const { id, pubtime, remark, name, type, seo } = form
       const picture_info = fileList2.value.map((item) => {
         return item.id
       })
@@ -313,12 +320,13 @@ const saveFn = () => {
           picture_info: {
             id: picture_info.length ? picture_info[0] : ''
           },
-          type
+          type,
+          seo
         }).finally(() => {
           fileStore.setloading(false)
         })
       } else {
-        res = await fileCaseEdit({
+        res = await fileCaseAdd({
           id,
           pubtime,
           name,
@@ -326,7 +334,8 @@ const saveFn = () => {
           picture_info: {
             id: picture_info.length ? picture_info[0] : ''
           },
-          type
+          type,
+          seo
         }).finally(() => {
           fileStore.setloading(false)
         })

@@ -302,12 +302,23 @@ export const uc_login_sdk = {
     return null
   },
   init: function () {
+    if (this.getCookie('app_ueid') == '') {
+      this.local_reload()
+    }
     var _xxxide = this.getUrlParam('xxxide')
     if (_xxxide != null && _xxxide.length == 32) {
       this.setCookie('app_ueid', _xxxide)
     }
-    if (this.getCookie('app_ueid') == '') {
-      this.local_reload()
-    }
+  }
+}
+
+
+export function loadscript (dir, callback) {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = dir;
+  document.body.appendChild(script);
+  script.onload = function () {
+    callback && callback()
   }
 }

@@ -113,10 +113,13 @@
                 </template>
               </a-table-column>
               <a-table-column title="产品图片" data-index="name" :width="100" align="center">
-                <template #cell="{ record }">
-                  <div class="img-cell-box">
+                <template #cell="{ record, rowIndex }">
+                  <div class="img-cell-box" v-if="record.has_photo">
                     <img :src="record.picture_path" alt="" />
                   </div>
+                  <div @click="addPic(record, rowIndex)" v-else>
+                    <uploadcus></uploadcus>
+                  </div> 
                 </template>
               </a-table-column>
               <a-table-column title="产品名称" :width="230">
@@ -350,6 +353,8 @@
       </a-modal>
       <!-- 海关编码弹框 -->
       <customs-code ref="customsCodeRef" @update="()=>{getTableData()}"></customs-code>
+      <!--选择图片-->
+      <pic-dialog ref="picDialogref" @change="picChange"></pic-dialog>
     </div>
     <GiFooter></GiFooter>
   </div>
@@ -366,7 +371,8 @@ import {
   productDel,
   setHotspot,
   editUser,
-  editCategory
+  editCategory,
+  prSavePicture
 } from '@/apis'
 import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
@@ -374,6 +380,8 @@ import { Notification, Message } from '@arco-design/web-vue'
 import GiSvgIcon from '@/components/GiSvgIcon.vue'
 import customsCode from './mod/customs-code.vue'
 import { getTreeDate } from '@/utils/common'
+import uploadcus from './mod/uploadcus.vue'
+import picDialog from '@/components/commonDialog/picDialog.vue'
 const emit = defineEmits(['update', 'changeTab'])
 const router = useRouter()
 const route = useRoute()
@@ -390,7 +398,7 @@ const form = reactive({
 let personArr = reactive<proPersonItem[]>([])
 const cateArr = ref([])
 const loading = ref(false)
-let tableData = reactive<productListItem[]>([])
+const tableData = ref<productListItem[]>([])
 const collapsed = ref(false)
 
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
@@ -410,7 +418,7 @@ const getTableData = async () => {
     video_id
   })
   if (code == 0) {
-    tableData = data.list
+    tableData.value = data.list
     personArr = data.p_users
     cateArr.value = data.categories
     emit('update', data)
@@ -573,7 +581,6 @@ const cateHandleOk = async() => {
   }
 }
 const treeData = ref([])
-// let currentRow = reactive({})
 const reportTag = ref(false)
 const reportTag1 = ref(false)
 const reportMsg = ref('')
@@ -669,6 +676,25 @@ const searchName = (name: string) => {
   resetFn()
   form.search_name = name
   getTableData()
+}
+
+
+const picDialogref = ref()
+const addPic = (row, index) => {
+  currentRow.value = row
+  picDialogref.value?.showDialog()
+}
+const currentRow = ref({})
+const picChange = async(arr) => {
+  const idMap = arr.map((item)=> item.id)
+  const res = await prSavePicture({
+    product_id: currentRow.value.id,
+    picture_id: idMap
+  })
+  if (res.code == 0) {
+    currentRow.value.has_photo = true
+    currentRow.value.picture_path = res.data?.picture_url
+  }
 }
 </script>
 

@@ -51,17 +51,37 @@
           </a-col>
           <a-col :span="18" :offset="1">
             <div class="pro-name" v-show="!isEdit">{{ videoDetail.video.title }}</div>
-            <a-form label-align="left" :model="form" :class="{'edit-form': isEdit}" ref="formRef" direction="vertical" auto-label-width layout="horizontal">
+            <a-form
+              label-align="left"
+              :model="form"
+              :class="{ 'edit-form': isEdit }"
+              ref="formRef"
+              direction="vertical"
+              auto-label-width
+              layout="horizontal"
+            >
               <a-row v-show="isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 56px' }" field="tpl" label="使用自动描述">
-                    <span @click="changeTpl(index)" v-for="(item, index) in videoDetail.tpl" :key="index" :class="{'arco-tag-checked': form.tpl === index}" class="nor-span-tag arco-tag arco-tag-size-medium arco-tag-arcoblue arco-tag-checkable">{{ '模板' + (index+1) }}</span>
+                    <span
+                      @click="changeTpl(index)"
+                      v-for="(item, index) in videoDetail.tpl"
+                      :key="index"
+                      :class="{ 'arco-tag-checked': form.tpl === index }"
+                      class="nor-span-tag arco-tag arco-tag-size-medium arco-tag-arcoblue arco-tag-checkable"
+                      >{{ '模板' + (index + 1) }}</span
+                    >
                   </a-form-item>
                 </a-col>
               </a-row>
               <a-row v-show="isEdit">
                 <a-col :span="24">
-                  <a-form-item :rules="[{required:true, message:'请输入'}]" :label-col-style="{ flex: '0 0 56px' }" field="title" label="视频标题">
+                  <a-form-item
+                    :rules="[{ required: true, message: '请输入' }]"
+                    :label-col-style="{ flex: '0 0 56px' }"
+                    field="title"
+                    label="视频标题"
+                  >
                     <a-input placeholder="请输入" v-model="form.title"></a-input>
                   </a-form-item>
                 </a-col>
@@ -76,9 +96,11 @@
               <a-row v-show="isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 56px' }" field="value1" label="视频分组">
-                    <a-select :style="{width:'320px'}" placeholder="请选择" v-model="form.group_id">
+                    <a-select :style="{ width: '320px' }" placeholder="请选择" v-model="form.group_id">
                       <a-option value="0">未分组</a-option>
-                      <a-option v-for="(item, index) in videoDetail.group" :key="item.id" :value="item.id">{{ item.name }}</a-option>
+                      <a-option v-for="(item, index) in videoDetail.group" :key="item.id" :value="item.id">{{
+                        item.name
+                      }}</a-option>
                     </a-select>
                   </a-form-item>
                 </a-col>
@@ -98,28 +120,30 @@
               <a-row v-show="!isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 56px' }" field="value1" label="视频标签">
-                    <a-tag style="margin-right: 4px;" v-for="(item, index) in videoDetail.video.tags" :key="index">{{ item }}</a-tag>
+                    <a-tag style="margin-right: 4px" v-for="(item, index) in videoDetail.video.tags" :key="index">{{
+                      item
+                    }}</a-tag>
                   </a-form-item>
                 </a-col>
               </a-row>
               <a-row v-show="isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 56px' }" field="tags" label="视频标签">
-                    <a-input-tag v-model="form.tags" placeholder="请输入" allow-clear/>
+                    <a-input-tag v-model="form.tags" placeholder="请输入" allow-clear />
                   </a-form-item>
                 </a-col>
               </a-row>
               <a-row v-show="!isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 56px' }" field="value1" label="视频描述">
-                    <div style="max-height: 120px;overflow:auto;">{{ videoDetail.video.desc }}</div>
+                    <div style="max-height: 120px; overflow: auto">{{ videoDetail.video.desc }}</div>
                   </a-form-item>
                 </a-col>
               </a-row>
               <a-row v-show="isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 56px' }" field="desc" label="视频描述">
-                    <a-textarea placeholder="请输入" v-model="form.desc" allow-clear/>
+                    <a-textarea placeholder="请输入" v-model="form.desc" allow-clear />
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -168,7 +192,7 @@
               <a-row v-show="isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 80px' }" field="words" label="关键词">
-                    <a-input-tag v-model="form.words" placeholder="请输入" allow-clear/>
+                    <a-input-tag v-model="form.words" placeholder="请输入" allow-clear />
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -182,7 +206,7 @@
               <a-row v-show="isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 80px' }" field="selling_point" label="卖点">
-                    <a-input-tag v-model="form.selling_point" placeholder="请输入" allow-clear/>
+                    <a-input-tag v-model="form.selling_point" placeholder="请输入" allow-clear />
                   </a-form-item>
                 </a-col>
               </a-row>
@@ -265,17 +289,24 @@ const getDetail = async (id) => {
     videoDetail.value = res.data
     const { title, desc, tags, vcid, words_value, selling_point_value } = res.data.video
     form.value = {
-      title, desc, tags, group_id: vcid, words: words_value, selling_point: selling_point_value
+      title,
+      desc,
+      tags,
+      group_id: vcid,
+      words: words_value,
+      selling_point: selling_point_value
     }
   }
 }
 const goPlay = () => {
   localStorage.setItem('videoSrc', videoDetail.value.video?.ecer_play_url)
-  window.open(
-    '//www.maoyt.com/video/ecerplay.html',
-    'newwindow',
-    'height=500, width=900, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no'
-  )
+  if (videoDetail.value.video.ecer_status == 0 || videoDetail.value.video.ecer_status == 1) {
+    window.open(
+      '/newmyt/ecerplay',
+      'newwindow',
+      'height=500, width=900, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no'
+    )
+  }
 }
 const download = () => {}
 const emit = defineEmits(['change', 'delete'])
@@ -296,13 +327,13 @@ const showProduct = () => {
 const changeTpl = (index) => {
   if (form.value.tpl === index) {
     form.value.tpl = ''
-    const {desc, tags, title} = videoDetail.value.video
+    const { desc, tags, title } = videoDetail.value.video
     form.value.title = title
     form.value.desc = desc
     form.value.tags = tags
   } else {
     form.value.tpl = index
-    const {desc, tags, title} = videoDetail.value.tpl[index]
+    const { desc, tags, title } = videoDetail.value.tpl[index]
     form.value.title = title
     form.value.desc = desc
     form.value.tags = tags
@@ -312,7 +343,7 @@ const formRef = ref()
 const handleBeforeOk = () => {
   if (isEdit.value) {
     console.log(66)
-    formRef.value.validate(async(val) => {
+    formRef.value.validate(async (val) => {
       console.log(val, '3333')
       if (val) {
         return

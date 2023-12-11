@@ -5,6 +5,7 @@ import { getToken } from '@/utils/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import router from '../router/index'
+const link = import.meta.env.VITE_API_LOCA
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 interface ICodeMessage {
@@ -60,7 +61,7 @@ http.interceptors.response.use(
       NProgress.done()
       // router.push({ path: '/login' })
       Notification.error(message || '登录失效')
-      location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent('https://ecweb.maoyt.com/newmyt/overview')
+      location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent(link)
       return Promise.reject(new Error('Error'))
     }
     if (code != 0) {

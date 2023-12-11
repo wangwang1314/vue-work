@@ -5,7 +5,7 @@
       <div class="m-right"></div>
     </div>
     <div class="detail" id="detailbox" ref="containerRef">
-      <div v-show="!publish" class="detail-wrap">
+      <div class="detail-wrap">
         <a-form
           ref="formRef"
           size="medium"
@@ -162,14 +162,26 @@
                               </div>
                               <video-detail ref="videoDetailRef"></video-detail>
                             </div>
-                            <a-upload :show-file-list="false" v-else>
+
+                            <a-upload 
+                            :show-file-list="false" 
+                            @progress="sigleChange"
+                            @success="sigleSuccess"
+                            @error="sigleError"
+                            :action="baseURL + '?r=video/upload'"
+                             v-else>
                               <template #upload-button>
-                                <div class="arco-upload-picture-card video-upload">
+                                <div class="arco-upload-picture-card video-upload" v-if="!isuploading">
                                   <div class="arco-upload-picture-card-text">
                                     <IconPlus />
                                     <div style="margin-top: 10px; color: var(--color-text-4); font-size: 14px">
                                       上传
                                     </div>
+                                  </div>
+                                </div>
+                                <div @click.stop class="arco-upload-picture-card video-upload" v-else>
+                                  <div class="arco-upload-picture-card-text">
+                                    <a-progress size="mini" :percent="percent" />
                                   </div>
                                 </div>
                               </template>
@@ -447,15 +459,6 @@
                           <file-dialog ref="filedialogRef" @change="fileChange"></file-dialog>
                         </div>
                       </a-form-item>
-                      <!-- <a-form-item label="产品标识">
-                      <a-select
-                        :options="selectList"
-                        v-model="form.product_flag"
-                        placeholder="请选择"
-                        multiple
-                        allow-clear
-                      ></a-select>
-                    </a-form-item> -->
                     </a-col>
                   </a-row>
                 </a-card>
@@ -483,8 +486,9 @@
                   </a-form-item>
                 </a-card>
                 <a-card title="SEO" :bordered="false" class="item">
-                  <a-form-item label="SEO标题">
+                  <a-form-item label="SEO标题" field="seo.title">
                     <a-textarea
+                      v-model="form.seo.title"
                       :auto-size="{ minRows: 4 }"
                       placeholder="建议在60 - 120个字符之间。"
                       :min-length="{ length: 60, errorOnly: true }"
@@ -492,24 +496,27 @@
                       allow-clear
                     />
                   </a-form-item>
-                  <a-form-item label="SEO关键词">
+                  <a-form-item label="SEO关键词" field="seo.keyword">
                     <a-textarea
+                      v-model="form.seo.keyword"
                       :auto-size="{ minRows: 5 }"
                       placeholder="建议设置3-5个单词，以英文逗号“,”分隔。"
                       allow-clear
                     />
                   </a-form-item>
-                  <a-form-item label="SEO描述">
-                    <a-textarea :auto-size="{ minRows: 6 }" placeholder="建议在140 - 160个字符之间。" allow-clear />
+                  <a-form-item label="SEO描述" field="seo.description">
+                    <a-textarea 
+                    v-model="form.seo.description"
+                    :auto-size="{ minRows: 6 }" placeholder="建议在140 - 160个字符之间。" allow-clear />
                   </a-form-item>
-                  <a-form-item label="Tag词">
-                    <a-input placeholder="请输入TAG词1"></a-input>
+                  <a-form-item label="Tag词" field="tags.0">
+                    <a-input placeholder="请输入TAG词1" v-model="form.tags[0]"></a-input>
                   </a-form-item>
-                  <a-form-item :hide-label="true">
-                    <a-input placeholder="请输入TAG词2"></a-input>
+                  <a-form-item :hide-label="true" field="tags.1">
+                    <a-input placeholder="请输入TAG词2" v-model="form.tags[1]"></a-input>
                   </a-form-item>
-                  <a-form-item :hide-label="true" class="no-bot">
-                    <a-input placeholder="请输入TAG词3"></a-input>
+                  <a-form-item :hide-label="true" field="tags.2" class="no-bot">
+                    <a-input placeholder="请输入TAG词3" v-model="form.tags[2]"></a-input>
                   </a-form-item>
                 </a-card>
               </div>
@@ -517,7 +524,6 @@
           </a-row>
         </a-form>
       </div>
-      <success-tpl v-if="publish" :info="proInfo"></success-tpl>
     </div>
   </div>
 </template>
@@ -545,10 +551,10 @@ import {
   progetTplContent,
   progethotKeyword,
   progetAttr,
-  proAddProduct,
   proEditProduct,
   qualityControl,
-  pictureDdel
+  pictureDdel,
+  getVideoDetail
 } from '@/apis'
 import { useUserStore, useFileStore } from '@/store'
 import successTpl from './mod/success.vue'
@@ -620,6 +626,8 @@ fileStore.$onAction(({ name }) => {
         },
         '2': {}
       }
+      form.tags = ['', '', '']
+      fileStore.setCheckdata([])
     }
   } else if (name === 'confirm') {
     saveFn('pro')
@@ -682,7 +690,6 @@ const form = reactive({
   id: '',
   name: '',
   category_id: '',
-  product_flag: [],
   details: {
     '0': {
       'Brand Name': {
@@ -731,8 +738,19 @@ const form = reactive({
     '2': {}
   },
   checked: true,
-  remark: ''
+  remark: '',
+  seo: {
+    title: '',
+    keyword: '',
+    description: ''
+  },
+  tags: [
+    '',
+    '',
+    ''
+  ]
 })
+fileStore.setCheckdata([])
 const rules = reactive({
   name: [{ required: true, message: '请输入产品名称' }]
 })
@@ -900,7 +918,7 @@ const handleOk2 = () => {
   selectedArr.value.forEach((item) => {
     const index = lodash.findIndex(couArr.value, { keys: item.keys })
     if (index == -1) {
-      couArr.value.push({ keys: item.keys, value: item.value.toString() })
+      couArr.value.push({ keys: item.keys, value: item.value?.toString() })
     }
   })
 }
@@ -957,16 +975,15 @@ const goScrollTop = (vali) => {
   }
 }
 const getSubObj = () => {
-  const { name, id, category_id, remark, details, product_flag } = form
-  const flag = product_flag.toString()
+  const { name, id, category_id, remark, details, seo, tags } = form
   details[2] = revesKey(couArr)
-  details[1]['Payment Terms'].value = details[1]['Payment Terms'].value.toString()
+  details[1]['Payment Terms'].value = details[1]['Payment Terms'].value?.toString()
   const picture_ids = fileList.value.map((item) => {
     return item.id
   })
-  let videoId
+  let video_id
   videoChosed.value.map((item) => {
-    videoId = item.id
+    video_id = item.id
   })
   const document_ids = defaultfilelist.value.map((item) => {
     return item.id
@@ -977,10 +994,13 @@ const getSubObj = () => {
     category_id,
     remark,
     details,
-    flag,
     picture_ids,
     document_ids,
-    videoId
+    video_id,
+    ai_optimization: fileStore.checkdata.indexOf(1)!=-1?1:0,
+    ai_extend: fileStore.checkdata.indexOf(2)!=-1?1:0,
+    seo,
+    tags
   }
   if (!obj.product_id) {
     delete obj.product_id
@@ -999,7 +1019,8 @@ const revesKey = (couArr) => {
 const saveFn = (priview) => {
   formRef.value.validate((vali) => {
     if (vali) {
-      return goScrollTop(vali)
+      // goScrollTop(vali)
+      return
     }
     if (!form.id || route.query.type == 'copy') {
       form.id = ''
@@ -1011,7 +1032,7 @@ const saveFn = (priview) => {
 }
 const addProSub = async (priview: string) => {
   priview == 'priview' ? (loading1.value = true) : (loading.value = true)
-  const res = await proAddProduct(getSubObj()).finally(() => {
+  const res = await proEditProduct(getSubObj()).finally(() => {
     priview == 'priview' ? (loading1.value = false) : (loading.value = false)
   })
   if (res.code == 0) {
@@ -1022,13 +1043,6 @@ const addProSub = async (priview: string) => {
       setTimeout(() => {
         router.push({ path: '/web/webproduct/list' })
       })
-      // router.push({ path: '/web/webproduct/list' })
-      // proInfo.id = res.data.id
-      // proInfo.cateid = res.data.cateid || form.category_id
-      // proInfo.url = res.data.preview_url
-      // proInfo.star = res.data.star
-      // proInfo.reason = res.data.reason
-      // publish.value = true
     }
   }
 }
@@ -1042,13 +1056,9 @@ const editProSub = async (priview: string) => {
     if (priview == 'priview') {
       window.open(res.data.preview_url, '_blank')
     } else {
-      // router.push({ path: '/web/webproduct/list' })
-      proInfo.id = res.data.id
-      proInfo.cateid = res.data.cateid || form.category_id
-      proInfo.url = res.data.preview_url
-      proInfo.star = res.data.star
-      proInfo.reason = res.data.reason
-      publish.value = true
+      setTimeout(() => {
+        router.push({ path: '/web/webproduct/list' })
+      })
     }
   }
 }
@@ -1137,13 +1147,20 @@ const initProduct = async () => {
 }
 initProduct()
 const reverdetail = (product) => {
-  const { cateid, id, details, name, remark, product_flag } = product
+  const { cateid, id, details, name, remark, ai_optimization, ai_extend, tags, seo } = product
   form.category_id = product.cateid
   form.id = id
+  fileStore.setCheckdata([ai_optimization?1:'', ai_extend?2:''])
   if (details) {
     Object.assign(form.details['0'], details['0'])
     Object.assign(form.details['1'], details['1'])
     Object.assign(form.details['2'], details['2'])
+  }
+  Object.assign(form.tags, tags)
+  form.seo = {
+    title: seo.title,
+    keyword: seo.keyword,
+    description: seo.description
   }
   if (form.details['2']) {
     let arr = []
@@ -1165,7 +1182,6 @@ const reverdetail = (product) => {
   }
   form.name = name
   form.remark = remark
-  form.product_flag = product_flag
   // 图片
   if (product.associate && product.associate.length) {
     product.associate.forEach((item) => {
@@ -1217,8 +1233,6 @@ const goCheck = async () => {
   }
 }
 
-// 发布成功页面
-const publish = ref(false)
 
 // 选择的数组
 const selectedArr = ref([])
@@ -1265,6 +1279,27 @@ const selectValClick = (key, value) => {
     }
   }
 }
+const isuploading = ref(false)
+const percent = ref(0)
+const sigleChange = (res) => {
+  isuploading.value = true
+  percent.value = res.percent
+}
+const sigleError = () => {
+  isuploading.value = false
+}
+const sigleSuccess = async(result) => {
+  if (result.response?.data.id) {
+    const res = await getVideoDetail({id: result.response?.data.id})
+    if (res.code === 0) {
+      videoChosed.value.push(res.data.video)
+    }
+    
+    isuploading.value = false
+  }
+  
+}
+
 </script>
 <style lang="scss" scoped>
 @import './mod/index.scss';

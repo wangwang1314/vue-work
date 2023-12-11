@@ -132,5 +132,9 @@ export function prBatchSet(params: PrFlagList) {
 export function prBatchDel(params: PrFlagList) {
   return axios.post<ApiRes<aiRecommendRes>>(`${baseURL}?r=product/batch-del`, qs.stringify(params))
 }
+/** @desc 设置产品图片 */
+export function prSavePicture(params: PrFlagList) {
+  return axios.post<ApiRes<aiRecommendRes>>(`${baseURL}?r=product/save-picture`, qs.stringify(params))
+}
 
 export * from './mod/addpro'

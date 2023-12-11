@@ -17,7 +17,7 @@ export function fileCaseEdit(params: any) {
 }
 /** @desc 新增案例 */
 export function fileCaseAdd(params: any) {
-  return axios.post<ApiRes<any>>(`${baseURL}?r=case/add`, qs.stringify(params))
+  return axios.post<ApiRes<any>>(`${baseURL}?r=case/save`, qs.stringify(params))
 }
 /** @desc 删除案例 */
 export function fileCaseDel(params: any) {
@@ -66,7 +66,7 @@ export function fileNewsInit(params: any) {
 }
 /** @desc 新增新闻 */
 export function fileNewsAdd(params: any) {
-  return axios.post<ApiRes<any>>(`${baseURL}?r=news/add`, qs.stringify(params))
+  return axios.post<ApiRes<any>>(`${baseURL}?r=news/save`, qs.stringify(params))
 }
 /** @desc 删除新闻 */
 export function fileNewsDel(params: any) {

@@ -25,7 +25,6 @@ onMounted(() => {
 })
 
 
-
 if (uc_login_sdk.getCookie('app_ueid') == '') {
   uc_login_sdk.init()
 }

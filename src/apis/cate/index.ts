@@ -8,7 +8,7 @@ export function getCategoryList(params) {
 }
 /** @desc 新建分类 */
 export function addCategory(params: AddCate) {
-  return axios.post<ApiRes<CateData>>(`${baseURL}?r=category/add`, qs.stringify(params))
+  return axios.post<ApiRes<CateData>>(`${baseURL}?r=category/save`, qs.stringify(params))
 }
 /** @desc 删除分类 */
 export function delCategory(params: DelCate) {
@@ -53,10 +53,7 @@ export function delCateIntro(params: SeoParams) {
   return axios.post<ApiRes<CateData>>(`${baseURL}?r=category/del-intro`, qs.stringify(params))
 }
 
-/** @desc 分类新增*/
-export function addCateContent(params: SeoParams) {
-  return axios.post<ApiRes<CateData>>(`${baseURL}?r=category/add`, qs.stringify(params))
-}
+
 
 /** @desc 分类编辑*/
 export function editCateContent(params: SeoParams) {

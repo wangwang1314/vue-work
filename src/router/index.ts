@@ -61,6 +61,15 @@ const routes = [
     }
   },
   {
+    path: '/ecerplay',
+    name: 'ecerplay',
+    component: () => import('@/views/ecerplay/index.vue'),
+    meta: {
+      title: '视频播放',
+      keepAlive: false
+    }
+  },
+  {
     path: '/layout',
     name: 'Layout',
     component: DEFAULT_LAYOUT,

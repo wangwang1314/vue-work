@@ -75,7 +75,7 @@ import Message from './Message.vue'
 import qrcode from '@/assets/images/an_qr_code.png'
 import { useI18n } from 'vue-i18n'
 import $t from '@/i18n/use'
-
+const link = import.meta.env.VITE_API_LOCA
 const router = useRouter()
 const userStore = useUserStore()
 const { isFullScreen, onToggleFullScreen } = useFullScreen()
@@ -109,7 +109,7 @@ const logout = () => {
     closable: true,
     onOk: () => {
       userStore.logout()
-      location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent('https://ecweb.maoyt.com/newmyt/overview')
+      location.href = 'https://uc.ecer.com/home/login'
       // router.replace('/login')
     }
   })

@@ -9,6 +9,7 @@ interface FileState {
   isBatchMode: boolean
   grouplist: any
   loading: boolean
+  checkdata: Array<any>
 }
 
 export const useFileStore = defineStore({
@@ -25,7 +26,8 @@ export const useFileStore = defineStore({
         '0': [],
         '1': []
       },
-      loading: false
+      loading: false,
+      checkdata: []
     }
   },
   getters: {
@@ -60,6 +62,9 @@ export const useFileStore = defineStore({
     save () {},
     setloading (bool: boolean) {
       this.loading = bool
+    },
+    setCheckdata (data) {
+      this.checkdata = data
     }
   }
 })
