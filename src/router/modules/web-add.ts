@@ -148,6 +148,15 @@ const Webadd = {
               }
             }
           ]
+        },
+        {
+          path: '/web/navlink',
+          name: 'navlink', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+          meta: {
+            title: '导航',
+            keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+          },
+          component: () => import('@/views/navlink/index.vue'),
         }
       ]
     }

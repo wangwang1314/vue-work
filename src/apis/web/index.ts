@@ -137,4 +137,12 @@ export function prSavePicture(params: PrFlagList) {
   return axios.post<ApiRes<aiRecommendRes>>(`${baseURL}?r=product/save-picture`, qs.stringify(params))
 }
 
+/** @desc 获取导航信息 */
+export function prWebsetNav(params: PrFlagList) {
+  return axios.get<ApiRes<aiRecommendRes>>(`${baseURL}?r=webset/nav`, params)
+}
+/** @desc 保存导航信息 */
+export function prWebsetSaveNav(params: PrFlagList) {
+  return axios.post<ApiRes<aiRecommendRes>>(`${baseURL}?r=webset/save-nav`, qs.stringify(params))
+}
 export * from './mod/addpro'

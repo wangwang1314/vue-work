@@ -197,6 +197,15 @@ export const useMenuStore = defineStore({
           path: '',
           children: [
             {
+              id: 'DH',
+              name: '导航',
+              path: '/web/navlink',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
               id: 'XWZX',
               name: '幻灯',
               path: '/banner/list',

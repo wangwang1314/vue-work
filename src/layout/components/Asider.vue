@@ -8,7 +8,8 @@
       :style="{ width: '100%', height: '100%' }"
     >
       <div class="logo-box">
-        <img @click="toHome" :src="userStore.userInfo.homeInfo?.company?.logo_url" />
+        <img v-if="userStore.userInfo.homeInfo?.company?.logo_url" :src="userStore.userInfo.homeInfo?.company?.logo_url" />
+        <div class="robote" v-else><icon-robot :size="18"/></div>
         <span>{{ userStore.userInfo.homeInfo?.company?.name }}</span>
       </div>
       <LoopMenuItem
@@ -116,6 +117,16 @@ const handleClickItem = (item: MenuItem) => {
     align-items: center;
     border-right: 1px solid var(--fill-3);
     margin-bottom: 24px;
+    .robote {
+      height: 32px;
+      width: 48px;
+      border-radius: 4px;
+      /* 填充/Fill-3 */
+      background: rgb(242, 243, 245);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     img {
       height: 32px;
       width: 48px;
