@@ -32,6 +32,12 @@ export const useUserStore = defineStore({
   getters: {
     userName(): string {
       return this.userInfo.name
+    },
+    goRoute(): string {
+      if (this.userInfo.homeInfo && !this.userInfo.homeInfo.ecweb) {
+        return '/agreement'
+      }
+      return ''
     }
   },
   actions: {
@@ -68,6 +74,8 @@ export const useUserStore = defineStore({
         this.setLoading(false)
         if (res.code == 0) {
           this.userInfo.homeInfo = res.data
+          this.hasinfo()
+          this.jump()
         }
       } catch (err) {
         this.setLoading(false)
@@ -81,6 +89,7 @@ export const useUserStore = defineStore({
     // 设置显示
     setShowMain(mode: boolean) {
       this.userInfo.showMain = mode
-    }
+    },
+    hasinfo() {}
   }
 })

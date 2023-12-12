@@ -7,10 +7,10 @@
       <div class="c-right">
         <a-space :size="32">
           <a href="" target="_blank">
-            <span class="text"><icon-link></icon-link><span>网站域名：yyttllmm.com</span></span>
+            <span class="text"><icon-link></icon-link><span>网站域名：{{ userStore.userInfo.homeInfo?.company?.domain }}</span></span>
           </a>
-          <span class="text"><icon-calendar /><span>上线时间：2023-11-23 18:00:00</span></span>
-          <span class="text"><icon-schedule /><span>最近更新时间：2023-11-23 18:00:00</span></span>
+          <span class="text"><icon-calendar /><span>上线时间：{{ userStore.userInfo.homeInfo?.company?.onlinetime }}</span></span>
+          <span class="text"><icon-schedule /><span>最近更新时间：{{ userStore.userInfo.homeInfo?.company?.uptime }}</span></span>
         </a-space>
       </div>
     </div>
@@ -18,7 +18,7 @@
       <div class="w-item">
         <div class="tit">本月新增产品</div>
         <div class="count">
-          <span>23</span>
+          <span>{{ userStore.userInfo.homeInfo?.panel?.cur_month_incr_product }}</span>
           <span class="unit">个</span>
         </div>
         <i class="w-icon icon-1"></i>
@@ -26,7 +26,7 @@
       <div class="w-item">
         <div class="tit">累计添加产品</div>
         <div class="count">
-          <span>763</span>
+          <span>{{ userStore.userInfo.homeInfo?.panel?.total_product }}</span>
           <span class="unit">个</span>
         </div>
         <i class="w-icon icon-2"></i>
@@ -34,7 +34,7 @@
       <div class="w-item">
         <div class="tit">本月访问用户</div>
         <div class="count">
-          <span>642</span>
+          <span>{{ userStore.userInfo.homeInfo?.panel?.cur_month_incr_traffic }}</span>
           <span class="unit">次</span>
         </div>
         <i class="w-icon icon-3"></i>
@@ -42,7 +42,7 @@
       <div class="w-item">
         <div class="tit">累计访问用户</div>
         <div class="count">
-          <span>23</span>
+          <span>{{ userStore.userInfo.homeInfo?.panel?.total_traffic }}</span>
           <span class="unit">次</span>
         </div>
         <i class="w-icon icon-4"></i>
@@ -50,7 +50,7 @@
       <div class="w-item">
         <div class="tit">本月获得商机</div>
         <div class="count">
-          <span>6</span>
+          <span>{{ userStore.userInfo.homeInfo?.panel?.cur_month_incr_inquiry }}</span>
           <span class="unit">条</span>
         </div>
         <i class="w-icon icon-5"></i>
@@ -58,7 +58,7 @@
       <div class="w-item">
         <div class="tit">累计获得商机</div>
         <div class="count">
-          <span>84</span>
+          <span>{{ userStore.userInfo.homeInfo?.panel?.total_inquiry }}</span>
           <span class="unit">条</span>
         </div>
         <i class="w-icon icon-6"></i>
@@ -76,7 +76,7 @@
         </a-col>
         <a-col :span="12">
           <div class="chart-wrap">
-            <div class="c-tit">最近15天获取商机情况</div>
+            <div class="c-tit">最近15天访客情况</div>
             <div class="chart-box">
               <GiChart height="244px" :option="chartOption2"></GiChart>
             </div>
@@ -88,7 +88,7 @@
   </div>
 </template>
 <script setup lang="ts" name="Overcenter">
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
 import type { LoginParams } from '@/apis'
@@ -112,6 +112,8 @@ function graphicFactory(side: AnyObject) {
 const { loading, setLoading } = useLoading(true)
 const xAxis = ref<string[]>([])
 const chartsData = ref<number[]>([])
+const xAxis2 = ref<string[]>([])
+const chartsData2 = ref<number[]>([])
 const graphicElements = ref([graphicFactory({ left: '2.6%' }), graphicFactory({ right: 0 })])
 const { chartOption } = useChart(() => {
   return {
@@ -240,7 +242,7 @@ const option2 = useChart(() => {
     xAxis: {
       type: 'category',
       offset: 2,
-      data: xAxis.value,
+      data: xAxis2.value,
       boundaryGap: false,
       axisLabel: {
         color: '#86909C',
@@ -310,7 +312,7 @@ const option2 = useChart(() => {
     },
     series: [
       {
-        data: chartsData.value,
+        data: chartsData2.value,
         type: 'line',
         smooth: true,
         // symbol: 'circle',
@@ -348,25 +350,10 @@ const chartOption2 = option2.chartOption
 const fetchData = () => {
   setLoading(true)
   try {
-    const data = [
-      { y: 20, x: '22-01' },
-      { y: 30, x: '22-02' },
-      { y: 40, x: '22-03' },
-      { y: 45, x: '22-04' },
-      { y: 50, x: '22-05' },
-      { y: 55, x: '22-06' },
-      { y: 70, x: '22-07' },
-      { y: 90, x: '22-08' }
-    ]
+    const data = userStore.userInfo.homeInfo?.panel.last_15_days_inquiry
     data.forEach((item: any, index: number) => {
-      xAxis.value.push(item.x)
-      chartsData.value.push(item.y)
-      if (index === 0) {
-        graphicElements.value[0].style.text = item.x
-      }
-      if (index === data.length - 1) {
-        graphicElements.value[1].style.text = item.x
-      }
+      xAxis.value.push(item.date)
+      chartsData.value.push(item.total)
     })
   } catch (err) {
     // you can report use errorHandler or other
@@ -374,7 +361,30 @@ const fetchData = () => {
     setLoading(false)
   }
 }
-fetchData()
+const fetchData2 = () => {
+  setLoading(true)
+  try {
+    const data = userStore.userInfo.homeInfo?.panel.last_15_days_traffic
+    data.forEach((item: any, index: number) => {
+      xAxis2.value.push(item.date)
+      chartsData2.value.push(item.total)
+    })
+  } catch (err) {
+    // you can report use errorHandler or other
+  } finally {
+    setLoading(false)
+  }
+}
+userStore.$onAction(({name})=>{
+  if (name === "hasinfo") {
+    fetchData()
+    fetchData2()
+  }
+})
+onMounted(() => {
+  fetchData()
+  fetchData2()
+})
 </script>
 <style lang="scss" scoped>
 .center-top {
