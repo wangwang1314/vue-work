@@ -215,16 +215,8 @@ export const useMenuStore = defineStore({
               level: 2
             }
           ]
-        // },
-        // {
-        //   icon: 'icon-save',
-        //   id: 'ZYGL',
-        //   name: '资源管理',
-        //   keepAlive: false,
-        //   hidden: false,
-        //   level: 1,
-        //   path: '/resource/list'
         },
+       
         // {
         //   icon: 'icon-fire',
         //   id: 'YXTG',
@@ -236,10 +228,19 @@ export const useMenuStore = defineStore({
         {
           icon: 'IconDesktop',
           id: 'WZSZ',
-          name: '网站设置',
+          name: '后台设置',
           keepAlive: false,
           hidden: false,
           level: 1
+        },
+        {
+          icon: 'icon-save',
+          id: 'SCGL',
+          name: '素材管理',
+          keepAlive: false,
+          hidden: false,
+          level: 1,
+          path: '/resource/list'
         },
         // {
         //   icon: 'menu-form',

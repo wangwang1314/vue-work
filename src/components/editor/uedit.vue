@@ -106,12 +106,12 @@ const addCustomButtom = () => {
 const picChange = (data) => {
   let str = ''
   data && data.forEach((item) => {
-    str += `<p><img style="max-width:640px" src="${item.picture_url_l}" /></p>`
+    str += `<p><img style="max-width:640px" src="${item.remark_url}" /></p>`
   })
   editorIns.value.execCommand('inserthtml', str)
 }
 const videoChange = (data) => {
-  const str = `<p><br/><video class="youtube-video-offline" poster="${data[0].img_path}" data-videoid="502" src="${data[0].youtube_url_http}" controls="controls" style="max-width:640px;"></video></p>`
+  const str = `<p><br/><video class="youtube-video-offline" poster="${data[0].img_path}" data-videoid="502" src="${data[0].youtube_url_local}" controls="controls" style="max-width:640px;"></video></p>`
   editorIns.value.execCommand('inserthtml', str)
 }
 </script>

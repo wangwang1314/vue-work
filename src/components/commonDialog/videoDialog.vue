@@ -10,7 +10,7 @@
           <div class="tit">视频中心</div>
           <div class="info">
             <span
-              >无可用视频？<a id="upload_a" target="_blank" href="https://www.maoyt.com/index.php?r=video/index"
+              >无可用视频？<a id="upload_a" @click="govideo"
                 >前往视频中心上传</a
               ></span
             >
@@ -76,6 +76,8 @@
 import { ref, reactive } from 'vue'
 import { provideList } from '@/apis'
 import { usePagination } from '@/hooks'
+const baselink = import.meta.env.VITE_API_BASE_URL + import.meta.env.VITE_ROURE_BASE_URL
+
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
 const form = reactive({
   group_name: '',
@@ -139,6 +141,9 @@ const choseItem = (item) => {
   item.checked = !item.checked
 }
 const emit = defineEmits(['change', 'delete'])
+const govideo = () => {
+  window.open(baselink + '/resource/list?fileType=1', '_blank')
+}
 defineExpose({
   showDialog,
   handleCancel,
