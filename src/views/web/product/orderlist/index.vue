@@ -9,12 +9,12 @@
       <a-tabs hide-content size="large" type="capsule" v-model:active-key="activeKey">
         <a-tab-pane :key="1">
           <template #title>
-            <div class="tit">首页置顶<span class="s-span">({{titArray.count1}})</span></div>
+            <div class="tit">首页置顶<span class="s-span" v-if="titArray.count1!=undefined">({{titArray.count1}})</span></div>
           </template>
         </a-tab-pane>
         <a-tab-pane :key="2">
           <template #title>
-            <div class="tit">Top Products<span class="s-span">({{titArray.count2}})</span></div>
+            <div class="tit">Top Products<span class="s-span" v-if="titArray.count2!=undefined">({{titArray.count2}})</span></div>
           </template>
         </a-tab-pane>
         <a-tab-pane :key="3">

@@ -224,6 +224,7 @@ import { ref, reactive } from 'vue'
 import { getVideoDetail, setVideoSwitch, pubYoutube, setVideoEdit } from '@/apis'
 import lodash from 'lodash'
 import { Message } from '@arco-design/web-vue'
+const baseRoute = import.meta.env.VITE_ROURE_BASE_URL
 const visible = ref(false)
 const handleCancel = () => {
   visible.value = false
@@ -258,7 +259,7 @@ const setTictok = async (val) => {
 }
 const isEdit = ref(false)
 const goList = () => {
-  window.open('/newmyt/web/webproduct/list?video_id=' + videoId.value, '_blank')
+  window.open(baseRoute + '/web/webproduct/list?video_id=' + videoId.value, '_blank')
 }
 const getName = (id) => {
   if (!id) {
@@ -302,7 +303,7 @@ const goPlay = () => {
   localStorage.setItem('videoSrc', videoDetail.value.video?.ecer_play_url)
   if (videoDetail.value.video.ecer_status == 0 || videoDetail.value.video.ecer_status == 1) {
     window.open(
-      '/newmyt/ecerplay',
+      baseRoute + '/ecerplay',
       'newwindow',
       'height=500, width=900, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no'
     )

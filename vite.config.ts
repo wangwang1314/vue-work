@@ -8,7 +8,6 @@ import { viteMockServe } from 'vite-plugin-mock'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import Components from 'unplugin-vue-components/vite'
 import path from 'path'
-
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
@@ -46,7 +45,7 @@ export default defineConfig(({ command, mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       }
     },
-    base: '/newmyt',
+    base: '/website',
     // 引入sass全局样式变量
     css: {
       preprocessorOptions: {

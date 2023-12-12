@@ -98,9 +98,7 @@ const setTictok = async (val) => {
   })
 }
 const isEdit = ref(false)
-const goList = () => {
-  window.open('/newmyt/web/webproduct/list?video_id=' + videoId.value, '_blank')
-}
+
 const getName = (id) => {
   if (!id) {
     return '未分组'
