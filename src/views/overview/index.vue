@@ -1,10 +1,5 @@
 <template>
   <div class="overview-out">
-    <div class="top-nav-tit">
-      <div class="m-left">网站初始上线步骤</div>
-      <div class="m-right">
-      </div>
-    </div>
     <div class="overview">
       <init-step></init-step>
       <overcenter></overcenter>

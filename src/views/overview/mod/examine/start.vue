@@ -21,11 +21,11 @@
       <div class="s-box" v-if="tabCurrent == 2">
         <div class="s-tit">选择信息录入方式：</div>
         <a-radio-group direction="vertical" v-model="choseType">
-          <a-radio class="mar-radio" value="1"
+          <a-radio class="mar-radio" :value="1"
             ><span class="label-box"><i></i><span>Alibaba 展厅获取</span></span></a-radio
           >
-          <div class="input-wrap" v-show="choseType == '1'">
-            <a-input-search @search="searchFn" v-if="status[choseType] == '2'" class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com" search-button>
+          <div class="input-wrap" v-show="choseType == 1">
+            <a-input-search v-model="form.ali" @search="searchFn" v-if="status[choseType] == '2'" class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com" search-button>
               <template #button-default>
                 <span >开始获取</span>
               </template>
@@ -33,7 +33,7 @@
                 <span></span>
               </template>
             </a-input-search>
-            <a-input v-else class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com">
+            <a-input v-model="form.ali" @blur="checkFn" v-else class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com">
             </a-input>
             <div class="status-box-wrap">
               <div class="status-box" v-if="status[choseType] == '1'">
@@ -53,11 +53,11 @@
             </div>
           </div>
 
-          <a-radio class="mar-radio" value="2"
+          <a-radio class="mar-radio" :value="2"
             ><span class="label-box"><i></i><span>Made-in-China 展厅获取</span></span></a-radio
           >
-          <div class="input-wrap" v-show="choseType == '2'">
-            <a-input-search @search="searchFn" v-if="status[choseType] == '2'" class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com" search-button>
+          <div class="input-wrap" v-show="choseType == 2">
+            <a-input-search v-model="form.made" @search="searchFn" v-if="status[choseType] == '2'" class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com" search-button>
               <template #button-default>
                 <span >开始获取</span>
               </template>
@@ -65,7 +65,7 @@
                 <span ></span>
               </template>
             </a-input-search>
-            <a-input v-else class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com">
+            <a-input v-model="form.made" @blur="checkFn" v-else class="nor-input" placeholder="填写展厅地址 例：xxxx.en.made-in-china.com">
             </a-input>
             <div class="status-box-wrap">
               <div class="status-box" v-if="status[choseType] == '1'">
@@ -84,10 +84,10 @@
               </div>
             </div>
           </div>
-          <a-radio class="mar-radio" value="3"><span class="label-box">自主创建</span></a-radio>
+          <a-radio class="mar-radio" :value="3"><span class="label-box">自主创建</span></a-radio>
         </a-radio-group>
-        <div class="e-btn fix-b" @click="goNext" v-show="choseType!='3' && isstartcheck"><span>下一步</span><icon-arrow-right /></div>
-        <div class="e-btn fix-b" v-show="choseType == '3'"><span>立即前往</span><icon-arrow-right /></div>
+        <div class="e-btn fix-b" @click="goNext" v-show="choseType!=3 && isstartcheck"><span>下一步</span><icon-arrow-right /></div>
+        <div class="e-btn fix-b" v-show="choseType == 3"><span>立即前往</span><icon-arrow-right /></div>
         <div class="count-box" v-if="isstartcheck">
           <a-space :size="40" v-if="!fetchloading">
             <div class="cate-label">分类数量
@@ -194,19 +194,19 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
-import type { LoginParams } from '@/apis'
+import { guideDataurlcheck } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
 const tabCurrent = ref(2)
-const choseType = ref('1')
+const choseType = ref(3)
 const form = ref({
   ali: '',
   made: ''
 })
 // 0 无状态 1 校验中 2 成功 3 失败
 const status = reactive({
-  '1': '2',
-  '2': '2',
+  '1': '0',
+  '2': '0',
   '3': '0'
 })
 const fetchloading = ref(true)
@@ -221,6 +221,28 @@ const activeKey = ref(1)
        
 const checkedValue = ref('1')
 const domainCheck = ref('2')
+const checkFn = async () => {
+  let url = ''
+  if (choseType.value == 1) {
+    url = form.value.ali
+  } else {
+    url = form.value.made
+  }
+  if (!url) {
+    return
+  }
+  status[choseType.value] = '1'
+  const res = await guideDataurlcheck({
+    url
+  })
+  if (res.code == 0) {
+    if (res.data == 200) {
+      status[choseType.value] = '2'
+    } else if (res.data == 400) {
+      status[choseType.value] = '3'
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import './common.scss';

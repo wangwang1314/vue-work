@@ -30,10 +30,10 @@
         <div class="guide-input-wrap">
           <a-form :model="form" layout="vertical" ref="formref">
             <a-form-item field="name1" label="请提供 Alibaba.com 展厅地址：" v-show="type == '1'">
-              <a-input v-model.trim="form.ali" :class="{'arco-input-error': status['1'] == '3' }"/>
+              <a-input v-model.trim="form.ali" @blur="checkFn" :class="{ 'arco-input-error': status['1'] == '3' }" />
             </a-form-item>
             <a-form-item field="name1" label="请提供 Made-in-China 展厅地址：" v-show="type == '2'">
-              <a-input v-model.trim="form.made" :class="{'arco-input-error': status['2'] == '3' }"/>
+              <a-input v-model.trim="form.made" @blur="checkFn" :class="{ 'arco-input-error': status['2'] == '3' }" />
             </a-form-item>
             <div class="status-box-wrap">
               <div class="status-box" v-if="status[type] == '1'">
@@ -44,22 +44,26 @@
                 </div>
                 <span>校验中</span>
               </div>
-              <div class="status-box success" v-else-if="status[type] == '2'"><icon-check-circle-fill /><span>校验通过，该地址可用</span></div>
-              <div class="status-box error" v-else-if="status[type] == '3'"><icon-exclamation-circle-fill /><span>校验失败，该地址不可用</span></div>
+              <div class="status-box success" v-else-if="status[type] == '2'">
+                <icon-check-circle-fill /><span>校验通过，该地址可用</span>
+              </div>
+              <div class="status-box error" v-else-if="status[type] == '3'">
+                <icon-exclamation-circle-fill /><span>校验失败，该地址不可用</span>
+              </div>
             </div>
           </a-form>
         </div>
         <div
           class="l-btn"
           v-loading="disabled"
-          :class="{ disabled: disabled || status[type] != '2', grash: status[type] != '2' }"
+          :class="{ disabled: disabled, grash: status[type] != '2' && type != '3' }"
           @click="submit"
           gi-loading-type="circle"
         >
           <span>下一步</span><icon-arrow-right />
         </div>
       </div>
-      <div class="go-link"><span>稍后选择</span></div>
+      <div class="go-link"><span @click="nextFn">稍后选择</span></div>
     </div>
   </div>
 </template>
@@ -70,7 +74,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
 import { useLoading } from '@/hooks'
 import { Message, Form } from '@arco-design/web-vue'
-import type { LoginParams } from '@/apis'
+import { guideDataurlcheck, guideDatafrom, guidejump } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
 const navTabStore = useNavTabStore()
@@ -80,15 +84,62 @@ const form = ref({
 })
 // 0 无状态 1 校验中 2 成功 3 失败
 const status = reactive({
-  '1': '1',
-  '2': '2',
+  '1': '0',
+  '2': '0',
   '3': '0'
 })
 const type = ref('1')
 const disabled = ref(false)
-const submit = () => {}
+const submit = async () => {
+  let dataurl = ''
+  if (type.value == '1') {
+    dataurl = form.value.ali
+  } else if (type.value == '2') {
+    dataurl = form.value.made
+  }
+  const res = await guideDatafrom({
+    datafrom: type.value,
+    dataurl
+  })
+  if (res.code == 0) {
+    Message.success(res.message || '操作成功')
+    goOver()
+  }
+}
 const changeType = (val) => {
   type.value = val
+}
+const checkFn = async () => {
+  let url = ''
+  if (type.value == '1') {
+    url = form.value.ali
+  } else {
+    url = form.value.made
+  }
+  if (!url) {
+    return
+  }
+  status[type.value] = '1'
+  const res = await guideDataurlcheck({
+    url
+  })
+  if (res.code == 0) {
+    if (res.data == 200) {
+      status[type.value] = '2'
+    } else if (res.data == 400) {
+      status[type.value] = '3'
+    }
+  }
+}
+const goOver = () => {
+  userStore.getHomeinfo()
+  router.push({ path: '/overview' })
+}
+const nextFn = async() => {
+  const res = await guidejump()
+  if (res.code == 0) {
+    goOver()
+  }
 }
 </script>
 

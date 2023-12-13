@@ -12,11 +12,11 @@
         </div>
         <div class="guide-inner-content">
           <a-form :model="form" layout="vertical" ref="formref">
-            <a-form-item field="name1" label="您想建立的网站名称" :rules="rules">
-              <a-input v-model.trim="form.name1" placeholder="6~20个英文字符" />
+            <a-form-item field="webname" label="您想建立的网站名称" :rules="rules">
+              <a-input v-model.trim="form.webname" placeholder="6~20个英文字符" />
             </a-form-item>
-            <a-form-item field="name2" label="您的英文公司名称" :rules="rules2">
-              <a-input v-model.trim="form.name2" placeholder="40个以内英文字符" />
+            <a-form-item field="companyname" label="您的英文公司名称" :rules="rules2">
+              <a-input v-model.trim="form.companyname" placeholder="40个以内英文字符" />
             </a-form-item>
             <div class="l-btn" v-loading="disabled" :class="{'disabled': disabled}" @click="submit" gi-loading-type="circle">
               <span>下一步</span><icon-arrow-right />
@@ -34,13 +34,13 @@ import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
 import { useLoading } from '@/hooks'
 import { Message, Form } from '@arco-design/web-vue'
-import type { LoginParams } from '@/apis'
+import { guideCreatweb } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
 const navTabStore = useNavTabStore()
 const form = ref({
-  name1: '',
-  name2: ''
+  webname: '',
+  companyname: ''
 })
 const rules = [
   {
@@ -63,15 +63,22 @@ const rules2 = [
 const disabled = ref(false)
 const formref = ref()
 const submit = () => {
-  formref.value.validate((res) => {
+  formref.value.validate(async(res) => {
     if (res) {
       return
     }
     disabled.value = true
-    setTimeout(() => {
-      router.push({ path: '/guide2' })
+    const result = await guideCreatweb({
+      ...form.value
+    }).finally(() => {
       disabled.value = false
-    }, 2000)
+    })
+    if (result.code == 0) {
+      Message.success(result.message || '操作成功')
+      setTimeout(() => {
+        router.push({ path: '/guide2' })
+      })
+    }
   })
 }
 </script>

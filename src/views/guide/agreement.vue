@@ -224,7 +224,7 @@
         </div>
       </div>
       <div class="agree-btn-wrap">
-        <div class="l-btn">同意</div>
+        <div class="l-btn" @click="agreeFn">同意</div>
       </div>
     </div>
   </div>
@@ -236,10 +236,16 @@ import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
 import { useLoading } from '@/hooks'
 import { Message, Form } from '@arco-design/web-vue'
-import type { LoginParams } from '@/apis'
+import { guideProve } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
 const navTabStore = useNavTabStore()
+const agreeFn = async() => {
+ const res = await guideProve()
+ if (res.code == 0) {
+  router.push({path: '/guide1'})
+ }
+}
 </script>
 
 <style lang="scss" scoped>

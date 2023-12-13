@@ -36,18 +36,22 @@ export const useUserStore = defineStore({
     goRoute(): string {
       if (this.userInfo.homeInfo && !this.userInfo.homeInfo.ecweb) {
         return '/agreement'
+      } else if (this.userInfo.homeInfo && this.userInfo.homeInfo.company && !this.userInfo.homeInfo.company.name) {
+        return '/guide1'
+      } else if (this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && !this.userInfo.homeInfo.ecweb.datafrom && !this.userInfo.homeInfo.ecweb.jsjump) {
+        return '/guide2'
       }
       return ''
-    }
+    },
+    getcheckstate(): number {
+      return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.checkstate
+    },
   },
   actions: {
     // 登录
     async login(loginForm: LoginParams) {
       try {
         const res = (await userLogin(loginForm)) as UserRes
-        // setToken(res.data.token)
-        // this.userInfo = res.data.userInfo
-        // localStorage.setItem('UserInfo', JSON.stringify(this.userInfo))
         if (res.code != 0) {
           throw new Error(res.message)
         }
@@ -68,17 +72,13 @@ export const useUserStore = defineStore({
     },
     // 获取首页信息
     async getHomeinfo() {
-      this.setLoading(true)
       try {
         const res = await getHome()
-        this.setLoading(false)
         if (res.code == 0) {
           this.userInfo.homeInfo = res.data
           this.hasinfo()
-          this.jump()
         }
       } catch (err) {
-        this.setLoading(false)
         return err
       }
     },

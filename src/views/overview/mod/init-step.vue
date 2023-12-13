@@ -1,19 +1,25 @@
 <template>
-  <div class="init-step">
-    <div v-if="examine=='0'">
-      <start></start>
+  <div class="init-step-wrap">
+    <div class="top-nav-tit">
+      <div class="m-left">网站初始上线步骤</div>
+      <div class="m-right"></div>
     </div>
-    <div v-else-if="examine=='1'">
-      <exa1></exa1>
-    </div>
-    <div v-else-if="examine=='2'">
-      <exa2></exa2>
-    </div>
-    <div v-else-if="examine=='3'">
-      <exa3></exa3>
-    </div>
-    <div v-else-if="examine=='4'">
-      <exa4></exa4>
+    <div class="init-step">
+      <div v-if="userStore.getcheckstate == '-1'">
+        <start></start>
+      </div>
+      <div v-else-if="userStore.getcheckstate == '0'">
+        <exa1></exa1>
+      </div>
+      <div v-else-if="userStore.getcheckstate == '2'">
+        <exa2></exa2>
+      </div>
+      <div v-else-if="userStore.getcheckstate == '1'">
+        <exa3></exa3>
+      </div>
+      <div v-else-if="userStore.getcheckstate == '3'">
+        <exa4></exa4>
+      </div>
     </div>
   </div>
 </template>
@@ -29,8 +35,8 @@ import exa3 from './examine/exa3.vue'
 import exa4 from './examine/exa4.vue'
 const router = useRouter()
 const userStore = useUserStore()
-// 审核状态 0 未开始审核 1审核中 2审核失败 3审核成功 4网站上线 
-const examine = ref('0')
+// 审核状态-1 未开始审核 0审核中 1审核成功 2审核失败  3网站上线
+
 </script>
 <style lang="scss" scoped>
 .init-step {
@@ -42,5 +48,7 @@ const examine = ref('0')
   background-position: center;
   background-size: auto 100%;
 }
-
+.top-nav-tit {
+  margin: 16px 0 0px 0;
+}
 </style>

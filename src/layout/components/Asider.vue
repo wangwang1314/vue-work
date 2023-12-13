@@ -126,6 +126,7 @@ const handleClickItem = (item: MenuItem) => {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-right: 8px;
     }
     img {
       height: 32px;
