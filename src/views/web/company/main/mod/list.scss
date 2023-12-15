@@ -1,13 +1,16 @@
+.com-detail-out {
+  // overflow: auto;
+}
 .com-detail {
-  overflow: auto;
-  padding: 15px 20px 0 20px;
-  background-color: var(--color-bg-1);
+  
+  padding: 20px 15px 24px 20px;
+ 
 }
 .full-width {
   width: 100%;
 }
 .com-form {
-  padding: 0 16px;
+  // padding: 0 16px;
   box-sizing: border-box
 }
 .video-chose-list {
@@ -60,4 +63,49 @@
   margin-left: 20px;
   cursor: pointer;
   margin-top: 8px;
+}
+
+.label-class {
+  margin-bottom: 10px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  span {
+    font-size: 16px;
+    color: var(--color-text-1);
+    font-weight: bold;
+  }
+}
+
+.video-upload {
+  width: 144px;
+  height: 80px;
+  .arco-image-footer-caption-description {
+    width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+
+:deep(.com-detail ) {
+  .media-class {
+    align-items: stretch;
+      display: flex;
+    &>.arco-col {
+      align-items: stretch;
+      display: flex;
+      .arco-card {
+        width: 100%;
+        .arco-card-body {
+          padding-bottom: 8px;
+        }
+        // align-items: stretch;
+        // display: flex;
+      }
+    }
+  }
+  
 }

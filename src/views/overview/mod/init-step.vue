@@ -5,7 +5,10 @@
       <div class="m-right"></div>
     </div>
     <div class="init-step">
-      <div v-if="userStore.getcheckstate == '-1'">
+      <div v-if="userStore.hasonline == 1">
+        <exa4></exa4>
+      </div>
+      <div v-else-if="userStore.getcheckstate == '-1'">
         <start></start>
       </div>
       <div v-else-if="userStore.getcheckstate == '0'">
@@ -16,9 +19,6 @@
       </div>
       <div v-else-if="userStore.getcheckstate == '1'">
         <exa3></exa3>
-      </div>
-      <div v-else-if="userStore.getcheckstate == '3'">
-        <exa4></exa4>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@ import exa3 from './examine/exa3.vue'
 import exa4 from './examine/exa4.vue'
 const router = useRouter()
 const userStore = useUserStore()
-// 审核状态-1 未开始审核 0审核中 1审核成功 2审核失败  3网站上线
+// 审核状态-1 未开始审核 0审核中 1审核成功 2审核失败
 
 </script>
 <style lang="scss" scoped>

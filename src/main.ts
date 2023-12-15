@@ -34,8 +34,8 @@ import VueUeditorWrap from 'vue-ueditor-wrap'
 import i18n from './i18n'
 const app = createApp(App)
 
-app.use(router)
 app.use(createPinia())
+app.use(router)
 app.use(ArcoVue)
 app.use(ArcoVueIcon)
 app.use(directives)

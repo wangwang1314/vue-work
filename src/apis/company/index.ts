@@ -5,7 +5,7 @@ const baseURL = import.meta.env.VITE_API_BASE_AJAX
 
 /** @desc 获取公司基本信息 */
 export function companyInfo() {
-  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=company/info`, {})
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=company/base-info`, {})
 }
 /** @desc 编辑保存基本信息 */
 export function companySave(params: ComInfo) {
@@ -13,11 +13,11 @@ export function companySave(params: ComInfo) {
 }
 /** @desc 获取公司信息内容 */
 export function companyTypeInfo(params: ComType) {
-  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=company/company-info`, params)
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=company/ext-info`, params)
 }
 /** @desc 编辑保存公司信息内容 */
 export function saveCompanyTypeInfo(params: ComSave) {
-  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-company-info`, qs.stringify(params))
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-ext-info`, qs.stringify(params))
 }
 /** @desc 获取公司优势 */
 export function getCompanyAdv() {
@@ -55,4 +55,34 @@ export function saveCompanyFactory(params: saveFactory) {
 /** @desc 删除图片关联 */
 export function pictureDdel(params) {
   return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=picture/del`, qs.stringify(params))
+}
+
+/** @desc 获取隐私协议 */
+export function companyprivacypolicy(params) {
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=company/privacy-policy`, params)
+}
+
+/** @desc 保存隐私协议 */
+export function companysaveprivacypolicy(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-privacy-policy`, qs.stringify(params))
+}
+
+/** @desc 获取访问设置 */
+export function companygetlanguage(params) {
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=webset/language`, params)
+}
+
+/** @desc 保存访问设置 */
+export function companysavelanguage(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=webset/set-language`, qs.stringify(params))
+}
+
+/** @desc 获取网站icon */
+export function companywebseticon(params) {
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=webset/icon`, params)
+}
+
+/** @desc 删除网站icon */
+export function companywebsetdelicon(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=webset/del-icon`, qs.stringify(params))
 }

@@ -417,7 +417,6 @@ const editImg = () => {
   }
 }
 fileStore.$onAction(({ name }) => {
-  console.log(name)
   if (name === 'cancel') {
     cancelFn()
   } else if (name === 'save') {

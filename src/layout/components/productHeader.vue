@@ -1,24 +1,28 @@
 <template>
   <a-layout-header>
     <section class="system-logo">
-      <div class="goback-class" @click="goback"><icon-arrow-left /><span>返回</span></div>
+      <div class="goback-class" @click="goback" v-if="nogobackarr.indexOf(route.name) == -1">
+        <icon-arrow-left /><span>返回</span>
+      </div>
     </section>
     <a-space class="system-head" v-if="route.name === 'productadd'">
       <a-button @click="cancel" :disabled="fileStore.loading">取消</a-button>
-      <a-checkbox-group v-model="fileStore.checkdata" style="margin: 0 0 0 48px;">
-        <a-checkbox :value="1">AI优化发布
+      <a-checkbox-group v-model="fileStore.checkdata" style="margin: 0 0 0 48px">
+        <a-checkbox :value="1"
+          >AI优化发布
           <a-popover title="Title">
-            <icon-exclamation-circle size="16"/>
+            <icon-exclamation-circle size="16" />
             <template #title><span></span></template>
             <template #content>
               <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al优化，优化完成后发布。<a>了解更多>></a></p>
             </template>
           </a-popover>
         </a-checkbox>
-        <a-checkbox :value="2">AI产品扩展
+        <a-checkbox :value="2"
+          >AI产品扩展
           <a-popover title="Title">
-            <icon-exclamation-circle size="16"/>
-            <template #title><span></span></template>  
+            <icon-exclamation-circle size="16" />
+            <template #title><span></span></template>
             <template #content>
               <p>勾选后，点击产品发布时会对产品标题及描述内容进行Al扩展，扩展完成后发布。<a>了解更多>></a></p>
             </template>
@@ -30,7 +34,7 @@
         <template #icon><icon-send /></template>
       </a-button>
     </a-space>
-    <a-space :size="16" v-else-if="route.name === 'NewsDetail' || route.name ==='CaseDetail'">
+    <a-space :size="16" v-else>
       <a-button type="primary" @click="save" :loading="fileStore.loading">保存</a-button>
       <a-button @click="cancel" :disabled="fileStore.loading">取消</a-button>
     </a-space>
@@ -60,6 +64,7 @@ const checkdata = ref([])
 const changeColl = () => {
   appStore.setMenuCollapse(!appStore.menuCollapse)
 }
+const savecancel = ref([])
 const goback = () => {
   router.go(-1)
 }
@@ -86,6 +91,13 @@ onMounted(() => {
   fileStore.setloading(false)
 })
 const checkbox = ref(1)
+const nogobackarr = ref([
+  'webcompanymessage',
+  'webcompanyintro',
+  'webcompanyfactory',
+  'webcompanypolicy',
+  'webcompanylanguage'
+])
 </script>
 
 <style lang="scss" scoped>
@@ -179,7 +191,7 @@ const checkbox = ref(1)
   justify-content: space-between;
   align-items: center;
   box-shadow: 0px 4px 10px 0px rgba(78, 89, 105, 0.06);
-    z-index: 10;
+  z-index: 10;
   // border-bottom: 1px solid var(--color-neutral-3);
   .system-logo {
     font-size: 20px;

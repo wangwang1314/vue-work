@@ -16,22 +16,28 @@ import router from './router/index'
 import { uc_login_sdk } from '@/utils/common'
 const userStore = useUserStore()
 // 没有首页信息 & 不是登录页面的时候请求首页信息接口
-onMounted(() => {
-  if (!userStore.userInfo.homeInfo && router.currentRoute.value.path != '/login') {
-    userStore.getHomeinfo()
-  }
-})
+// onMounted(() => {
+//   setTimeout(() => {
+//     if (
+//       !userStore.userInfo.homeInfo &&
+//       router.currentRoute.value.path != '/login' &&
+//       router.currentRoute.value.path != '/overview'
+//     ) {
+//       userStore.getHomeinfo()
+//     }
+//   })
+// })
 
 if (uc_login_sdk.getCookie('app_ueid') == '') {
   uc_login_sdk.init()
 }
-userStore.$onAction(({ name }) => {
-  if (name === 'hasinfo') {
-    if (userStore.goRoute) {
-      router.replace({ path: userStore.goRoute })
-    }
-  }
-})
+// userStore.$onAction(({ name }) => {
+//   if (name === 'hasinfo') {
+//     if (userStore.goRoute) {
+//       router.replace({ path: userStore.goRoute })
+//     }
+//   }
+// })
 </script>
 <style lang="scss" scoped>
 .loading-box {

@@ -74,7 +74,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
 import { useLoading } from '@/hooks'
 import { Message, Form } from '@arco-design/web-vue'
-import { guideDataurlcheck, guideDatafrom, guidejump } from '@/apis'
+import { guideDataurlcheck, guideDatafrom, guidejump, guidegetpredomains } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
 const navTabStore = useNavTabStore()
@@ -132,7 +132,6 @@ const checkFn = async () => {
   }
 }
 const goOver = () => {
-  userStore.getHomeinfo()
   router.push({ path: '/overview' })
 }
 const nextFn = async() => {

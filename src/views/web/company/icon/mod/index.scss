@@ -1,16 +1,29 @@
-.com-detail {
+.msg-detail-out{
   overflow: auto;
-  padding: 15px 20px 0 20px;
-  background-color: var(--color-bg-1);
 }
-.detail {
-  padding: 20px 15px 0 20px;
+.msg-detail {
+  
+  padding: 15px 20px 0 20px;
+
+  min-height: 100%;
+  box-sizing: border-box;
+  :deep(.arco-card-size-medium .arco-card-body) {
+    padding-right: 40px;
+    padding-top: 30px;
+  }
+}
+.del-i-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: var(--red-init);
+  cursor: pointer;
 }
 .full-width {
   width: 100%;
 }
 .com-form {
-  padding: 0 16px;
+  padding: 0 16px 24px 16px;
   box-sizing: border-box
 }
 .video-chose-list {
@@ -49,4 +62,12 @@
   justify-content: start;
   margin-top: 20px;
   padding-bottom: 20px;
+}
+.msg-box {
+  margin-bottom: 20px;
+}
+.img-box-l {
+  img {
+    max-width: 100%;
+  }
 }

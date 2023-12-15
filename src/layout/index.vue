@@ -25,11 +25,19 @@ import productHeader from './components/productHeader.vue'
 import Main from './components/Main.vue'
 import NavTab from './components/NavTab.vue'
 const route = useRoute()
-const routeNameArr = ['productadd', 'NewsDetail', 'CaseDetail']
+const routeNameArr = [
+  'productadd',
+  'NewsDetail',
+  'CaseDetail',
+  'webcompanyintro',
+  'webcompanymessage',
+  'webcompanyfactory',
+  'webcompanypolicy',
+  'webcompanylanguage'
+]
 watch(
   () => route.query,
-  () => {
-  },
+  () => {},
   {
     immediate: true
   }

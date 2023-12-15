@@ -18,7 +18,7 @@
       <div class="w-item">
         <div class="tit">本月新增产品</div>
         <div class="count">
-          <span>{{ userStore.userInfo.homeInfo?.panel?.cur_month_incr_product }}</span>
+          <span>{{ paneldata?.cur_month_incr_product }}</span>
           <span class="unit">个</span>
         </div>
         <i class="w-icon icon-1"></i>
@@ -26,7 +26,7 @@
       <div class="w-item">
         <div class="tit">累计添加产品</div>
         <div class="count">
-          <span>{{ userStore.userInfo.homeInfo?.panel?.total_product }}</span>
+          <span>{{ paneldata?.total_product }}</span>
           <span class="unit">个</span>
         </div>
         <i class="w-icon icon-2"></i>
@@ -34,7 +34,7 @@
       <div class="w-item">
         <div class="tit">本月访问用户</div>
         <div class="count">
-          <span>{{ userStore.userInfo.homeInfo?.panel?.cur_month_incr_traffic }}</span>
+          <span>{{ paneldata?.cur_month_incr_traffic }}</span>
           <span class="unit">次</span>
         </div>
         <i class="w-icon icon-3"></i>
@@ -42,7 +42,7 @@
       <div class="w-item">
         <div class="tit">累计访问用户</div>
         <div class="count">
-          <span>{{ userStore.userInfo.homeInfo?.panel?.total_traffic }}</span>
+          <span>{{ paneldata?.total_traffic }}</span>
           <span class="unit">次</span>
         </div>
         <i class="w-icon icon-4"></i>
@@ -50,7 +50,7 @@
       <div class="w-item">
         <div class="tit">本月获得商机</div>
         <div class="count">
-          <span>{{ userStore.userInfo.homeInfo?.panel?.cur_month_incr_inquiry }}</span>
+          <span>{{ paneldata?.cur_month_incr_inquiry }}</span>
           <span class="unit">条</span>
         </div>
         <i class="w-icon icon-5"></i>
@@ -58,7 +58,7 @@
       <div class="w-item">
         <div class="tit">累计获得商机</div>
         <div class="count">
-          <span>{{ userStore.userInfo.homeInfo?.panel?.total_inquiry }}</span>
+          <span>{{ paneldata?.total_inquiry }}</span>
           <span class="unit">条</span>
         </div>
         <i class="w-icon icon-6"></i>
@@ -91,7 +91,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
-import type { LoginParams } from '@/apis'
+import { guidepanel } from '@/apis'
 import { graphic } from 'echarts'
 import { useLoading, useChart } from '@/hooks'
 const router = useRouter()
@@ -350,7 +350,7 @@ const chartOption2 = option2.chartOption
 const fetchData = () => {
   setLoading(true)
   try {
-    const data = userStore.userInfo.homeInfo?.panel.last_15_days_inquiry
+    const data = paneldata.value.last_15_days_inquiry
     data.forEach((item: any, index: number) => {
       xAxis.value.push(item.date)
       chartsData.value.push(item.total)
@@ -364,7 +364,7 @@ const fetchData = () => {
 const fetchData2 = () => {
   setLoading(true)
   try {
-    const data = userStore.userInfo.homeInfo?.panel.last_15_days_traffic
+    const data = paneldata.value.last_15_days_traffic
     data.forEach((item: any, index: number) => {
       xAxis2.value.push(item.date)
       chartsData2.value.push(item.total)
@@ -375,16 +375,26 @@ const fetchData2 = () => {
     setLoading(false)
   }
 }
-userStore.$onAction(({name})=>{
-  if (name === "hasinfo") {
+
+const paneldata = ref({
+  last_15_days_inquiry: [],
+  last_15_days_traffic: [],
+  total_inquiry: '',
+  cur_month_incr_inquiry: '',
+  total_traffic: '',
+  cur_month_incr_traffic: '',
+  total_product: '',
+  cur_month_incr_product: ''
+})
+const getDataFn = async() => {
+  const res = await guidepanel()
+  if (res.code == 0) {
+    Object.assign(paneldata.value, res.data.panel)
     fetchData()
     fetchData2()
   }
-})
-onMounted(() => {
-  fetchData()
-  fetchData2()
-})
+}
+getDataFn()
 </script>
 <style lang="scss" scoped>
 .center-top {

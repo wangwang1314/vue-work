@@ -1157,10 +1157,12 @@ const reverdetail = (product) => {
     Object.assign(form.details['2'], details['2'])
   }
   Object.assign(form.tags, tags)
-  form.seo = {
-    title: seo.title,
-    keyword: seo.keyword,
-    description: seo.description
+  if (seo) {
+      form.seo = {
+      title: seo.title,
+      keyword: seo.keyword,
+      description: seo.description
+    }
   }
   if (form.details['2']) {
     let arr = []

@@ -2,7 +2,7 @@
   <div class="inner-wrap">
     <div class="tit"><i></i><span>恭喜您，上线审核通过！</span></div>
     <div class="sub-tit">请在您的***.com域名管理后台进行如下记录设置，以完成域名最终链接</div>
-    <table>
+    <table v-if="tabvalue.length">
       <thead>
         <tr>
           <td>记录类型</td>
@@ -14,42 +14,49 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>A</td>
-          <td>@</td>
-          <td>默认</td>
-          <td>52.116.230.100</td>
-          <td>--</td>
-          <td>10分钟</td>
+        <tr v-for="(item, index) in tabvalue" :key="index">
+          <td>{{ item.type || '--' }}</td>
+          <td>{{ item.route || '--' }}</td>
+          <td>{{ item.line || '--' }}</td>
+          <td>{{ item.ip || '--' }}</td>
+          <td>{{ item.mxer || '--' }}</td>
+          <td>{{ item.ttl || '--' }}</td>
         </tr>
-        <tr>
-          <td>A</td>
-          <td>www</td>
-          <td>默认</td>
-          <td>52.116.230.100</td>
-          <td>--</td>
-          <td>10分钟</td>
-        </tr>
-        <tr>
-          <td>A</td>
-          <td>www</td>
-          <td>默认</td>
-          <td>52.116.230.100</td>
-          <td>--</td>
-          <td>10分钟</td>
-        </tr>
+
       </tbody>
     </table>
-    <div class="e-btn"><icon-find-replace /><span>配置检测</span></div>
+    <div class="e-btn" @click="gocheck"><icon-find-replace /><span>配置检测</span></div>
   </div>
 </template>
 <script setup lang="ts" name="exa3">
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
-import type { LoginParams } from '@/apis'
+import { guidedomaininfos, guidedomainconfigcheck } from '@/apis'
+import { Message } from '@arco-design/web-vue'
 const router = useRouter()
 const userStore = useUserStore()
+const tabvalue = ref([])
+const getInfo = async() => {
+  const res = await guidedomaininfos()
+  if (res.code == 0) {
+    Object.assign(tabvalue.value, res.data)
+  }
+}
+const gocheck = async () => {
+  const res = await guidedomainconfigcheck()
+  if (res.code == 0) {
+    if (res.data == 1) {
+      Message.success('操作成功')
+      userStore.setOnlineState(1)
+    } else {
+      Message.error('检测不通过，请重新配置。')
+    }
+  }
+}
+onMounted(() => {
+  getInfo()
+})
 
 </script>
 <style lang="scss" scoped>

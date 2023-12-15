@@ -1,6 +1,5 @@
 <template>
   <a-layout-sider :collapsed="appStore.menuCollapse" breakpoint="xl" :width="232" class="asider">
-   
     <a-menu
       :selected-keys="[activeKey]"
       :default-open-keys="['Workplace']"
@@ -8,16 +7,21 @@
       :style="{ width: '100%', height: '100%' }"
     >
       <div class="logo-box">
-        <img v-if="userStore.userInfo.homeInfo?.company?.logo_url" :src="userStore.userInfo.homeInfo?.company?.logo_url" />
-        <div class="robote" v-else><icon-robot :size="18"/></div>
+        <img
+          v-if="userStore.userInfo.homeInfo?.company?.logo_url"
+          :src="userStore.userInfo.homeInfo?.company?.logo_url"
+        />
+        <div class="robote" v-else><icon-robot :size="18" /></div>
         <span>{{ userStore.userInfo.homeInfo?.company?.name }}</span>
       </div>
-      <LoopMenuItem
-        v-for="item in menuStore.menuTree"
-        :key="item.name"
-        :data="item"
-        @click="handleClickItem"
-      ></LoopMenuItem>
+      <div class="bg-color">
+        <LoopMenuItem
+          v-for="item in menuStore.menuTree"
+          :key="item.name"
+          :data="item"
+          @click="handleClickItem"
+        ></LoopMenuItem>
+      </div>
     </a-menu>
     <!-- <div class="copyright" style="text-align:center;font-size: 12px;margin-top:-42px;position:relative">@2023 北京宜选科技股份公司<br>京公网安备110105010289号 <br>京ICP备09074326号-6</div> -->
   </a-layout-sider>
@@ -98,17 +102,27 @@ const handleClickItem = (item: MenuItem) => {
     display: none;
   }
 }
-
+.bg-color {
+  background: rgb(var(--primary-6));
+  padding-top: 24px;
+  flex: 1;
+  overflow-y: auto;
+}
 .asider {
   z-index: 1000;
+ 
   :deep(.arco-menu-title) {
     text-transform: capitalize;
   }
   :deep(.arco-menu-light) {
-    background: rgb(var(--primary-6));
+    
+  }
+  :deep(.arco-menu-inner) {
+    display: flex;
+    flex-direction: column;
   }
   :deep(.arco-menu-inner::-webkit-scrollbar-thumb) {
-    background:rgba(255,255,255,0.16);
+    background: rgba(255, 255, 255, 0.16);
   }
   .logo-box {
     display: flex;
@@ -116,7 +130,7 @@ const handleClickItem = (item: MenuItem) => {
     background: #fff;
     align-items: center;
     border-right: 1px solid var(--fill-3);
-    margin-bottom: 24px;
+    
     .robote {
       height: 32px;
       width: 48px;

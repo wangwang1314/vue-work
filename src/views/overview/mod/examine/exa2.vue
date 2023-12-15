@@ -3,7 +3,7 @@
     <img src="@/assets/images/sad-face.png" alt="">
     <div class="tit">非常遗憾，上线审核未通过…</div>
     <div class="sub-tit">原因：您提交的材料经审核为无效内容</div>
-    <div class="e-btn"><icon-refresh /><span>重新申请</span></div>
+    <div class="e-btn" @click="reset"><icon-refresh /><span>重新申请</span></div>
   </div>
 </template>
 <script setup lang="ts" name="exa2">
@@ -13,7 +13,9 @@ import { useUserStore, useNavTabStore } from '@/store'
 import type { LoginParams } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
-
+const reset = () => {
+  userStore.setcheckstate(-1)
+}
 </script>
 <style lang="scss" scoped>
 @import './common.scss';

@@ -46,8 +46,23 @@ export const useUserStore = defineStore({
     getcheckstate(): number {
       return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.checkstate
     },
+    getdatafrom ():number {
+      return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.datafrom
+    },
+    getdomaintype():number {
+      return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.domaintype
+    },
+    getdataurl():number {
+      return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.dataurl
+    },
+    hasonline():number {
+      return this.userInfo.homeInfo && this.userInfo.homeInfo.opscompanyinfo && this.userInfo.homeInfo.opscompanyinfo.status
+    }
   },
   actions: {
+    setcheckstate (state) {
+      this.userInfo.homeInfo.ecweb.checkstate = state
+    },
     // 登录
     async login(loginForm: LoginParams) {
       try {
@@ -90,6 +105,11 @@ export const useUserStore = defineStore({
     setShowMain(mode: boolean) {
       this.userInfo.showMain = mode
     },
-    hasinfo() {}
+    hasinfo() {},
+    setOnlineState (val) {
+      if (this.userInfo.homeInfo && this.userInfo.homeInfo.opscompanyinfo) {
+        this.userInfo.homeInfo.opscompanyinfo.status = val
+      }
+    }
   }
 })

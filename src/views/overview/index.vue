@@ -8,7 +8,7 @@
   </div>
 </template>
 <script setup lang="ts" name="Overview">
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
 import type { LoginParams } from '@/apis'
@@ -17,7 +17,9 @@ import overcenter from './mod/overcenter.vue'
 import overbot from './mod/overbot.vue'
 const router = useRouter()
 const userStore = useUserStore()
-
+onMounted(() => {
+  userStore.getHomeinfo()
+})
 </script>
 <style lang="scss" scoped>
 .overview-out {

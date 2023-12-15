@@ -11,7 +11,9 @@ import { useUserStore, useNavTabStore } from '@/store'
 import type { LoginParams } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
-
+const reset = () => {
+  userStore.setcheckstate(-1)
+}
 </script>
 <style lang="scss" scoped>
 

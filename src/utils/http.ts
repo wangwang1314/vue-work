@@ -5,7 +5,10 @@ import { getToken } from '@/utils/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import router from '../router/index'
-const link = import.meta.env.VITE_API_LOCA
+import { uc_login_sdk } from '@/utils/common'
+
+const link = import.meta.env.VITE_API_LOCA + '?refresh=no'
+
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 interface ICodeMessage {
@@ -59,10 +62,23 @@ http.interceptors.response.use(
     const { message, code } = data
     if (code == 401) {
       NProgress.done()
-      // router.push({ path: '/login' })
+      router.push({ path: '/login' })
       Notification.error(message || '登录失效')
-      location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent(link)
+      uc_login_sdk.setCookie('PHP_SESSION_ID', '', -1)
+      // uc_login_sdk.setCookie('app_ueid', '', -1)
+      if (!uc_login_sdk.getUrlParam('refresh')) {
+        location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent(link)
+      }
       return Promise.reject(new Error('Error'))
+    }
+    if (code == 999) {
+      NProgress.done()
+      if (!data.provetime) {
+        router.push({ path: '/agreement' })
+      } else {
+        router.push({ path: '/guide1', query: { company: data.company_name } })
+      }
+      return response
     }
     if (code != 0) {
       NProgress.done()

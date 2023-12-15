@@ -30,17 +30,18 @@
 
 <script setup lang="ts" name="Guide1">
 import { reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
 import { useLoading } from '@/hooks'
 import { Message, Form } from '@arco-design/web-vue'
 import { guideCreatweb } from '@/apis'
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 const navTabStore = useNavTabStore()
 const form = ref({
   webname: '',
-  companyname: ''
+  companyname: route.query.company_name || ''
 })
 const rules = [
   {

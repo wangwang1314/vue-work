@@ -1,42 +1,37 @@
 <template>
   <div class="manage">
+    <div class="top-nav-tit">
+      <div class="m-left">公司基本信息</div>
+      <div class="m-right"></div>
+    </div>
     <section class="tab">
-      <a-tabs hide-content size="medium" type="capsule" @change="changeTab">
+      <a-tabs hide-content size="large" type="capsule" @change="changeTab">
         <a-tab-pane :key="1">
           <template #title>
-            <div class="tit">基本信息</div>
+            <div class="tit">公司基本介绍</div>
           </template>
         </a-tab-pane>
         <a-tab-pane :key="2">
           <template #title>
-            <div class="tit">公司介绍</div>
+            <div class="tit">公司服务</div>
           </template>
         </a-tab-pane>
         <a-tab-pane :key="3">
           <template #title>
-            <div class="tit">公司服务</div>
-          </template>
-        </a-tab-pane>
-        <a-tab-pane :key="4">
-          <template #title>
             <div class="tit">公司历史</div>
           </template>
         </a-tab-pane>
-        <a-tab-pane :key="5">
+        <a-tab-pane :key="4">
           <template #title>
             <div class="tit">公司团队</div>
           </template>
         </a-tab-pane>
       </a-tabs>
     </section>
-    <transition name="zoom-fade" mode="out-in" appear>
-      <pane1 v-if="activeKey == 1" :key="1"></pane1>
-      <pane2 v-else-if="activeKey == 2" :key="2" type="intro"></pane2>
-      <pane2 v-else-if="activeKey == 3" :key="3" type="history"></pane2>
-      <pane2 v-else-if="activeKey == 4" :key="4" type="service"></pane2>
-      <pane2 v-else-if="activeKey == 5" :key="5" type="team"></pane2>
-      <!-- <component :is="PaneMap[activeKey]" @update="updateFn" @changeTab="changeTab"></component> -->
-    </transition>
+    <pane1 v-if="activeKey == 1" :key="1"></pane1>
+    <pane2 v-else-if="activeKey == 2" :key="2" type="service"></pane2>
+    <pane3 v-else-if="activeKey == 3" :key="3" type="history"></pane3>
+    <pane4 v-else-if="activeKey == 4" :key="4" type="team"></pane4>
   </div>
 </template>
 
@@ -45,6 +40,8 @@ import { ref, reactive, nextTick } from 'vue'
 import { throttle, debounce } from '@/utils/common'
 import Pane1 from './Pane1.vue'
 import Pane2 from './Pane2.vue'
+import Pane3 from './Pane3.vue'
+import Pane4 from './Pane4.vue'
 // import Pane3 from './Pane3.vue'
 
 const PaneMap: any = {
@@ -70,7 +67,6 @@ const changeTab = debounce((val: number) => {
 <style lang="scss" scoped>
 :deep(.arco-card) {
   .arco-card-header {
-    border-bottom-style: dashed;
     margin: 0 16px;
     padding-left: 0;
     padding-right: 0;
@@ -81,8 +77,7 @@ const changeTab = debounce((val: number) => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  background: var(--color-bg-1);
+  overflow: auto;
   .tab {
     .tit {
       color: var(--color-text-1);
@@ -103,7 +98,7 @@ const changeTab = debounce((val: number) => {
         }
       }
     }
-    padding: 12px 0 0 24px;
+    padding: 18px 0 0 20px;
   }
 }
 

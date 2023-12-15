@@ -11,7 +11,7 @@
         </a-row>
         <a-row class="full-width">
           <a-col :span="24">
-            <a-form-item field="name" label="服务概要" class="no-bot">
+            <a-form-item field="name" label="历史概要" class="no-bot">
               <a-textarea
                 :auto-size="{
                   minRows: 5
@@ -52,13 +52,13 @@ const getData = async () => {
 }
 const saveFn = async() => {
   const { brief, remark } = form
-  fileStore.setloading(true)
+  loading.value = true
   const res = await saveCompanyTypeInfo({
     type: props.type,
     brief,
     remark
   }).finally(() => {
-    fileStore.setloading(false)
+    loading.value = false
   })
   if (res.code === 0) {
    Message.success(res.message || '操作成功')

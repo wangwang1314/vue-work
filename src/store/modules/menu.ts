@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 interface MenuState {
   menuTree: MenuItem[]
 }
-
+const baseURL = import.meta.env.VITE_API_BASE_URL
 export const useMenuStore = defineStore({
   id: 'Menu',
   state: (): MenuState => {
@@ -197,6 +197,16 @@ export const useMenuStore = defineStore({
           path: '',
           children: [
             {
+              id: 'MB',
+              name: '模版',
+              path: 'mod',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2,
+              link: window.location.origin + '/demo/index.html'
+            },
+            {
               id: 'DH',
               name: '导航',
               path: '/web/navlink',
@@ -225,7 +235,71 @@ export const useMenuStore = defineStore({
             }
           ]
         },
-       
+        {
+          icon: 'IconDesktop',
+          id: 'WZSS',
+          name: '网站设置',
+          keepAlive: false,
+          hidden: false,
+          level: 1,
+          path: '',
+          children: [
+            {
+              id: 'JCXX',
+              name: '基础信息',
+              path: '/web/company/intro',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'GCXX',
+              name: '工厂信息',
+              path: '/web/company/factory',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'KHZZ',
+              name: '客户赠言',
+              path: '/web/company/message',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'YSXY',
+              name: '隐私协议',
+              path: '/web/company/policy',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'WZXTB',
+              name: '网站小图标',
+              path: '/web/company/icon',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'FWSZ',
+              name: '访问设置',
+              path: '/web/company/language',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+          ]
+        },
         // {
         //   icon: 'icon-fire',
         //   id: 'YXTG',
@@ -234,14 +308,7 @@ export const useMenuStore = defineStore({
         //   hidden: false,
         //   level: 1
         // },
-        {
-          icon: 'IconDesktop',
-          id: 'WZSZ',
-          name: '后台设置',
-          keepAlive: false,
-          hidden: false,
-          level: 1
-        },
+        
         {
           icon: 'icon-save',
           id: 'SCGL',
@@ -250,6 +317,14 @@ export const useMenuStore = defineStore({
           hidden: false,
           level: 1,
           path: '/resource/list'
+        },
+        {
+          icon: 'icon-settings',
+          id: 'WZSZ',
+          name: '后台设置',
+          keepAlive: false,
+          hidden: false,
+          level: 1
         },
         // {
         //   icon: 'menu-form',

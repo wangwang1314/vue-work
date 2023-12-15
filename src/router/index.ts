@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router
 import type { RouteRecordNormalized } from 'vue-router'
 import { getToken } from '@/utils/auth'
 import { DEFAULT_LAYOUT } from './base'
+import { useUserStore } from '@/store'
 
 // 路由模块化自动导入
 const modules = import.meta.globEager('./modules/*.ts')
@@ -111,16 +112,14 @@ const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 })
 })
 router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
   if (to.path === '/login') {
     next()
   } else {
+    if (!userStore.userInfo.homeInfo && to.path !== '/overview' && to.path !== '/guide1' && to.path !== '/agreement') {
+      userStore.getHomeinfo()
+    }
     next()
-    // const token = getToken()
-    // if (!token) {
-    //   next('/login')
-    // } else {
-    //   next()
-    // }
   }
 })
 

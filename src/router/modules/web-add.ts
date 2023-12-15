@@ -118,6 +118,33 @@ const Webadd = {
                 title: '工厂展示',
                 keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
               }
+            },
+            {
+              path: '/web/company/policy',
+              name: 'webcompanypolicy', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/policy/index.vue'),
+              meta: {
+                title: '隐私协议',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/icon',
+              name: 'webcompanyicon', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/icon/index.vue'),
+              meta: {
+                title: '网站小图标',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/language',
+              name: 'webcompanylanguage', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/language/index.vue'),
+              meta: {
+                title: '访问设置',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
             }
           ]
         },
