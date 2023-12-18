@@ -96,7 +96,8 @@ const nogobackarr = ref([
   'webcompanyintro',
   'webcompanyfactory',
   'webcompanypolicy',
-  'webcompanylanguage'
+  'webcompanylanguage',
+  'webcompanyquality'
 ])
 </script>
 

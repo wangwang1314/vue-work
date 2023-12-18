@@ -6,7 +6,7 @@
     </div>
     <div class="com-detail detail">
       <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
-        <a-card :border="false">
+        <a-card :bordered="false">
           <div class="label-class">
             <span>产品图片</span>
             <a-button type="primary" size="mini" @click="showPicCenter">图片中心选择</a-button>
@@ -91,7 +91,7 @@
             </template>
           </a-form-item>
         </a-card>
-        <a-card :border="false">
+        <a-card :bordered="false">
           <a-tabs type="card" size="small" v-model:active-key="activeKey" @change="changeTab" hide-content>
             <a-tab-pane :key="1" title="Production Line"> </a-tab-pane>
             <a-tab-pane :key="2" title="OEM/ODM"> </a-tab-pane>

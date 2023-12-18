@@ -263,6 +263,15 @@ export const useMenuStore = defineStore({
               level: 2
             },
             {
+              id: 'ZLRZ',
+              name: '质量认证',
+              path: '/web/company/quality',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
               id: 'KHZZ',
               name: '客户赠言',
               path: '/web/company/message',
@@ -293,6 +302,15 @@ export const useMenuStore = defineStore({
               id: 'FWSZ',
               name: '访问设置',
               path: '/web/company/language',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'ZDYDM',
+              name: '自定义代码',
+              path: '/web/company/statistic',
               keepAlive: false,
               hidden: false,
               icon: 'menu-detail',

@@ -120,6 +120,15 @@ const Webadd = {
               }
             },
             {
+              path: '/web/company/quality',
+              name: 'webcompanyquality', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/quality/index.vue'),
+              meta: {
+                title: '质量认证',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
               path: '/web/company/policy',
               name: 'webcompanypolicy', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
               component: () => import('@/views/web/company/policy/index.vue'),
@@ -143,6 +152,24 @@ const Webadd = {
               component: () => import('@/views/web/company/language/index.vue'),
               meta: {
                 title: '访问设置',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/statistic',
+              name: 'webcompanystatistic', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/statistic/index.vue'),
+              meta: {
+                title: '自定义代码',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/statisticedit',
+              name: 'webcompanystatisticedit', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/statistic/mod/detail.vue'),
+              meta: {
+                title: '流量统计',
                 keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
               }
             }

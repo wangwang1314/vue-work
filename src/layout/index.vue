@@ -33,7 +33,9 @@ const routeNameArr = [
   'webcompanymessage',
   'webcompanyfactory',
   'webcompanypolicy',
-  'webcompanylanguage'
+  'webcompanylanguage',
+  'webcompanystatisticedit',
+  'webcompanyquality'
 ]
 watch(
   () => route.query,

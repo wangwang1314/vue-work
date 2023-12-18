@@ -86,3 +86,28 @@ export function companywebseticon(params) {
 export function companywebsetdelicon(params) {
   return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=webset/del-icon`, qs.stringify(params))
 }
+
+/** @desc 获取流量统计 */
+export function companygetstatistic(params) {
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=webset/statistic`, params)
+}
+
+/** @desc 保存流量统计 */
+export function companysetstatistic(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=webset/save-statistic`, qs.stringify(params))
+}
+
+/** @desc 获取质量控制信息 */
+export function companyqc(params) {
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=company/qc`, params)
+}
+
+/** @desc 保存质量控制信息 */
+export function companysaveqc(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-qc`, qs.stringify(params))
+}
+
+/** @desc 删除证书 */
+export function companydelqc(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/del-certificate`, qs.stringify(params))
+}

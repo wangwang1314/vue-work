@@ -25,15 +25,15 @@ const routes = [
     path: '',
     redirect: '/overview'
   },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/login/index.vue'),
-    meta: {
-      title: '登录',
-      keepAlive: false
-    }
-  },
+  // {
+  //   path: '/login',
+  //   name: 'Login',
+  //   component: () => import('@/views/login/index.vue'),
+  //   meta: {
+  //     title: '登录',
+  //     keepAlive: false
+  //   }
+  // },
   {
     path: '/agreement',
     name: 'Agreement',

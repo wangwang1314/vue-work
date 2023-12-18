@@ -6,7 +6,7 @@
     </div>
     <div class="msg-detail detail">
       <a-form :model="form" layout="vertical" :auto-label-width="true">
-        <a-card :border="false" title="网站语言">
+        <a-card :bordered="false" title="网站语言">
           <a-checkbox :value="1" v-model="form.langstate" style="margin: -10px 0 16px 0"
             >是否关闭其他语言网站（关闭其他语言后，网站不可切换其他语言）</a-checkbox
           >
@@ -29,7 +29,7 @@
             </a-radio-group>
           </a-form-item>
         </a-card>
-        <a-card :border="false" title="屏蔽国内">
+        <a-card :bordered="false" title="屏蔽国内">
           <a-form-item label="屏蔽国内" :hide-label="true" :content-flex="false">
             <a-radio-group v-model="form.maskchina">
               <a-radio :value="0">

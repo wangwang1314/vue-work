@@ -62,7 +62,7 @@ http.interceptors.response.use(
     const { message, code } = data
     if (code == 401) {
       NProgress.done()
-      router.push({ path: '/login' })
+      // router.push({ path: '/login' })
       Notification.error(message || '登录失效')
       uc_login_sdk.setCookie('PHP_SESSION_ID', '', -1)
       // uc_login_sdk.setCookie('app_ueid', '', -1)

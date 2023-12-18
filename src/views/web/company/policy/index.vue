@@ -5,7 +5,7 @@
       <div class="m-right"></div>
     </div>
     <div class="msg-detail detail">
-      <a-card :border="false">
+      <a-card :bordered="false">
         <uedit v-model="form.privacy_policy"></uedit>
       </a-card>
     </div>

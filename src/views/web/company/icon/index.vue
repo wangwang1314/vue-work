@@ -13,7 +13,7 @@
         :auto-label-width="true"
         label-align="left"
       >
-        <a-card :border="false">
+        <a-card :bordered="false">
           <a-form-item
             field="cate"
             label="公司logo"
