@@ -6,11 +6,15 @@
       </div>
       <div class="c-right">
         <a-space :size="32">
-          <a href="" target="_blank">
-            <span class="text"><icon-link></icon-link><span>网站域名：{{ userStore.userInfo.homeInfo?.company?.domain }}</span></span>
-          </a>
-          <span class="text"><icon-calendar /><span>上线时间：{{ userStore.userInfo.homeInfo?.company?.onlinetime }}</span></span>
-          <span class="text"><icon-schedule /><span>最近更新时间：{{ userStore.userInfo.homeInfo?.company?.uptime }}</span></span>
+          <span class="text"
+            ><icon-link></icon-link><span>网站域名：{{ userStore.userInfo.homeInfo?.company?.domain }}</span></span
+          >
+          <span class="text"
+            ><icon-calendar /><span>上线时间：{{ userStore.userInfo.homeInfo?.company?.onlinetime }}</span></span
+          >
+          <span class="text"
+            ><icon-schedule /><span>最近更新时间：{{ userStore.userInfo.homeInfo?.company?.uptime }}</span></span
+          >
         </a-space>
       </div>
     </div>
@@ -386,7 +390,7 @@ const paneldata = ref({
   total_product: '',
   cur_month_incr_product: ''
 })
-const getDataFn = async() => {
+const getDataFn = async () => {
   const res = await guidepanel()
   if (res.code == 0) {
     Object.assign(paneldata.value, res.data.panel)

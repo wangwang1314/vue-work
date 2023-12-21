@@ -18,6 +18,8 @@ import '@/styles/css/transition.css'
 // 导入全局scss主文件
 import '@/styles/index.scss'
 
+// 导入字体图标
+import '@/assets/iconfont/feitian/iconfont.css'
 // 支持SVG
 import 'virtual:svg-icons-register'
 

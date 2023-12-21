@@ -22,7 +22,7 @@
               <a-button type="primary" size="small" @click="goPlay">预览视频</a-button>
               <a-button type="primary" size="small" @click="isEdit = true">编辑详情</a-button>
             </a-space>
-            <div class="switch-box">
+            <!-- <div class="switch-box">
               <a-switch
                 checked-value="1"
                 unchecked-value="0"
@@ -47,7 +47,7 @@
               <a class="nor-a" :href="videoDetail.video.youtube_url_local" target="_blank" ref="nofollow"
                 ><a-button type="primary" size="large" @click="download">下载视频文件</a-button></a
               >
-            </div>
+            </div> -->
           </a-col>
           <a-col :span="18" :offset="1">
             <div class="pro-name" v-show="!isEdit">{{ videoDetail.video.title }}</div>
@@ -62,7 +62,7 @@
             >
               <a-row v-show="isEdit">
                 <a-col :span="24">
-                  <a-form-item :label-col-style="{ flex: '0 0 56px' }" field="tpl" label="使用自动描述">
+                  <a-form-item v-if="videoDetail.tpl && videoDetail.tpl.length" :label-col-style="{ flex: '0 0 56px' }" field="tpl" label="使用自动描述">
                     <span
                       @click="changeTpl(index)"
                       v-for="(item, index) in videoDetail.tpl"
@@ -147,7 +147,7 @@
                   </a-form-item>
                 </a-col>
               </a-row>
-              <a-row>
+              <!-- <a-row>
                 <a-col :span="8">
                   <a-form-item :label-col-style="{ flex: '0 0 100px' }" field="value1" label="点播观看次数">
                     {{ videoDetail.video.ecer_view }}
@@ -158,22 +158,22 @@
                     {{ videoDetail.video.youtube_view }}
                   </a-form-item>
                 </a-col>
-              </a-row>
+              </a-row> -->
               <a-row>
-                <a-col :span="8">
+                <!-- <a-col :span="8">
                   <a-form-item :label-col-style="{ flex: '0 0 80px' }" field="value1" label="正在被引用">
                     {{ videoDetail.video.used > 0 ? '是' : '否' }}
                   </a-form-item>
-                </a-col>
+                </a-col> -->
                 <a-col :span="16">
                   <a-form-item :label-col-style="{ flex: '0 0 70px' }" field="value1" label="引用次数">
                     {{ videoDetail.video.used }}
-                    <a-link @click="goList">查看引用产品（{{ videoDetail.video.video_p_count }}）</a-link>
-                    <a-link @click="showProduct">设定产品>></a-link>
+                    <!-- <a-link @click="goList">查看引用产品（{{ videoDetail.video.video_p_count }}）</a-link>
+                    <a-link @click="showProduct">设定产品>></a-link> -->
                   </a-form-item>
                 </a-col>
               </a-row>
-              <a-row>
+              <!-- <a-row>
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 80px' }" field="value1" label="YouTube视频页地址">
                     <a-link target="_blank" :href="videoDetail.video.youtube_url">{{
@@ -181,8 +181,8 @@
                     }}</a-link>
                   </a-form-item>
                 </a-col>
-              </a-row>
-              <a-row v-show="!isEdit">
+              </a-row> -->
+              <!-- <a-row v-show="!isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 80px' }" field="value1" label="关键词">
                     {{ videoDetail.video.words_value?.toString() }}
@@ -195,21 +195,21 @@
                     <a-input-tag v-model="form.words" placeholder="请输入" allow-clear />
                   </a-form-item>
                 </a-col>
-              </a-row>
-              <a-row v-show="!isEdit">
+              </a-row> -->
+              <!-- <a-row v-show="!isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 80px' }" field="value1" label="卖点">
                     {{ videoDetail.video.selling_point_value?.toString() }}
                   </a-form-item>
                 </a-col>
-              </a-row>
-              <a-row v-show="isEdit">
+              </a-row> -->
+              <!-- <a-row v-show="isEdit">
                 <a-col :span="24">
                   <a-form-item :label-col-style="{ flex: '0 0 80px' }" field="selling_point" label="卖点">
                     <a-input-tag v-model="form.selling_point" placeholder="请输入" allow-clear />
                   </a-form-item>
                 </a-col>
-              </a-row>
+              </a-row> -->
             </a-form>
           </a-col>
         </a-row>

@@ -13,7 +13,7 @@
           </a-col>
           <a-col :xs="8" :md="8" :lg="7" :xl="5" :xxl="4">
             <a-form-item field="category_id" label="分类名称">
-              <a-select placeholder="所有分类" v-model="form.category_id">
+              <a-select placeholder="所有分类" v-model="form.category_id" @change="catechange">
                 <a-option value="" label="所有分类"></a-option>
                 <a-option v-for="item in cateArr" :key="item.id" :value="item.id" :label="item.name"></a-option>
               </a-select>
@@ -153,7 +153,7 @@
               <a-table-column title="负责人" data-index="p_username" :width="100" align="left"></a-table-column> -->
               <a-table-column title="发布时间" data-index="addtime" :width="96" align="left">
                 <template #title>
-                  <div @click="sortFn('uptime')">
+                  <div @click="sortFn('uptime')" class="cus-cla">
                     {{ '发布时间' }}
                     <template v-if="form.order_by == 'uptime'">
                       <icon-arrow-down v-if="form.order == 'desc'" />
@@ -164,7 +164,7 @@
               </a-table-column>
               <a-table-column title="更新时间" data-index="uptime" :width="96" align="left">
                 <template #title>
-                  <div @click="sortFn('addtime')">
+                  <div @click="sortFn('addtime')" class="cus-cla">
                     {{ '更新时间' }}
                     <template v-if="form.order_by == 'addtime'">
                       <icon-arrow-down v-if="form.order == 'desc'" />
@@ -406,7 +406,7 @@ const getTableData = async () => {
   loading.value = true
   const { search_name, category_id, p_uid, hs_code, product_id, order, order_by, video_id } = form
   const { code, data } = await getProductList({
-    page_no: current.value,
+    page_no: changepage.value || current.value,
     page_size: pageSize.value,
     search_name,
     category_id,
@@ -417,6 +417,7 @@ const getTableData = async () => {
     order_by,
     video_id
   })
+  changepage.value = 0
   if (code == 0) {
     tableData.value = data.list
     personArr = data.p_users
@@ -425,6 +426,10 @@ const getTableData = async () => {
     setTotal(Number(data.total_records))
   }
   loading.value = false
+}
+const changepage = ref(0)
+const catechange = () => {
+  changepage.value = 1
 }
 const searchFn = () => {
   form.video_id = ''

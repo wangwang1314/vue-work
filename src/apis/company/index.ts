@@ -111,3 +111,41 @@ export function companysaveqc(params) {
 export function companydelqc(params) {
   return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/del-certificate`, qs.stringify(params))
 }
+
+/** @desc 获取联系信息 */
+export function companycontactinfo(params) {
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=company/contact-info`, params)
+}
+
+/** @desc 保存联系信息
+ */
+export function companysavecontactinfo(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/save-contact-info`, qs.stringify(params))
+}
+
+/** @desc 设置默认联系人
+
+ */
+export function companysetdefaultcontact(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/set-default-contact`, qs.stringify(params))
+}
+
+/** @desc 设置默认联系人
+
+ */
+export function companydelcontact(params) {
+  return axios.post<ApiRes<ComInfo>>(`${baseURL}?r=company/del-contact`, qs.stringify(params))
+}
+
+/** @desc 获取账号信息
+*/
+export function companyaccountinfo(params) {
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=account/info`, params)
+}
+
+/** @desc 获取聊天配置
+
+*/
+export function companywebimconfig(params) {
+  return axios.get<ApiRes<ComInfo>>(`${baseURL}?r=index/webim-config`, params)
+}

@@ -52,7 +52,7 @@
       </a-form-item>
       <a-form-item label="">
         <div style="margin-top: 20px">
-          <a-button type="primary" @click="saveFn" :loading="loading" :disabled="loading">完成</a-button>
+          <a-button type="primary" @click="saveFn" :loading="loading" :disabled="loading">保存</a-button>
         </div>
       </a-form-item>
     </a-form>
@@ -67,7 +67,7 @@
               <a-input
                 v-model="dialogForm.title"
                 placeholder=""
-                :max-length="{ length: 20, errorOnly: true }"
+                :max-length="{ length: 20 }"
                 :show-word-limit="true"
               />
               <template #extra>建议填写<span class="warning-color">10-20</span>个字符</template>
@@ -80,7 +80,7 @@
                 }"
                 v-model="dialogForm.picturedesc"
                 placeholder=""
-                :max-length="{ length: 150, errorOnly: true }"
+                :max-length="{ length: 150 }"
                 :show-word-limit="true"
               />
               <template #extra>建议填写<span class="warning-color">30-150</span>个字符</template>
@@ -93,7 +93,7 @@
         <a-button @click="catevisi = false">取消</a-button>
       </template>
     </a-modal>
-    <linkdialog ref="linkRef"></linkdialog>
+    <linkdialog ref="linkRef" :isvr="isvr"></linkdialog>
   </div>
 </template>
 
@@ -102,7 +102,7 @@ import { reactive, ref, h, nextTick } from 'vue'
 import { getHomeBanner, pictureDdel, saveHomeBanner } from '@/apis'
 import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
-import { Notification, Message } from '@arco-design/web-vue'
+import { Notification, Message, Modal } from '@arco-design/web-vue'
 import lodash from 'lodash'
 import draggable from 'vuedraggable'
 import linkdialog from './mod/linkdialog.vue'
@@ -146,14 +146,25 @@ const saveFn = async () => {
   })
   if (res.code === 0) {
     Message.success(res.message || '操作成功')
+    getDate()
   }
 }
 const picListDel = (file) => {
-  const index = lodash.findIndex(fileList.value, function (o) {
+  Modal.confirm({
+    title: '提示',
+    content: `您确定要删除吗？`,
+    onOk: () => {
+      const index = lodash.findIndex(fileList.value, function (o) {
     return o.uid == file.uid
   })
   delPicAjax(fileList.value[index].id)
   fileList.value.splice(index, 1)
+    },
+    onCancel: () => {
+
+    },
+  });
+ 
 }
 
 const delPicAjax = async (id) => {
@@ -187,6 +198,7 @@ const picCropper = (item, index) => {
   currentIndex.value = index
   linkRef.value?.showDialog(item.id)
 }
+const isvr = ref(false)
 const getDate = async () => {
   const res = await getHomeBanner()
   if (res.code == 0) {
@@ -195,6 +207,7 @@ const getDate = async () => {
       item.url = item.picture_url
     })
     fileList.value = res.data.banner
+    isvr.value = res.data.vr
   }
 }
 getDate()

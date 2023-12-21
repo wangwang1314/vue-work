@@ -47,7 +47,7 @@ const gocheck = async () => {
   const res = await guidedomainconfigcheck()
   if (res.code == 0) {
     if (res.data == 1) {
-      Message.success('操作成功')
+      // Message.success('操作成功')
       userStore.setOnlineState(1)
     } else {
       Message.error('检测不通过，请重新配置。')

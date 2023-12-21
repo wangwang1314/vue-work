@@ -16,6 +16,7 @@
             <a-form-item field="value1" label="分组">
               <a-select placeholder="请选择" v-model="form.category_id">
                 <a-option value="">所有分组</a-option>
+                <a-option v-for="(item, index) in catelist" :value="item.id" :key='index'>{{ item.name }}</a-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -70,6 +71,7 @@ const form = reactive({
   search_name: '',
   category_id: ''
 })
+const catelist = ref([])
 const getTableData = async () => {
   listloading.value = true
   const { search_name, category_id } = form
@@ -83,6 +85,7 @@ const getTableData = async () => {
   })
   if (code == 0) {
     fileObj.list = data.list
+    catelist.value = data.categories
     setTotal(Number(data.total_records))
   }
 }
@@ -95,6 +98,9 @@ const handleCancel = () => {
 }
 const btnloading = ref(false)
 const handleBeforeOk = async() => {
+  if (!selectedKeys.value.length) {
+    return Message.warning('请选择产品')
+  }
   btnloading.value = true
   const res = await setProVideo({
     id: videoId.value,

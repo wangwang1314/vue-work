@@ -10,11 +10,14 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
-import type { LoginParams } from '@/apis'
+import { guidereapply } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
-const reset = () => {
-  userStore.setcheckstate(-1)
+const reset = async () => {
+  const res = await guidereapply()
+  if (res.code == 0) {
+    userStore.setcheckstate(-1)
+  }
 }
 </script>
 <style lang="scss" scoped>

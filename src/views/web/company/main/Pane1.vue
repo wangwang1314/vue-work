@@ -42,18 +42,18 @@
               </template>
             </a-upload>
             <template #extra>
-              <div style="line-height: 18px">建议220*60尺寸，高度小于100，图片质量小于100k</div>
+              <div style="line-height: 18px;margin:-29px 0 0 96px;">建议220*60尺寸，高度小于100，图片质量小于100k</div>
             </template>
           </a-form-item>
           <a-form-item field="info.remark" label="描述" :label-col-style="{ flex: '0 0 70px' }">
             <uedit v-model="form.info.remark" ref="ueditref"></uedit>
           </a-form-item>
-          <a-form-item field="name" label="服务概要" class="no-bot" :label-col-style="{ flex: '0 0 70px' }">
+          <a-form-item field="name" label="公司概要" class="no-bot" :label-col-style="{ flex: '0 0 70px' }">
             <a-textarea
               :auto-size="{
                 minRows: 5
               }"
-              :max-length="150"
+              :max-length="120"
               show-word-limit
               v-model="form.info.brief"
             ></a-textarea>
@@ -63,7 +63,7 @@
           <a-col :span="16">
             <a-card class="item">
               <div class="label-class">
-                <span>产品图片</span>
+                <span>公司图片</span>
                 <a-button type="primary" size="mini" @click="showPicCenter">图片中心选择</a-button>
               </div>
               <a-form-item label="公司图片" :hide-label="true">
@@ -150,10 +150,10 @@
           <a-col :span="8">
             <a-card class="item">
               <div class="label-class">
-                <span>产品视频</span>
+                <span>公司视频</span>
                 <a-button type="primary" size="mini" @click="showVideoCenter">视频中心选择</a-button>
               </div>
-              <a-form-item label="产品视频" :hide-label="true">
+              <a-form-item label="公司视频" :hide-label="true">
                 <a-row class="full-width">
                   <a-col :span="24">
                     <video-dialog ref="videoDialogRef" @change="videoChange"></video-dialog>
@@ -181,6 +181,7 @@
 
                     <a-upload
                       :show-file-list="false"
+                      :on-before-upload="siglebefore"
                       @progress="sigleChange"
                       @success="sigleSuccess"
                       @error="sigleError"
@@ -640,6 +641,7 @@ const successUploadlogo = (res) => {
     res.url = res.response.data?.picture_url + '?' + new Date().getTime()
     res.picture_path = res.response.data?.picture_path
   } else {
+    Message.warning(res.response.message || '上传失败')
     res.status = 'error'
   }
 }
@@ -649,6 +651,7 @@ const successUpload = (res) => {
     res.url = res.response.data?.picture_url
     res.picture_path = res.response.data?.picture_path
   } else {
+    Message.warning(res.response.message || '上传失败')
     res.status = 'error'
   }
 }
@@ -826,8 +829,12 @@ const cancelFn = () => {
 
 const isuploading = ref(false)
 const percent = ref(0)
-const sigleChange = (res) => {
+const siglebefore = (res) => {
   isuploading.value = true
+  return res
+}
+const sigleChange = (res) => {
+  // isuploading.value = true
   percent.value = res.percent
 }
 const sigleError = () => {

@@ -70,8 +70,7 @@
                 <a-table-column title="操作" :width="300" align="center">
                   <template #cell="{ record }">
                     <a-space :size="4">
-                      <a-button size="mini" type="text" @click="addSubCate(record)">
-                        <!-- <template #icon><icon-plus :size="13" :stroke-width="3" /></template> -->
+                      <a-button size="mini" type="text" @click="addSubCate(record)" :class="{'hide-class': record.level=='2'}">
                         <template #default>添加子分类</template>
                       </a-button>
                       <a-button type="text" size="mini" @click="editFn(record)" status="warning">
@@ -144,14 +143,14 @@
           </template>
         </a-modal>
         <!-- 添加分类弹框 -->
-        <a-modal v-model:visible="addPopup" :width="286">
+        <a-modal v-model:visible="addPopup" :width="500">
           <template #title>{{ cateObj.id ? '编辑分类' : '添加分类' }}</template>
           <div>
             <div class="add-tit">{{ cateObj.id ? '编辑分类' : '新增分类' }}</div>
             <div class="add-sub-tit" v-show="cateObj.pid">父级分类：{{ cateObj.pname }}</div>
             <div :class="cateErr ? 'arco-form-item-status-error' : ''">
-              <a-input v-model="cateObj.name" @blur="cateTitChange"></a-input>
-              <div v-if="cateErr" role="alert" class="arco-form-item-message">请输入分类名称</div>
+              <a-input v-model="cateObj.name" @blur="cateTitChange" show-word-limit max-length="100"></a-input>
+              <div v-if="cateErr" role="alert" class="arco-form-item-message">{{ cateErrtips }}</div>
             </div>
           </div>
           <template #footer>
@@ -339,16 +338,25 @@ const addCate = () => {
   cateObj.name = ''
   cateObj.pid = ''
   addPopup.value = true
+  cateErr.value = false
 }
+const cateErrtips = ref('请输入分类名称')
 const cateTitChange = () => {
+  cateErrtips.value = '请输入分类名称'
   if (!cateObj.name) {
     cateErr.value = true
-  } else {
-    cateErr.value = false
+    return false
   }
+  if (/[\u4e00-\u9fa5]+/.test(cateObj.name)) {
+    cateErr.value = true
+    cateErrtips.value = '分类名称中不能有中文'
+    return false
+  }
+  cateErr.value = false
+  return true
 }
 const addCateFn = async () => {
-  if (!cateObj.name) {
+  if (!cateTitChange()) {
     return
   }
   btnloading.value = true
@@ -387,6 +395,7 @@ const editFn = (row: CateItem) => {
   cateObj.pid = ''
   cateObj.pname = ''
   addPopup.value = true
+  cateErr.value = false
 }
 // 新增子分类
 const addSubCate = (row: CateItem) => {
@@ -395,6 +404,7 @@ const addSubCate = (row: CateItem) => {
   cateObj.pid = row.id
   cateObj.pname = row.name
   addPopup.value = true
+  cateErr.value = false
 }
 // seo相关
 const form = reactive({

@@ -81,3 +81,19 @@ export function guidedomainconfigcheck(params) {
 export function guidepanel(params) {
   return axios.get<ApiRes<null>>(`${baseURL}?r=index/panel`, params)
 }
+
+
+/** @desc 获取看板数据 */
+export function guidereapply(params) {
+  return axios.get<ApiRes<null>>(`${baseURL}?r=index/reapply`, params)
+}
+
+/** @desc 当前步骤 */
+export function guidegetnowstep(params) {
+  return axios.get<ApiRes<null>>(`${baseURL}?r=index/getnowstep`, params)
+}
+
+/** @desc 当前步骤 */
+export function guidenextsetdomain(params) {
+  return axios.get<ApiRes<null>>(`${baseURL}?r=index/nextsetdomain`, params)
+}

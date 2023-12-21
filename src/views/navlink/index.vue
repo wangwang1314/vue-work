@@ -113,7 +113,7 @@ const confirm =  (item, tag) => {
   } else {
     item.tag2 = !item.tag2
   }
-  changeajax(item)
+  changeajax(item, true)
 }
 const changeajax = async(item, istip) => {
   const { controller, action, english, china, isfooter, isheader } = item

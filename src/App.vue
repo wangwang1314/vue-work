@@ -31,13 +31,13 @@ const userStore = useUserStore()
 if (uc_login_sdk.getCookie('app_ueid') == '') {
   uc_login_sdk.init()
 }
-// userStore.$onAction(({ name }) => {
-//   if (name === 'hasinfo') {
-//     if (userStore.goRoute) {
-//       router.replace({ path: userStore.goRoute })
-//     }
-//   }
-// })
+userStore.$onAction(({ name }) => {
+  if (name === 'hasinfo') {
+    if (userStore.goRoute) {
+      router.replace({ path: userStore.goRoute })
+    }
+  }
+})
 </script>
 <style lang="scss" scoped>
 .loading-box {

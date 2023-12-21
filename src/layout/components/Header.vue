@@ -23,11 +23,7 @@
             预览
           </a-link>
           <span class="line-span"></span>
-          <a-link
-            class="addr-span service"
-            target="_blank"
-            href=""
-          >
+          <a-link class="addr-span service" target="_blank" href="">
             <template #icon><icon-customer-service :size="18" /></template>
           </a-link>
         </div>
@@ -43,7 +39,7 @@
           <icon-down /> -->
         </a-row>
         <template #content>
-          <a-doption>
+          <a-doption @click="goacount">
             <template #icon>
               <span class="doption-icon" style="background: rgba(var(--primary-6))"><icon-user /></span>
             </template>
@@ -94,7 +90,9 @@ const changeLang = (type: string) => {
 const toHome = () => {
   router.push('/')
 }
-
+const goacount = () => {
+  router.push({ path: '/account/detail' })
+}
 // 跳转个人中心
 const toUser = () => {
   router.push('/system/user-center')
@@ -109,7 +107,6 @@ const logout = () => {
     closable: true,
     onOk: () => {
       userStore.logout()
-      location.href = 'https://uc.ecer.com/home/login'
       // router.replace('/login')
     }
   })
@@ -131,7 +128,6 @@ const logout = () => {
     display: flex;
     align-items: center;
     .addr-span {
-     
       // margin-left: 12px;
       color: var(--color-text-8);
       text-decoration: none;
@@ -139,7 +135,7 @@ const logout = () => {
         background: none;
       }
     }
-    
+
     .link-addr {
       color: var(--color-text-8);
       margin-left: 22px;
@@ -221,7 +217,7 @@ const logout = () => {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0px 4px 10px 0px rgba(78, 89, 105, 0.06);
-    z-index: 10;
+  z-index: 10;
   // border-bottom: 1px solid var(--color-neutral-3);
   .system-logo {
     font-size: 16px;

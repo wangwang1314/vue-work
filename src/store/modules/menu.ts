@@ -19,6 +19,31 @@ export const useMenuStore = defineStore({
           level: 1
         },
         {
+          icon: 'icon-email',
+          id: 'SJ',
+          name: '商机',
+          path: '/web/inquiry',
+          keepAlive: false,
+          hidden: false,
+          level: 1
+        },
+        // {
+        //   id: 'SJXQ',
+        //   name: '商机详情',
+        //   path: '/web/inquiry/detail',
+        //   keepAlive: false,
+        //   hidden: true,
+        //   level: 2
+        // },
+        // {
+        //   id: 'SJHF',
+        //   name: '商机回复',
+        //   path: '/web/inquiry/reply',
+        //   keepAlive: false,
+        //   hidden: true,
+        //   level: 2
+        // },
+        {
           icon: 'icon-file',
           id: 'CP',
           name: '产品',
@@ -27,47 +52,47 @@ export const useMenuStore = defineStore({
           hidden: false,
           level: 1,
           children: [
-                {
-                  id: 'CPGL',
-                  name: '产品管理',
-                  path: '/web/webproduct/list',
-                  keepAlive: false,
-                  hidden: false,
-                  level: 2
-                },
-                // {
-                //   id: 'YXZS',
-                //   name: '优先展示',
-                //   path: '/web/webproduct/orderlist',
-                //   keepAlive: true,
-                //   hidden: false,
-                //   level: 3
-                // },
-                {
-                  id: 'FLGL',
-                  name: '分类管理',
-                  path: '/web/webcate/list',
-                  keepAlive: true,
-                  hidden: false,
-                  level: 2
-                },
-                {
-                  id: 'PLSZ',
-                  name: '批量设置',
-                  path: '/web/webproduct/proset',
-                  keepAlive: true,
-                  hidden: false,
-                  level: 2
-                },
-                // {
-                //   id: 'HGBM',
-                //   name: '海关编码',
-                //   path: '/web/webproduct/hscode',
-                //   keepAlive: true,
-                //   hidden: false,
-                //   level: 3
-                // }
-  
+            {
+              id: 'CPGL',
+              name: '产品管理',
+              path: '/web/webproduct/list',
+              keepAlive: false,
+              hidden: false,
+              level: 2
+            },
+            // {
+            //   id: 'YXZS',
+            //   name: '优先展示',
+            //   path: '/web/webproduct/orderlist',
+            //   keepAlive: true,
+            //   hidden: false,
+            //   level: 3
+            // },
+            {
+              id: 'FLGL',
+              name: '分类管理',
+              path: '/web/webcate/list',
+              keepAlive: true,
+              hidden: false,
+              level: 2
+            },
+            {
+              id: 'PLSZ',
+              name: '批量设置',
+              path: '/web/webproduct/proset',
+              keepAlive: true,
+              hidden: false,
+              level: 2
+            }
+            // {
+            //   id: 'HGBM',
+            //   name: '海关编码',
+            //   path: '/web/webproduct/hscode',
+            //   keepAlive: true,
+            //   hidden: false,
+            //   level: 3
+            // }
+
             // {
             //   id: 'GSZL',
             //   name: '公司资料',
@@ -151,7 +176,7 @@ export const useMenuStore = defineStore({
           children: [
             {
               id: 'XWZX',
-              name: '新闻中心',
+              name: '新闻',
               path: '/file/news',
               keepAlive: false,
               hidden: false,
@@ -160,13 +185,13 @@ export const useMenuStore = defineStore({
             },
             {
               id: 'ALZX',
-              name: '案例中心',
+              name: '案例',
               path: '/file/case',
               keepAlive: false,
               hidden: false,
               icon: 'menu-detail',
               level: 2
-            },
+            }
             // {
             //   id: 'FAQS',
             //   name: 'Faqs',
@@ -198,7 +223,7 @@ export const useMenuStore = defineStore({
           children: [
             {
               id: 'MB',
-              name: '模版',
+              name: '模板',
               path: 'mod',
               keepAlive: false,
               hidden: false,
@@ -248,6 +273,15 @@ export const useMenuStore = defineStore({
               id: 'JCXX',
               name: '基础信息',
               path: '/web/company/intro',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            },
+            {
+              id: 'LXXX',
+              name: '联系信息',
+              path: '/web/company/contact',
               keepAlive: false,
               hidden: false,
               icon: 'menu-detail',
@@ -315,7 +349,7 @@ export const useMenuStore = defineStore({
               hidden: false,
               icon: 'menu-detail',
               level: 2
-            },
+            }
           ]
         },
         // {
@@ -326,7 +360,7 @@ export const useMenuStore = defineStore({
         //   hidden: false,
         //   level: 1
         // },
-        
+
         {
           icon: 'icon-save',
           id: 'SCGL',
@@ -342,8 +376,19 @@ export const useMenuStore = defineStore({
           name: '后台设置',
           keepAlive: false,
           hidden: false,
-          level: 1
-        },
+          level: 1,
+          children: [
+            {
+              id: 'ZHGL',
+              name: '账户管理',
+              path: '/account/detail',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
+            }
+          ]
+        }
         // {
         //   icon: 'menu-form',
         //   id: 'BDGL',

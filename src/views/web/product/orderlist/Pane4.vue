@@ -2,7 +2,7 @@
   <div class="table-wrap">
     <div class="table-page">
       <a-alert type="warning" class="top-alert"
-        >提示：您可以选择 3 个主推分类放在在页脚的左侧、中部和右侧，每个分类最多可以选择 {{ flagMax }} 条产品。</a-alert
+        >提示：您可以选择 3 个主推分类放在页脚的左侧、中部和右侧，每个分类最多可以选择 {{ flagMax }} 条产品。</a-alert
       >
       <a-form label-align="right" ref="formRef" auto-label-width :model="form" class="form" direction="inline">
         <a-row :gutter="16" wrap>
@@ -14,14 +14,14 @@
               <a-button style="margin-left: 10px;" @click="cateFn">选择分类</a-button>
             </a-form-item>
           </a-col>
-          <a-col :xs="12" :md="12" :lg="8" :xl="5" :xxl="6">
+          <!-- <a-col :xs="12" :md="12" :lg="8" :xl="5" :xxl="6">
             <a-form-item field="p_uid" label="负责人">
               <a-select placeholder="所有负责人" v-model="form.p_uid">
                 <a-option value="">所有负责人</a-option>
                 <a-option v-for="item in personArr" :key="item.id" :value="item.id">{{ item.username }}</a-option>
               </a-select>
             </a-form-item>
-          </a-col>
+          </a-col> -->
           <a-col :xs="8" :md="8" :lg="6" :xl="6" :xxl="5">
             <a-form-item :hide-label="true">
               <a-space>
@@ -76,7 +76,7 @@
                   </a-link>
                 </template>
               </a-table-column>
-              <a-table-column title="产品关键字" :width="160">
+              <!-- <a-table-column title="产品关键字" :width="160">
                 <template #cell="{ record }">
                   <ul class="normal-ul">
                     <template v-for="(item, index) in record.keyword">
@@ -86,7 +86,7 @@
                     </template>
                   </ul>
                 </template>
-              </a-table-column>
+              </a-table-column> -->
               <a-table-column title="更新时间" data-index="uptime" :width="140" align="left"> </a-table-column>
               <a-table-column title="操作" :width="150" align="center">
                 <template #cell="{ record, rowIndex }">
@@ -130,7 +130,7 @@
           <a-button type="primary" @click="cateHandleOk" :loading="btnloading">确定</a-button>
         </template>
       </a-modal>
-      <productlist ref="listRef" :flagType="flag_type" @update="getTableData"></productlist>
+      <productlist ref="listRef" :cateName="cateName" :flagType="flag_type" @update="getTableData"></productlist>
     </div>
     <GiFooter></GiFooter>
   </div>
@@ -208,9 +208,13 @@ getTableData()
 const formRef = ref()
 const resetFn = () => {
   formRef.value && formRef.value.resetFields()
+  getTableData()
 }
 
 const goAdd = () => {
+  if (!cateName.value) {
+    return Message.warning('请选择分类')
+  }
   listRef.value?.showDialog()
 }
 const goEdit = (id: string) => {

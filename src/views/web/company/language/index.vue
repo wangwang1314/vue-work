@@ -7,9 +7,9 @@
     <div class="msg-detail detail">
       <a-form :model="form" layout="vertical" :auto-label-width="true">
         <a-card :bordered="false" title="网站语言">
-          <a-checkbox :value="1" v-model="form.langstate" style="margin: -10px 0 16px 0"
+          <!-- <a-checkbox :value="1" v-model="form.langstate" style="margin: -10px 0 16px 0"
             >是否关闭其他语言网站（关闭其他语言后，网站不可切换其他语言）</a-checkbox
-          >
+          > -->
           <a-form-item label="网站语言" :hide-label="true" :content-flex="false">
             <a-radio-group v-model="form.defaultlang">
               <template v-for="item in form.langs" :key="item">

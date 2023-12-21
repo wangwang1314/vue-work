@@ -13,7 +13,10 @@
             </a-form-item>
           </a-col>
           <a-col :span="9">
-            <a-form-item field="category_id" label="分类">
+            <a-form-item field="category_id" label="分类" v-if="props.flagType=='3' || props.flagType=='4' || props.flagType=='5'">
+              {{ props.cateName }}
+            </a-form-item>
+            <a-form-item field="category_id" label="分类" v-else>
               <a-select placeholder="请选择" v-model="form.category_id">
                 <a-option value="">所有分类</a-option>
                 <a-option v-for="item in catelist" :key="item.id" :value="item.id">{{ item.name }}</a-option>
@@ -73,6 +76,9 @@ const props = defineProps({
   flagType: {
     default: '1',
     type: String
+  },
+  cateName: {
+    type: String
   }
 })
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
@@ -83,6 +89,7 @@ const form = reactive({
 const formRef = ref()
 const resetFn = () => {
   formRef.value?.resetFields()
+  getTableData()
 }
 const catelist = ref([])
 const max = ref(0)

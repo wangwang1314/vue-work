@@ -2,9 +2,10 @@
   <a-layout-sider :collapsed="appStore.menuCollapse" breakpoint="xl" :width="232" class="asider">
     <a-menu
       :selected-keys="[activeKey]"
-      :default-open-keys="['Workplace']"
+      :default-open-keys="['overview']"
       :auto-open-selected="true"
       :style="{ width: '100%', height: '100%' }"
+      :accordion="true"
     >
       <div class="logo-box">
         <img
@@ -12,7 +13,7 @@
           :src="userStore.userInfo.homeInfo?.company?.logo_url"
         />
         <div class="robote" v-else><icon-robot :size="18" /></div>
-        <span>{{ userStore.userInfo.homeInfo?.company?.name }}</span>
+        <span>{{ userStore.userInfo.homeInfo?.ecweb?.name }}</span>
       </div>
       <div class="bg-color">
         <LoopMenuItem

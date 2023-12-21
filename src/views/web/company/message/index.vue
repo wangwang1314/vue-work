@@ -15,7 +15,7 @@
               <a-form-item label="客户名称">
                 <a-input
                   v-model="item.name"
-                  :max-length="{ length: 30, errorOnly: true }"
+                  :max-length="{ length: 30 }"
                   allow-clear
                   show-word-limit
                 ></a-input>
@@ -25,7 +25,7 @@
                   :auto-size="{
                     minRows: 2
                   }"
-                  :max-length="{ length: 350, errorOnly: true }"
+                  :max-length="{ length: 350 }"
                   allow-clear
                   show-word-limit
                   v-model="item.content"
@@ -65,7 +65,7 @@
         </a-row>
         <a-row class="full-width">
           <a-col :span="18">
-            <a-button type="primary" size="mini" style="margin: 8px 0 8px 0" @click="addList">添加</a-button>
+            <a-button type="primary" style="margin: 8px 0 8px 0" @click="addList">添加</a-button>
           </a-col>
         </a-row>
       </a-form>

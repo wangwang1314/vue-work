@@ -13,7 +13,7 @@
           </a-col>
           <a-col :xs="8" :md="8" :lg="7" :xl="5" :xxl="4">
             <a-form-item field="category_id" label="分类名称">
-              <a-select placeholder="所有分类" v-model="form.category_id" :allow-create="true">
+              <a-select placeholder="所有分类" v-model="form.category_id" @change="catechange" :allow-create="true">
                 <a-option value="" label="所有分类"></a-option>
                 <a-option v-for="item in cateArr" :key="item.id" :value="item.id" :label="item.name"></a-option>
               </a-select>
@@ -119,12 +119,12 @@
                   </div>
                   <div @click="addPic(record)" v-else>
                     <uploadcus></uploadcus>
-                  </div> 
+                  </div>
                 </template>
               </a-table-column>
               <a-table-column title="产品名称" :width="230">
                 <template #cell="{ record }">
-                  <a-link @click="goEdit(record.id)" class="link-class normal-link">{{ record.name }}</a-link>
+                  <span style="font-size: 12px; color: var(--color-text-7)">{{ record.name }}</span>
                 </template>
               </a-table-column>
               <a-table-column title="产品分类" :width="160">
@@ -153,7 +153,7 @@
               <a-table-column title="负责人" data-index="p_username" :width="100" align="left"></a-table-column> -->
               <a-table-column title="发布时间" data-index="addtime" :width="96" align="left">
                 <template #title>
-                  <div @click="sortFn('uptime')">
+                  <div @click="sortFn('uptime')" class="cus-cla">
                     {{ '发布时间' }}
                     <template v-if="form.order_by == 'uptime'">
                       <icon-arrow-down v-if="form.order == 'desc'" />
@@ -164,7 +164,7 @@
               </a-table-column>
               <a-table-column title="更新时间" data-index="uptime" :width="96" align="left">
                 <template #title>
-                  <div @click="sortFn('addtime')">
+                  <div @click="sortFn('addtime')" class="cus-cla">
                     {{ '更新时间' }}
                     <template v-if="form.order_by == 'addtime'">
                       <icon-arrow-down v-if="form.order == 'desc'" />
@@ -207,7 +207,7 @@
               <a-table-column title="操作" :width="100" align="center" fixed="right">
                 <template #cell="{ record }">
                   <a-space :size="4">
-                    <a-popconfirm type="warning" content="您确定要恢复该项吗?" @ok="recover(record)">
+                    <a-popconfirm type="warning" content="您确定要恢复吗?" @ok="recover(record)">
                       <a-button size="mini" type="text" status="danger">
                         <template #default>恢复</template>
                       </a-button>
@@ -339,7 +339,14 @@
         </template>
       </a-modal>
       <!-- 海关编码弹框 -->
-      <customs-code ref="customsCodeRef" @update="()=>{getTableData()}"></customs-code>
+      <customs-code
+        ref="customsCodeRef"
+        @update="
+          () => {
+            getTableData()
+          }
+        "
+      ></customs-code>
       <!--选择图片-->
       <pic-dialog ref="picDialogref" @change="picChange"></pic-dialog>
     </div>
@@ -421,7 +428,10 @@ const rowSelection: any = reactive({
   onlyCurrent: false
 })
 getTableData()
-
+const changepage = ref(0)
+const catechange = () => {
+  changepage.value = 1
+}
 const formRef = ref()
 const resetFn = () => {
   formRef.value && formRef.value.resetFields()
@@ -436,7 +446,6 @@ const goEdit = (id: string) => {
 const selectObj = reactive<webSelectObj>({
   keys: []
 })
-
 
 // 单个删除
 const delPro = async (row) => {
@@ -460,7 +469,7 @@ const proHandleOk = async () => {
   btnloading.value = true
   const res = await setHotspot({ product_ids: selectObj.keys })
   btnloading.value = false
-  if (res.code === 0) {  
+  if (res.code === 0) {
     proVisi.value = false
     Message.success('设置成功')
     selectObj.keys = []
@@ -525,7 +534,7 @@ const cateKey = ref('')
 const cateHandleCancel = () => {
   cateTag.value = false
 }
-const cateHandleOk = async() => {
+const cateHandleOk = async () => {
   btnloading.value = true
   const res = await editCategory({
     category_id: cateKey.value[0],
@@ -670,16 +679,14 @@ const batchDel = async () => {
   }
 }
 
-
-
 const picDialogref = ref()
 const addPic = (row) => {
   currentRow.value = row
   picDialogref.value?.showDialog()
 }
 const currentRow = ref({})
-const picChange = async(arr) => {
-  const idMap = arr.map((item)=> item.id)
+const picChange = async (arr) => {
+  const idMap = arr.map((item) => item.id)
   const res = await prSavePicture({
     product_id: currentRow.value.id,
     picture_id: idMap

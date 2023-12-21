@@ -164,7 +164,8 @@
                             </div>
 
                             <a-upload 
-                            :show-file-list="false" 
+                            :show-file-list="false"
+                            :on-before-upload="siglebefore"
                             @progress="sigleChange"
                             @success="sigleSuccess"
                             @error="sigleError"
@@ -208,7 +209,7 @@
                       <a-form-item label="认证证书">
                         <a-input
                           placeholder="请输入认证证书"
-                          v-model="form.details[0]['Model Number'].value"
+                          v-model="form.details[0]['Certification'].value"
                           allow-clear
                         />
                       </a-form-item>
@@ -219,7 +220,7 @@
                       <a-form-item label="型号">
                         <a-input
                           placeholder="请输入型号"
-                          v-model="form.details[0]['Certification'].value"
+                          v-model="form.details[0]['Model Number'].value"
                           allow-clear
                         />
                       </a-form-item>
@@ -255,45 +256,56 @@
                             <a-button @click="handleCancel2">取消</a-button>
                             <a-button type="primary" @click="handleOk2">确定</a-button>
                           </template>
-                          <div style="height: 500px; overflow: hidden">
+                          <div style="height: 500px; overflow: auto">
                             <a-table
                               :data="attrData"
                               :loading="reloading"
                               style="width: 100%"
-                              :scroll="{ y: '100%' }"
+                              
                               :pagination="false"
                               class="select-table"
+                              height="400"
                             >
                               <template #columns>
-                                <a-table-column title="推荐属性名" data-index="attr_name" align="center" :width="120">
+                                <a-table-column title="推荐属性名" data-index="attr_name" align="center" :width="200">
                                   <template #cell="{ record }">
-                                    <div
+                                    <!-- <div
                                       class="padding-cell cursor"
-                                      @click="selectCellFn(record.attr_name)"
+                                      @click="selectCellFn(record.attr_name, record.attr_value)"
                                       :class="selectKeyFn(record.attr_name)"
                                     >
                                       {{ record.attr_name }}
-                                    </div>
+                                      <a-input v-model="record.attr_name"></a-input>
+                                    </div> -->
+                                    <a-input v-model="record.attr_name" style="margin: 8px;width: 200px;"></a-input>
                                   </template>
                                 </a-table-column>
-                                <a-table-column title="推荐属性值" data-index="value" align="center">
+                                <a-table-column title="推荐属性值" data-index="value" align="center" :width="200">
                                   <template #cell="{ record }">
-                                    <div class="padding-cell">
-                                      <span v-for="(item, index) in record.attr_value" :key="item"
-                                        ><span
+                                    <!-- <div class="padding-cell">
+                                        <span
                                           class="cursor"
-                                          :class="selectValue(record.attr_name, item)"
-                                          @click="selectValClick(record.attr_name, item)"
-                                          >{{ item }}</span
-                                        ><template v-if="index != record.attr_value.length - 1">,</template>
-                                      </span>
-                                      <!-- {{ record.attr_value && record.attr_value.toString() }} -->
-                                    </div>
+                                          :class="selectValue(record.attr_name, record.attr_value)"
+                                          @click="selectValClick(record.attr_name, record.attr_value)"
+                                          >{{ record.attr_value }}</span
+                                        >
+                                    </div> -->
+                                    <a-input v-model="record.attr_value" style="margin: 0 8px;"></a-input>
+                                  </template>
+                                </a-table-column>
+                                <a-table-column title="操作" data-index="value" align="center" :width="100">
+                                  <template #cell="{ record, rowIndex }">
+                                    <icon-close-circle-fill class="del-class" size="16" @click="delaiCous(rowIndex)" />
                                   </template>
                                 </a-table-column>
                               </template>
                             </a-table>
+                            <div class="cus-btn-wrap">
+                              <a-button @click="addaiCou()"><Icon-plus></Icon-plus></a-button>
+                              <span>属性名和属性值必须同时填写，例如、：Color:Red</span>
+                           </div>
                           </div>
+                         
                         </a-modal>
                         <a-table
                           :data="couArr"
@@ -449,7 +461,7 @@
                                   class="arco-upload-drag-text"
                                   style="padding: 0 16px; margin-top: 6px; color: var(--color-text-6); font-size: 12px"
                                 >
-                                  Only pdf, png, jpg can be uploaded, and the size does not exceed
+                                  Only pdf can be uploaded, and the size does not exceed
                                   100MB（不能上传含有中文名的文件）
                                 </div>
                               </div>
@@ -554,7 +566,8 @@ import {
   proEditProduct,
   qualityControl,
   pictureDdel,
-  getVideoDetail
+  getVideoDetail,
+  addCategory
 } from '@/apis'
 import { useUserStore, useFileStore } from '@/store'
 import successTpl from './mod/success.vue'
@@ -735,7 +748,7 @@ const form = reactive({
         id: ''
       }
     },
-    '2': {}
+    '5': {}
   },
   checked: true,
   remark: '',
@@ -801,7 +814,6 @@ const picChange = (imgArr) => {
 }
 const picUploadChange = (file) => {
   fileList.value = file
-  // console.log(file, file[2].status, file[2].percent)
   // fileList.value.push(file[file.length - 1])
 }
 const successUpload = (res) => {
@@ -809,6 +821,7 @@ const successUpload = (res) => {
     res.id = res.response.data?.picture_id
     res.url = res.response.data?.picture_url
   } else {
+    Message.warning(res.response.message || '操作失败')
     res.status = 'error'
   }
 }
@@ -913,12 +926,22 @@ const handleCancel2 = () => {
   showTable2.value = false
   selectedArr.value = []
 }
+const delaiCous = (index) => {
+  attrData.value.splice(index, 1)
+}
+const addaiCou = () => {
+  attrData.value.push({
+    attr_name: '',
+    attr_value: ''
+  })
+}
 const handleOk2 = () => {
   showTable2.value = false
-  selectedArr.value.forEach((item) => {
-    const index = lodash.findIndex(couArr.value, { keys: item.keys })
+  console.log(attrData.value, '3333')
+  attrData.value.forEach((item) => {
+    const index = lodash.findIndex(couArr.value, { keys: item.attr_name })
     if (index == -1) {
-      couArr.value.push({ keys: item.keys, value: item.value?.toString() })
+      couArr.value.push({ keys: item.attr_name, value: item.attr_value?.toString() })
     }
   })
 }
@@ -976,7 +999,7 @@ const goScrollTop = (vali) => {
 }
 const getSubObj = () => {
   const { name, id, category_id, remark, details, seo, tags } = form
-  details[2] = revesKey(couArr)
+  details[5] = revesKey(couArr)
   details[1]['Payment Terms'].value = details[1]['Payment Terms'].value?.toString()
   const picture_ids = fileList.value.map((item) => {
     return item.id
@@ -1032,6 +1055,14 @@ const saveFn = (priview) => {
 }
 const addProSub = async (priview: string) => {
   priview == 'priview' ? (loading1.value = true) : (loading.value = true)
+  if (!cateOptions.value.length) {
+    const result = await addCategory({
+      name: 'Unnamed Category'
+    })
+    if (result.code == 0) {
+      form.category_id = result.data.category_id
+    }
+  }
   const res = await proEditProduct(getSubObj()).finally(() => {
     priview == 'priview' ? (loading1.value = false) : (loading.value = false)
   })
@@ -1048,6 +1079,14 @@ const addProSub = async (priview: string) => {
 }
 const editProSub = async (priview: string) => {
   priview == 'priview' ? (loading1.value = true) : (loading.value = true)
+  if (!cateOptions.value.length) {
+    const result = await addCategory({
+      name: 'Unnamed Category'
+    })
+    if (result.code == 0) {
+      form.category_id = result.data.category_id
+    }
+  }
   const res = await proEditProduct(getSubObj()).finally(() => {
     priview == 'priview' ? (loading1.value = false) : (loading.value = false)
   })
@@ -1117,6 +1156,7 @@ const fileSuccess = (res) => {
     res.uid = res.response?.data.document.cid
     defaultfilelist.value.push(res)
   } else {
+    Message.warning(res.response.message || '操作失败')
     res.status = 'error'
   }
 }
@@ -1154,7 +1194,7 @@ const reverdetail = (product) => {
   if (details) {
     Object.assign(form.details['0'], details['0'])
     Object.assign(form.details['1'], details['1'])
-    Object.assign(form.details['2'], details['2'])
+    Object.assign(form.details['5'], details['5'])
   }
   Object.assign(form.tags, tags)
   if (seo) {
@@ -1164,13 +1204,13 @@ const reverdetail = (product) => {
       description: seo.description
     }
   }
-  if (form.details['2']) {
+  if (form.details['5']) {
     let arr = []
-    for (const key in form.details['2']) {
+    for (const key in form.details['5']) {
       arr.push({
-        ...form.details['2'][key],
+        ...form.details['5'][key],
         keys: key,
-        value: form.details['2'][key].value
+        value: form.details['5'][key].value
       })
     }
     couArr.value = arr
@@ -1242,12 +1282,12 @@ const selectKeyFn = (val: string) => {
   const index = lodash.findIndex(selectedArr.value, { keys: val })
   return index >= 0 ? 'cell-active' : ''
 }
-const selectCellFn = (val: string) => {
+const selectCellFn = (val: string, value) => {
   const index = lodash.findIndex(selectedArr.value, { keys: val })
   if (index == -1) {
     selectedArr.value.push({
       keys: val,
-      value: []
+      value: value
     })
   } else {
     selectedArr.value.splice(index, 1)
@@ -1261,8 +1301,8 @@ const selectValue = (key, value) => {
   if (index == -1) {
     return ''
   } else {
-    const valueArr = selectedArr.value[index].value
-    if (valueArr.indexOf(value) != -1) {
+    const valuechose = selectedArr.value[index].value
+    if (valuechose == value) {
       return 'active-span'
     }
   }
@@ -1270,7 +1310,7 @@ const selectValue = (key, value) => {
 const selectValClick = (key, value) => {
   const index = lodash.findIndex(selectedArr.value, { keys: key })
   if (index == -1) {
-    selectedArr.value.push({ keys: key, value: [value] })
+    selectedArr.value.push({ keys: key, value: value })
   } else {
     const valueArr = selectedArr.value[index].value
     const valueIndex = valueArr.indexOf(value)
@@ -1283,8 +1323,11 @@ const selectValClick = (key, value) => {
 }
 const isuploading = ref(false)
 const percent = ref(0)
-const sigleChange = (res) => {
+const siglebefore = (res) => {
   isuploading.value = true
+  return res
+}
+const sigleChange = (res) => {
   percent.value = res.percent
 }
 const sigleError = () => {
@@ -1295,11 +1338,12 @@ const sigleSuccess = async(result) => {
     const res = await getVideoDetail({id: result.response?.data.id})
     if (res.code === 0) {
       videoChosed.value.push(res.data.video)
+    } else {
+      Message.warning(res.response.message || '操作失败')
     }
     
-    isuploading.value = false
   }
-  
+  isuploading.value = false
 }
 
 </script>

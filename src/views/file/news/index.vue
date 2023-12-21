@@ -24,7 +24,7 @@
                   >
                   </a-input-search>
                   <a-button size="small" status="danger" type="text" @click="showPopFn">
-                    <template #default>删除</template>
+                    <template #default>批量删除</template>
                   </a-button>
                 </a-space>
               </a-form-item>

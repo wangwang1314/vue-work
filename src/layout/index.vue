@@ -3,8 +3,9 @@
     <Asider></Asider>
     <a-layout>
       <!-- <NavTab></NavTab> -->
-      <Header v-if="!routeNameArr.includes(route.name)"></Header>
+      <Header v-if="!routeNameArr.includes(route.name) && !inquiryRouteNameArr.includes(route.name)"></Header>
       <productHeader v-if="routeNameArr.includes(route.name)"></productHeader>
+      <inquiryHeader v-if="inquiryRouteNameArr.includes(route.name)"></inquiryHeader>
       <Main></Main>
     </a-layout>
     <!-- <a-layout-header>Header</a-layout-header>
@@ -13,6 +14,7 @@
         <a-layout-content>Content</a-layout-content>
       </a-layout>
       <a-layout-footer>Footer</a-layout-footer> -->
+    <allicon></allicon>
   </a-layout>
 </template>
 
@@ -22,8 +24,10 @@ import { useRoute, useRouter } from 'vue-router'
 import Asider from './components/Asider.vue'
 import Header from './components/Header.vue'
 import productHeader from './components/productHeader.vue'
+import inquiryHeader from './components/inquiryHeader.vue'
 import Main from './components/Main.vue'
 import NavTab from './components/NavTab.vue'
+import allicon from './components/all-icon.vue'
 const route = useRoute()
 const routeNameArr = [
   'productadd',
@@ -35,8 +39,10 @@ const routeNameArr = [
   'webcompanypolicy',
   'webcompanylanguage',
   'webcompanystatisticedit',
-  'webcompanyquality'
+  'webcompanyquality',
+  'webcompanycontact'
 ]
+const inquiryRouteNameArr = ['inquiryDetail', 'inquiryReply']
 watch(
   () => route.query,
   () => {},

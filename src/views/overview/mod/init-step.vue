@@ -5,7 +5,7 @@
       <div class="m-right"></div>
     </div>
     <div class="init-step">
-      <div v-if="userStore.hasonline == 1">
+      <div v-if="userStore.getcheckstate == '1'">
         <exa4></exa4>
       </div>
       <div v-else-if="userStore.getcheckstate == '-1'">
@@ -17,9 +17,9 @@
       <div v-else-if="userStore.getcheckstate == '2'">
         <exa2></exa2>
       </div>
-      <div v-else-if="userStore.getcheckstate == '1'">
+      <!-- <div v-else-if="userStore.getcheckstate == '1'">
         <exa3></exa3>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -43,7 +43,7 @@ const userStore = useUserStore()
   margin-top: 16px;
   border-radius: 8px;
   box-shadow: 0px 2px 40px 4px rgba(0, 30, 125, 0.08);
-  height: 296px;
+  height: 316px;
   background: url('@/assets/images/progress_bg.jpeg') no-repeat;
   background-position: center;
   background-size: auto 100%;

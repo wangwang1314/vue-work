@@ -55,7 +55,7 @@
         </div>
         <div
           class="l-btn"
-          v-loading="disabled"
+          v-loading="loadinged"
           :class="{ disabled: disabled, grash: status[type] != '2' && type != '3' }"
           @click="submit"
           gi-loading-type="circle"
@@ -90,6 +90,7 @@ const status = reactive({
 })
 const type = ref('1')
 const disabled = ref(false)
+const loadinged = ref(false)
 const submit = async () => {
   let dataurl = ''
   if (type.value == '1') {
@@ -97,9 +98,12 @@ const submit = async () => {
   } else if (type.value == '2') {
     dataurl = form.value.made
   }
+  loadinged.value = true
   const res = await guideDatafrom({
     datafrom: type.value,
     dataurl
+  }).finally(() => {
+    loadinged.value = false
   })
   if (res.code == 0) {
     Message.success(res.message || '操作成功')
@@ -110,18 +114,29 @@ const changeType = (val) => {
   type.value = val
 }
 const checkFn = async () => {
+  status[type.value] = '0'
   let url = ''
   if (type.value == '1') {
     url = form.value.ali
+    if (url && form.value.ali.indexOf('alibaba.com')==-1) {
+      status[type.value] = '3'
+      return
+    }
   } else {
     url = form.value.made
+    if (url && form.value.made.indexOf('made-in-china.com')==-1) {
+      status[type.value] = '3'
+      return
+    }
   }
   if (!url) {
+    status[type.value] = '0'
     return
   }
   status[type.value] = '1'
   const res = await guideDataurlcheck({
-    url
+    url,
+    datafrom: type.value
   })
   if (res.code == 0) {
     if (res.data == 200) {
@@ -132,8 +147,11 @@ const checkFn = async () => {
   }
 }
 const goOver = () => {
-  router.push({ path: '/overview' })
+  userStore.getHomeinfo(() => {
+    router.push({ path: '/overview' })
+  })
 }
+
 const nextFn = async() => {
   const res = await guidejump()
   if (res.code == 0) {

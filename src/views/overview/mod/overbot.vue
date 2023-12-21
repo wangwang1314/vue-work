@@ -2,7 +2,13 @@
   <div class="over-bot">
     <div class="tab-wrap">
       <div class="left">
-        <div class="l-item" @click="changeStep(index)" :class="{'active': step == index}" v-for="(item, index) in tabArr" :key="index">
+        <div
+          class="l-item"
+          @click="changeStep(index)"
+          :class="{ active: step == index }"
+          v-for="(item, index) in tabArr"
+          :key="index"
+        >
           <i></i><span>{{ item }}</span>
         </div>
       </div>
@@ -12,13 +18,13 @@
             <div class="text">
               完善产品的多样性、差异化，定期发布高质量的产品内容，可以增加网站活跃度，更容易让爬虫光顾您的网站，达到收录的目的。
             </div>
-            <div class="l-btn s"><span>产品添加</span><icon-arrow-right /></div>
+            <div class="l-btn s" @click="goproduct"><span>产品添加</span><icon-arrow-right /></div>
           </div>
           <div class="content-item" v-show="step == 1">
             <div class="text">
               真实有效的公司信息往往更能给访客提供足够的信任感、安全感，并且有利于品牌推广，让访客对公司的产品产生好感。
             </div>
-            <div class="l-btn s"><span>立即完善</span><icon-arrow-right /></div>
+            <div class="l-btn s" @click="gocompany"><span>立即完善</span><icon-arrow-right /></div>
           </div>
           <div class="content-item" v-show="step == 2">
             <div class="text">
@@ -48,6 +54,12 @@ const step = ref(0)
 const tabArr = ref(['发布产品', '完善公司资料', '提升SEO效果', '广告投放'])
 const changeStep = (val) => {
   step.value = val
+}
+const goproduct = () => {
+  router.push({ path: '/web/webproduct/detail' })
+}
+const gocompany = () => {
+  router.push({ path: '/web/company/intro' })
 }
 </script>
 <style lang="scss" scoped>
@@ -141,7 +153,12 @@ const changeStep = (val) => {
             position: absolute;
             left: 0;
             top: 0;
-            background: linear-gradient(135.00deg, rgb(43, 89, 255) 0%,rgb(105, 87, 255) 58.779%,rgb(167, 86, 255) 99.237%);
+            background: linear-gradient(
+              135deg,
+              rgb(43, 89, 255) 0%,
+              rgb(105, 87, 255) 58.779%,
+              rgb(167, 86, 255) 99.237%
+            );
           }
         }
       }
@@ -176,7 +193,7 @@ const changeStep = (val) => {
   color: #fff;
   cursor: pointer;
   user-select: none;
-  background: linear-gradient(135.00deg, rgb(43, 89, 255) 0%,rgb(105, 87, 255) 58.779%,rgb(167, 86, 255) 99.237%);
+  background: linear-gradient(135deg, rgb(43, 89, 255) 0%, rgb(105, 87, 255) 58.779%, rgb(167, 86, 255) 99.237%);
   transition: all 0.3s;
   margin-top: 44px;
   span {
@@ -192,7 +209,7 @@ const changeStep = (val) => {
   pointer-events: none;
 }
 .l-btn:hover {
-  background: linear-gradient(135.00deg, rgb(0, 53, 245) 0%,rgb(105, 87, 255) 58.779%,rgb(158, 0, 255) 99.724%);
+  background: linear-gradient(135deg, rgb(0, 53, 245) 0%, rgb(105, 87, 255) 58.779%, rgb(158, 0, 255) 99.724%);
 }
 .l-btn.grash {
   background: rgb(201, 205, 212);

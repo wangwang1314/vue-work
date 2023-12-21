@@ -34,33 +34,42 @@ export const useUserStore = defineStore({
       return this.userInfo.name
     },
     goRoute(): string {
-      if (this.userInfo.homeInfo && !this.userInfo.homeInfo.ecweb) {
-        return '/agreement'
-      } else if (this.userInfo.homeInfo && this.userInfo.homeInfo.company && !this.userInfo.homeInfo.company.name) {
-        return '/guide1'
-      } else if (this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && !this.userInfo.homeInfo.ecweb.datafrom && !this.userInfo.homeInfo.ecweb.jsjump) {
+      if (
+        this.userInfo.homeInfo &&
+        this.userInfo.homeInfo.ecweb &&
+        !this.userInfo.homeInfo.ecweb.datafrom &&
+        !this.userInfo.homeInfo.ecweb.jsjump
+      ) {
         return '/guide2'
       }
       return ''
     },
+    getuplinestate(): number {
+      return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.uplinestate
+    },
     getcheckstate(): number {
       return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.checkstate
     },
-    getdatafrom ():number {
+    getdatafrom(): number {
       return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.datafrom
     },
-    getdomaintype():number {
+    getdomaintype(): number {
       return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.domaintype
     },
-    getdataurl():number {
+    getdataurl(): number {
       return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.dataurl
     },
-    hasonline():number {
-      return this.userInfo.homeInfo && this.userInfo.homeInfo.opscompanyinfo && this.userInfo.homeInfo.opscompanyinfo.status
+    hasonline(): number {
+      return (
+        this.userInfo.homeInfo && this.userInfo.homeInfo.opscompanyinfo && this.userInfo.homeInfo.opscompanyinfo.status
+      )
+    },
+    getmgkshow(): number {
+      return this.userInfo.homeInfo && this.userInfo.homeInfo.mgkshow
     }
   },
   actions: {
-    setcheckstate (state) {
+    setcheckstate(state) {
       this.userInfo.homeInfo.ecweb.checkstate = state
     },
     // 登录
@@ -81,17 +90,19 @@ export const useUserStore = defineStore({
         await userLogout()
         this.userInfo.homeInfo = undefined
         clearToken()
+        location.href = 'https://uc.ecer.com/home/logouts?goto=https://uc.ecer.com/home/login'
       } catch (err) {
         return err
       }
     },
     // 获取首页信息
-    async getHomeinfo() {
+    async getHomeinfo(callback) {
       try {
         const res = await getHome()
         if (res.code == 0) {
           this.userInfo.homeInfo = res.data
           this.hasinfo()
+          callback && callback()
         }
       } catch (err) {
         return err
@@ -106,7 +117,7 @@ export const useUserStore = defineStore({
       this.userInfo.showMain = mode
     },
     hasinfo() {},
-    setOnlineState (val) {
+    setOnlineState(val) {
       if (this.userInfo.homeInfo && this.userInfo.homeInfo.opscompanyinfo) {
         this.userInfo.homeInfo.opscompanyinfo.status = val
       }

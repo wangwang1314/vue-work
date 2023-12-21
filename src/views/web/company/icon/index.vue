@@ -5,14 +5,7 @@
       <div class="m-right"></div>
     </div>
     <div class="msg-detail detail">
-      <a-form
-        ref="formRef"
-        size="medium"
-        :model="form"
-        layout="vertical"
-        :auto-label-width="true"
-        label-align="left"
-      >
+      <a-form ref="formRef" size="medium" :model="form" layout="vertical" :auto-label-width="true" label-align="left">
         <a-card :bordered="false">
           <a-form-item
             field="cate"
@@ -83,6 +76,7 @@ const successUploadlogo = (res) => {
     res.url = res.response.data?.icon_path + '?' + new Date().getTime()
     res.picture_path = res.response.data?.icon_path
   } else {
+    Message.warning(res.response.message || '操作失败')
     res.status = 'error'
   }
 }
@@ -106,7 +100,7 @@ const getData = async () => {
   }
 }
 getData()
-const removeFn = async() => {
+const removeFn = async () => {
   const res = await companywebsetdelicon()
   if (res.code == 0) {
     fileLogo.value = []

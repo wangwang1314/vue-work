@@ -5,7 +5,7 @@
       :mask-closable="false"
       :width="900"
       :body-style="{ minHeight: '500px' }"
-      title="产品列表"
+      title="选择链接"
     >
       <template #footer>
         <a-button @click="handleBeforeOk" type="primary" :loading="btnloading">确定</a-button>
@@ -25,7 +25,7 @@
             </div>
             
           </div>
-          <div class="radio-item">
+          <div class="radio-item" v-if="isvr">
             <a-radio value="3" v-model="checkRadio">点击图片跳转到VR页</a-radio>
           </div>
           <div class="radio-item">
@@ -100,6 +100,10 @@ const props = defineProps({
   flagType: {
     default: '1',
     type: String
+  },
+  isvr: {
+    default: false,
+    type: Boolean
   }
 })
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
@@ -150,7 +154,7 @@ const handleCancel = () => {
 }
 const btnloading = ref(false)
 const handleBeforeOk = async () => {
-  btnloading.value = true
+  
   if (checkRadio.value) {
     let sid;
     if (checkRadio.value == 3) {
@@ -166,6 +170,7 @@ const handleBeforeOk = async () => {
       }
       sid = selectedKeys.value[0]
     }
+    btnloading.value = true
     const res = await setLink({
       type: (checkRadio.value == 3) ? 4 : checkRadio.value,
       id: videoId.value,
@@ -178,7 +183,7 @@ const handleBeforeOk = async () => {
       Message.success(res.message || '操作成功')
     }
   } else {
-    visible.value = false
+    Message.warning('请选择链接方式')
   }
 }
 const videoId = ref('')

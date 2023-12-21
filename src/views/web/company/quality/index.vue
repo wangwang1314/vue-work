@@ -33,7 +33,7 @@
                 size="mini"
                 class="drag-upload"
                 draggable
-                :data="{ type: '33' }"
+                :data="{ type: uploadtype }"
                 :file-list="defaultfilelist"
                 :custom-icon="getCustomIcon()"
                 @success="fileSuccess"
@@ -47,11 +47,11 @@
                 </template>
               </a-upload>
               <div class="arco-upload-drag img-drag" v-if="defaultfilelist.length">
-                <icon-close-circle @click="imgdel" class="close-class" :size="18"/>
+                <icon-close-circle @click="imgdel" class="close-class" :size="18" />
                 <img :src="defaultfilelist[0] && defaultfilelist[0].picture_url" class="d-img" alt="" />
               </div>
             </a-col>
-            <a-col :span="18">
+            <a-col :span="14">
               <a-form-item label="证书类型（Standard）">
                 <a-input v-model="currentData.standard"></a-input>
               </a-form-item>
@@ -59,10 +59,10 @@
                 <a-input v-model="currentData.number"></a-input>
               </a-form-item>
               <a-form-item label="颁发日期（Issue Date）">
-                <a-input v-model="currentData.issuedate"></a-input>
+                <a-date-picker style="width: 100%" v-model="currentData.issuedate"/>
               </a-form-item>
               <a-form-item label="失效日期（Expiry Date）">
-                <a-input v-model="currentData.expiredate"></a-input>
+                <a-date-picker style="width: 100%" v-model="currentData.expiredate"/>
               </a-form-item>
               <a-form-item label="适用范围（Scope/Range）">
                 <a-input v-model="currentData.scope"></a-input>
@@ -137,7 +137,7 @@ import IconFileAudio from '@arco-design/web-vue/es/icon/icon-file-audio'
 import IconClose from '@arco-design/web-vue/es/icon/icon-close'
 import IconFaceFrownFill from '@arco-design/web-vue/es/icon/icon-face-frown-fill'
 const fileStore = useFileStore()
-
+const uploadtype = ref('5')
 const titArray = reactive({ count1: 0, count2: 0, count3: 0 })
 const activeKey = ref(1)
 const updateFn = (data) => {
@@ -168,7 +168,7 @@ const picUploadUrl = baseURL + '?r=picture/upload'
 
 const formRef = ref()
 
-const currentData = reactive({
+const currentData = ref({
   id: '',
   standard: '',
   number: '',
@@ -183,7 +183,7 @@ const getData = async () => {
     const { qcinfo, certificates } = res.data
     form.qcinfo = qcinfo
     form.certificates = certificates || []
-    Object.assign(currentData, {
+    currentData.value = {
       id: '',
       standard: '',
       number: '',
@@ -191,7 +191,7 @@ const getData = async () => {
       expiredate: '',
       scope: '',
       issuedby: ''
-    })
+    }
     defaultfilelist.value = []
   }
 }
@@ -199,12 +199,15 @@ getData()
 const saveFn = async () => {
   fileStore.setloading(true)
   const cur = {}
-  if (!checkEmpty(currentData)) {
-    Object.assign(cur, currentData)
+  console.log(currentData.value, '5555')
+  if (!checkEmpty(currentData.value)) {
+    Object.assign(cur, currentData.value)
     if (defaultfilelist.value.length) {
       cur.picture_info = {
         id: defaultfilelist.value[0].id
       }
+    } else {
+      cur.picture_info = {}
     }
   }
   const res = await companysaveqc({
@@ -243,7 +246,7 @@ const del = (item) => {
   })
 }
 const edit = (item) => {
-  Object.assign(currentData, item)
+  Object.assign(currentData.value, item)
   if (item.picture_info) {
     defaultfilelist.value = []
     defaultfilelist.value.push(item.picture_info)
@@ -285,10 +288,13 @@ const imgdel = () => {
 }
 
 const delPicAjax = async () => {
+  if (!currentData.value.id) {
+    return
+  }
   const res = await pictureDdel({
     id: defaultfilelist.value[0] && defaultfilelist.value[0].id,
-    sid: userStore.userInfo.homeInfo.company.id,
-    type: '33'
+    sid: currentData.value.id,
+    type: uploadtype.value
   })
   if (res.code == 0) {
     defaultfilelist.value = []

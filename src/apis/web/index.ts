@@ -1,5 +1,18 @@
 import axios from '@/utils/http'
-import type { productdata, productparams, similarParams, PrListParams, PrFlagUp, PrFlagList, aiParams, aiRecommendRes } from './type'
+import type {
+  productdata,
+  productparams,
+  similarParams,
+  PrListParams,
+  PrFlagUp,
+  PrFlagList,
+  aiParams,
+  aiRecommendRes,
+  InquirylistParams,
+  InquirylistRes,
+  IndexflagParams,
+  IndexflaglistRes
+} from './type'
 import qs from 'qs'
 const baseURL = import.meta.env.VITE_API_BASE_AJAX
 /** @desc 获取商品列表信息 */
@@ -144,5 +157,49 @@ export function prWebsetNav(params: PrFlagList) {
 /** @desc 保存导航信息 */
 export function prWebsetSaveNav(params: PrFlagList) {
   return axios.post<ApiRes<aiRecommendRes>>(`${baseURL}?r=webset/save-nav`, qs.stringify(params))
+}
+/** @desc 获取商机列表 */
+export function getInquiryList(params: InquirylistParams) {
+  return axios.get<ApiRes<InquirylistRes>>(`${baseURL}?r=inquiry/list`, params)
+}
+/** @desc 置顶询盘 */
+export function setindexflag(params: IndexflagParams) {
+  return axios.get<ApiRes<IndexflaglistRes>>(`${baseURL}?r=inquiry/setindexflag`, params)
+}
+/** @desc 删除询盘 */
+export function delInquiry(params: any) {
+  return axios.get<ApiRes<any>>(`${baseURL}?r=inquiry/del-inquiry`, params)
+}
+/** @desc 询盘详情 */
+export function detailInquiry(params: any) {
+  return axios.get<ApiRes<any>>(`${baseURL}?r=inquiry/detail`, params)
+}
+/** @desc 智能询盘聊天详情 */
+export function chatLists(params: any) {
+  return axios.get<ApiRes<any>>(`${baseURL}?r=inquiry/chat-lists`, params)
+}
+/** @desc 询盘翻译 */
+export function translateInquiry(params: any) {
+  return axios.post<ApiRes<any>>(`${baseURL}?r=inquiry/translate-message`, qs.stringify(params))
+}
+/** @desc 询盘附件上传 */
+export function addAttachment(params: any) {
+  return axios.post<ApiRes<any>>(`${baseURL}?r=inquiry/add-attachment`, qs.stringify(params))
+}
+/** @desc 询盘回复 */
+export function inquiry(params: any) {
+  return axios.post<ApiRes<any>>(`${baseURL}?r=inquiry/reply`, qs.stringify(params))
+}
+/** @desc 重发询盘邮件 */
+export function reSend(params: any) {
+  return axios.get<ApiRes<any>>(`${baseURL}?r=inquiry/re-send`, params)
+}
+/** @desc 获取邮箱签名 */
+export function getMailsign(params: any) {
+  return axios.post<ApiRes<any>>(`${baseURL}?r=inquiry/get-mailsign`, qs.stringify(params))
+}
+/** @desc 设置邮件签名 */
+export function setMailsign(params: any) {
+  return axios.get<ApiRes<any>>(`${baseURL}?r=inquiry/set-mailsign`, params)
 }
 export * from './mod/addpro'

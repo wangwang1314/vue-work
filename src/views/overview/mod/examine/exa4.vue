@@ -1,8 +1,14 @@
 <template>
   <div class="inner-wrap">
     <img src="@/assets/images/success.png" alt="">
-    <div class="tit">恭喜您，网站上线完成！</div>
-    <div class="sub-tit">您可以继续进行 <span class="e-link" @click="gopro">产品发布</span>、<span class="e-link" @click="goweb">网站装修</span> 来提升网站质量，也可以通过 <span class="e-link">营销推广</span> 来快速获得访客商机</div>
+    <template v-if="userStore.getuplinestate==1">
+      <div class="tit">恭喜您，网站上线完成！</div>
+      <div class="sub-tit">您可以继续进行 <span class="e-link" @click="gopro">产品发布</span>、<span class="e-link" @click="goweb">网站装修</span> 来提升网站质量，也可以通过 <span class="e-link">营销推广</span> 来快速获得访客商机</div>
+    </template>
+    <template v-else>
+      <div class="tit">网站上线中</div>
+      <div class="sub-tit">您可以继续进行 <span class="e-link" @click="gopro">产品发布</span>、<span class="e-link" @click="goweb">网站装修</span> 来提升网站质量</div>
+    </template>
   </div>
 </template>
 <script setup lang="ts" name="exa4">
@@ -12,6 +18,7 @@ import { useUserStore, useNavTabStore } from '@/store'
 import type { LoginParams } from '@/apis'
 const router = useRouter()
 const userStore = useUserStore()
+const isonline = ref(true)
 const gopro = () => {
   router.push({path: '/web/webproduct/detail'})
 }

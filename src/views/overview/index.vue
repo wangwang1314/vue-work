@@ -1,7 +1,7 @@
 <template>
   <div class="overview-out">
     <div class="overview">
-      <init-step></init-step>
+      <init-step v-if="userStore.getmgkshow!=1"></init-step>
       <overcenter></overcenter>
       <overbot></overbot>
     </div>

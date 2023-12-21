@@ -12,6 +12,33 @@ const Webadd = {
       },
       children: [
         {
+          path: '/web/inquiry',
+          name: 'inquiry', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+          meta: {
+            title: '商机',
+            keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+          },
+          component: () => import('@/views/inquiry/main/index.vue')
+        },
+        {
+          path: '/web/inquiry/detail',
+          name: 'inquiryDetail',
+          component: () => import('@/views/inquiry/detail/index.vue'),
+          meta: {
+            title: '商机详情',
+            keepAlive: true
+          }
+        },
+        {
+          path: '/web/inquiry/reply',
+          name: 'inquiryReply',
+          component: () => import('@/views/inquiry/reply/index.vue'),
+          meta: {
+            title: '商机回复',
+            keepAlive: true
+          }
+        },
+        {
           path: '/web/webproduct',
           name: 'webproduct', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
           meta: {
@@ -79,7 +106,16 @@ const Webadd = {
               name: 'webcompanyintro', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
               component: () => import('@/views/web/company/main/index.vue'),
               meta: {
-                title: '公司介绍',
+                title: '基础信息',
+                keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              }
+            },
+            {
+              path: '/web/company/contact',
+              name: 'webcompanycontact', // 如果想要缓存此页面，那么 name 必须与页面组件名一致
+              component: () => import('@/views/web/company/contact/index.vue'),
+              meta: {
+                title: '联系信息',
                 keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
               }
             },
@@ -210,7 +246,7 @@ const Webadd = {
             title: '导航',
             keepAlive: false // 如果想要缓存此页面，那么 name 必须与页面组件名一致
           },
-          component: () => import('@/views/navlink/index.vue'),
+          component: () => import('@/views/navlink/index.vue')
         }
       ]
     }

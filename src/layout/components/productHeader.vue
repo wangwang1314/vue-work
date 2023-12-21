@@ -7,7 +7,7 @@
     </section>
     <a-space class="system-head" v-if="route.name === 'productadd'">
       <a-button @click="cancel" :disabled="fileStore.loading">取消</a-button>
-      <a-checkbox-group v-model="fileStore.checkdata" style="margin: 0 0 0 48px">
+      <!-- <a-checkbox-group v-model="fileStore.checkdata" style="margin: 0 0 0 48px">
         <a-checkbox :value="1"
           >AI优化发布
           <a-popover title="Title">
@@ -28,7 +28,7 @@
             </template>
           </a-popover>
         </a-checkbox>
-      </a-checkbox-group>
+      </a-checkbox-group> -->
       <a-button type="primary" @click="confirm" :loading="fileStore.loading">
         发布
         <template #icon><icon-send /></template>
@@ -97,7 +97,8 @@ const nogobackarr = ref([
   'webcompanyfactory',
   'webcompanypolicy',
   'webcompanylanguage',
-  'webcompanyquality'
+  'webcompanyquality',
+  'webcompanycontact'
 ])
 </script>
 

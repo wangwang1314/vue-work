@@ -13,10 +13,10 @@
         <div class="guide-inner-content">
           <a-form :model="form" layout="vertical" ref="formref">
             <a-form-item field="webname" label="您想建立的网站名称" :rules="rules">
-              <a-input v-model.trim="form.webname" placeholder="6~20个英文字符" />
+              <a-input v-model="form.webname" placeholder="6~20个英文字符" />
             </a-form-item>
             <a-form-item field="companyname" label="您的英文公司名称" :rules="rules2">
-              <a-input v-model.trim="form.companyname" placeholder="40个以内英文字符" />
+              <a-input v-model="form.companyname" placeholder="60个以内英文字符" />
             </a-form-item>
             <div class="l-btn" v-loading="disabled" :class="{'disabled': disabled}" @click="submit" gi-loading-type="circle">
               <span>下一步</span><icon-arrow-right />
@@ -46,7 +46,10 @@ const form = ref({
 const rules = [
   {
     validator: (value, cb) => {
-      if (!/^[^\u4e00-\u9fa5]{6,20}$/.test(value) || value === undefined) {
+      if (/^\s+$/.test(value)) {
+        cb('不能输入全空格')
+      }
+      if (!/[a-zA-Z\s]{6,20}$/.test(value) || value === undefined) {
         cb('6~20个英文字符')
       }
     }
@@ -55,8 +58,11 @@ const rules = [
 const rules2 = [
   {
     validator: (value, cb) => {
-      if (!/^[^\u4e00-\u9fa5]{1,40}$/.test(value) || value === undefined) {
-        cb('40个以内英文字符')
+      if (/^\s+$/.test(value)) {
+        cb('不能输入全空格')
+      }
+      if (!/^[^\u4e00-\u9fa5]{1,60}$/.test(value) || value === undefined) {
+        cb('60个以内英文字符')
       }
     }
   }

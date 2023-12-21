@@ -15,7 +15,7 @@
                 :content-flex="false"
                 :rules="[{ required: true, message: '请填写新闻标题', type: 'string' }]"
               >
-                <a-input placeholder="请输入" v-model.trim="form.name" allow-clear />
+                <a-input placeholder="请输入" v-model.trim="form.name" allow-clear show-word-limit :max-length="{ length: 120 }"/>
               </a-form-item>
 
               <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
@@ -77,8 +77,8 @@
                   <a-date-picker
                     style="width: 100%"
                     show-time
-                    format="YYYY-MM-DD hh:mm:ss"
-                    value-format="YYYY-MM-DD hh:mm:ss"
+                    format="YYYY-MM-DD HH:mm:ss"
+                    value-format="YYYY-MM-DD HH:mm:ss"
                     v-model="form.pubtime"
                   />
                 </a-form-item>

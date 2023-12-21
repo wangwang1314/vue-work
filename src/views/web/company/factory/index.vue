@@ -1,15 +1,15 @@
 <template>
   <div class="detail-out">
     <div class="top-nav-tit">
-      <div class="m-left">设置产品信息</div>
+      <div class="m-left">工厂信息</div>
       <div class="m-right"></div>
     </div>
     <div class="com-detail detail">
       <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
         <a-card :bordered="false">
           <div class="label-class">
-            <span>产品图片</span>
-            <a-button type="primary" size="mini" @click="showPicCenter">图片中心选择</a-button>
+            <span>工厂图片</span>
+            <!-- <a-button type="primary" size="mini" @click="showPicCenter">图片中心选择</a-button> -->
           </div>
           <a-form-item label="上传图片" :hide-label="true">
             <a-row class="full-width">

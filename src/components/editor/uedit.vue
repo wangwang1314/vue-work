@@ -111,7 +111,7 @@ const picChange = (data) => {
   editorIns.value.execCommand('inserthtml', str)
 }
 const videoChange = (data) => {
-  const str = `<p><br/><video class="youtube-video-offline" poster="${data[0].img_path}" data-videoid="502" src="${data[0].youtube_url_local}" controls="controls" style="max-width:640px;"></video></p>`
+  const str = `<p><br/><video class="youtube-video-offline" poster="${data[0].img_path}" data-videoid="502" src="${data[0].youtube_url_local}" controls="controls" style="max-width:640px;"><span>''</span></video></p>`
   editorIns.value.execCommand('inserthtml', str)
 }
 </script>

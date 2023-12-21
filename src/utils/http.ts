@@ -66,17 +66,15 @@ http.interceptors.response.use(
       Notification.error(message || '登录失效')
       uc_login_sdk.setCookie('PHP_SESSION_ID', '', -1)
       // uc_login_sdk.setCookie('app_ueid', '', -1)
-      if (!uc_login_sdk.getUrlParam('refresh')) {
-        location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent(link)
-      }
+      location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent(link)
       return Promise.reject(new Error('Error'))
     }
     if (code == 999) {
       NProgress.done()
-      if (!data.provetime) {
-        router.push({ path: '/agreement' })
+      if (!data.data.provetime) {
+        router.push({ path: '/agreement', query: { company_name: data.data.company_name } })
       } else {
-        router.push({ path: '/guide1', query: { company: data.company_name } })
+        router.push({ path: '/guide1', query: { company_name: data.data.company_name } })
       }
       return response
     }

@@ -55,7 +55,7 @@
                   <div></div>
                   <div></div>
                 </div>
-                <span>资料AI获取中</span>
+                <span>AI获取资料中</span>
               </div>
               <div class="status-box" v-else-if="status[choseType] == '1'">
                 <div class="loading">
@@ -108,7 +108,7 @@
                   <div></div>
                   <div></div>
                 </div>
-                <span>资料AI获取中</span>
+                <span>AI获取资料中</span>
               </div>
               <div class="status-box" v-else-if="status[choseType] == '1'">
                 <div class="loading">
@@ -193,8 +193,8 @@
           </div>
         </div>
         <div class="self-web-box" v-else>
-          <div class="input-wrap">
-            <a-input class="nor-input" @blur="checkselfdomainfn" placeholder="输入您的域名 例：mydomain.com" v-model.trim="selfdomain"> </a-input>
+          <div class="input-wrap self-name" :class="{ nofree: isfreedomain != 1 }">
+            <a-input class="nor-input" placeholder="输入您的域名 例：mydomain.com" v-model.trim="selfdomain"> </a-input>
             <div class="status-box-wrap">
               <div class="status-box" v-if="domainCheck == '1'">
                 <div class="loading">
@@ -212,68 +212,97 @@
               </div>
             </div>
           </div>
-          <div class="self-tips">请确保您拥有域名管理权限，上线时将需要您进行域名解析记录的添加。</div>
-          <div class="e-btn fix-b" style="margin-top: 20px" @click="domainsave" :class="{ grash: domainCheck != '2' }">
-            <icon-upload /><span style="margin: 0px 0px 0 8px" >申请上线</span>
+          <div class="self-tips">请在您的域名管理后台进行如下记录设置，以完成域名最终链接。</div>
+          <div class="tb-wrap">
+            <table v-if="tabvalue.length">
+              <thead>
+                <tr>
+                  <td>记录类型</td>
+                  <td>主机记录</td>
+                  <td>解析线路</td>
+                  <td>记录值</td>
+                  <td>MX优先级</td>
+                  <td>TTL</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in tabvalue" :key="index">
+                  <td>{{ item.type || '--' }}</td>
+                  <td>{{ item.route || '--' }}</td>
+                  <td>{{ item.line || '--' }}</td>
+                  <td>{{ item.ip || '--' }}</td>
+                  <td>{{ item.mxer || '--' }}</td>
+                  <td>{{ item.ttl || '--' }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <a-button @click="gocheck" type="primary" class="btn" size="mini">配置检测</a-button>
+          </div>
+
+          <div class="e-btn fix-b" style="margin-top: 20px" @click="domainsave" :class="{ grash: !setcheck }">
+            <icon-upload /><span style="margin: 0px 0px 0 8px">申请上线</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 上传图片弹框 -->
-     <a-modal v-model:visible="picvise">
-        <template #title>提示</template>
-        
-        <a-form ref="diaformRef" size="medium" :model="diaform" layout="horizontal" :auto-label-width="true">
-          <div class="pic-text">
-           <p>您的网站资料部分来源于 {{ userStore.getdataurl }}，为确保知识产权得到合法保护，申请上线需要上传相关许可或证明文件照片</p> 
-           <p>可以是但不局限于：公司授权盖章文件、本人与公司关系证明、手持工牌在公司前台照片等。</p>
-          </div>
-          <a-form-item label="浏览图片" :hide-label="true">
-            <a-upload
-              :on-before-remove="picRemove"
-              list-type="picture-card"
-              :action="picUploadUrl"
-              :data="{ type: '33' }"
-              :file-list="picArr"
-              image-preview
-              :limit="5"
-              @success="successUpload"
-              @change="
-                (res) => {
-                  picUploadChange(res)
-                }
-              "
-            >
-              <template #upload-button>
-                <div class="arco-upload-picture-card">
-                  <div class="arco-upload-picture-card-text">
-                    <IconPlus />
-                    <div style="margin-top: 10px; color: var(--color-text-4); font-size: 14px">上传</div>
-                  </div>
+    <a-modal v-model:visible="picvise">
+      <template #title>提示</template>
+
+      <a-form ref="diaformRef" size="medium" :model="diaform" layout="horizontal" :auto-label-width="true">
+        <div class="pic-text">
+          <p>
+            您的网站资料部分来源于
+            {{ userStore.getdataurl }}，为确保知识产权得到合法保护，申请上线需要上传相关许可或证明文件照片
+          </p>
+          <p>可以是但不局限于：公司授权盖章文件、本人与公司关系证明、手持工牌在公司前台照片等。</p>
+        </div>
+        <a-form-item label="浏览图片" :hide-label="true">
+          <a-upload
+            :on-before-remove="picRemove"
+            list-type="picture-card"
+            :action="picUploadUrl"
+            :data="{ type: '33' }"
+            :file-list="picArr"
+            image-preview
+            :limit="5"
+            @success="successUpload"
+            @change="
+              (res) => {
+                picUploadChange(res)
+              }
+            "
+          >
+            <template #upload-button>
+              <div class="arco-upload-picture-card">
+                <div class="arco-upload-picture-card-text">
+                  <IconPlus />
+                  <div style="margin-top: 10px; color: var(--color-text-4); font-size: 14px">上传</div>
                 </div>
-              </template>
-            </a-upload>
-          </a-form-item>
-          <a-form-item label="图片描述" :hide-label="true">
-            <a-textarea
-              placeholder="备注说明"
-              :auto-size="{
-                minRows: 3
-              }"
-              v-model="diaform.webnote"
-            ></a-textarea>
-          </a-form-item>
-        </a-form>
-        <template #footer>
-          <a-button @click="picvise = false">取消</a-button>
-          <a-button type="primary" @click="handleBeforeOk">确定</a-button>
-        </template>
-      </a-modal>
+              </div>
+            </template>
+          </a-upload>
+        </a-form-item>
+        <a-form-item label="图片描述" :hide-label="true">
+          <a-textarea
+            placeholder="备注说明"
+            :auto-size="{
+              minRows: 3
+            }"
+            v-model="diaform.webnote"
+          ></a-textarea>
+        </a-form-item>
+      </a-form>
+      <template #footer>
+        <a-button @click="picvise = false">取消</a-button>
+        <a-button type="primary" @click="handleBeforeOk">确定</a-button>
+      </template>
+    </a-modal>
   </div>
 </template>
 <script setup lang="ts" name="startwrap">
-import { reactive, ref, onMounted, watch } from 'vue'
+import { reactive, ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore, useNavTabStore } from '@/store'
 import { Message } from '@arco-design/web-vue'
@@ -288,7 +317,10 @@ import {
   guidedomaincheck,
   guidedomainapply,
   guidecompanyapply,
-  pictureDdel
+  pictureDdel,
+  guidedomaininfos,
+  guidegetnowstep,
+  guidenextsetdomain
 } from '@/apis'
 const baseURL = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX
 const picUploadUrl = baseURL + '?r=picture/upload'
@@ -308,23 +340,32 @@ const status = reactive({
 })
 const fetchloading = ref(false)
 const searchFn = async () => {
-  const res = await guidegetdata()
-  if (res.code == 0) {
-    if (res.data == 1) {
-      imstats.value = 0
-    } else {
-      Message.error('获取失败')
+  const res1 = await guidegetdatastate()
+  if (res1.code == 0) {
+    if (res1.data == -1) {
+      const res = await guidegetdata()
+      if (res.code == 0) {
+        if (res.data == 1) {
+          imstats.value = 0
+        } else {
+          Message.error('获取失败')
+        }
+      }
     }
   }
 }
 const goNext = () => {
+  if (!userStore.getdataurl) {
+    savedatafrom()
+  }
   tabCurrent.value = 3
   getfreedomain()
-  getpredomainsFn()
+  guidenextsetdomain()
 }
 const activeKey = ref(1)
 
 const checkedValue = ref('')
+const setcheck = ref(false)
 const domainCheck = ref('0')
 const proObj = reactive({
   producttotal: 0,
@@ -344,12 +385,12 @@ const checkFn = async () => {
   }
   status[choseType.value] = '1'
   const res = await guideDataurlcheck({
-    url
+    url,
+    datafrom: choseType.value
   })
   if (res.code == 0) {
     if (res.data == 200) {
       status[choseType.value] = '2'
-      savedatafrom()
     } else if (res.data == 400) {
       status[choseType.value] = '3'
     }
@@ -360,8 +401,11 @@ const getintronum = async () => {
   const res = await guidegetdataIntro()
   if (res.code == 0) {
     Object.assign(proObj, res.data)
-    if (proObj.catetotal >= 2 && proObj.producttotal >= 10 && proObj.isremark == 1) {
-      goNext()
+    if (proObj.catetotal >= 2 && proObj.producttotal >= 10) {
+      clearInterval(startcount.value)
+      guidenextsetdomain()
+    } else {
+      startint()
     }
   }
 }
@@ -377,10 +421,22 @@ const getstate = async () => {
   if (res.code == 0) {
     imstats.value = res.data // 未开始获取-1 1完成 0获取中
     if (res.data == 1) {
-      goNext()
+      getintronum()
+    } else if (res.data == 0) {
+      startint()
     }
   }
 }
+const startcount = ref(0)
+const startint = () => {
+  clearInterval(startcount.value)
+  startcount.value = setTimeout(() => {
+    getintronum()
+  }, 10000)
+}
+onUnmounted(() => {
+  clearInterval(startcount.value)
+})
 // 保存状态
 const savedatafrom = async () => {
   let dataurl = ''
@@ -411,6 +467,7 @@ const initurl = () => {
   } else {
     form.value.made = userStore.getdataurl
   }
+  ischecking()
 }
 // 是否赠送域名
 const isfreedomain = ref(1)
@@ -421,13 +478,15 @@ const getfreedomain = async () => {
     isfreedomain.value = res.data
     if (res.data == 0) {
       activeKey.value = 2
+    } else if (res.data == 1) {
+      getpredomainsFn()
     }
   }
 }
 
 // 用户已有域名检测
 const selfdomain = ref('')
-const checkselfdomainfn = async() => {
+const checkselfdomainfn = async () => {
   if (!selfdomain.value) {
     return
   }
@@ -444,14 +503,14 @@ const checkselfdomainfn = async() => {
 }
 
 // 用户上线
-const domainsave = async() => {
- if (choseType.value === 3) {
-  domainajax()
- } else {
-  picvise.value = true
- }
+const domainsave = async () => {
+  if (choseType.value === 3) {
+    domainajax()
+  } else {
+    picvise.value = true
+  }
 }
-const domainajax = async() => {
+const domainajax = async () => {
   let domain = ''
   if (activeKey.value == 1) {
     domain = checkedValue.value
@@ -468,7 +527,7 @@ const domainajax = async() => {
 }
 // 导入资料
 const picvise = ref(false)
-const picArr =ref([])
+const picArr = ref([])
 const diaform = reactive({
   picArr: [],
   picids: [],
@@ -497,7 +556,7 @@ const picRemove = (data) => {
   delPicAjax(data.id)
   return data
 }
-const handleBeforeOk = async() => {
+const handleBeforeOk = async () => {
   if (!picArr.value.length) {
     return Message.warning('请上传图片')
   }
@@ -510,19 +569,65 @@ const handleBeforeOk = async() => {
     domainajax()
   }
 }
+const tabvalue = ref([])
+const getInfo = async () => {
+  const res = await guidedomaininfos()
+  if (res.code == 0) {
+    Object.assign(tabvalue.value, res.data)
+  }
+}
+getInfo()
+const gocheck = async () => {
+  if (!selfdomain.value) {
+    return Message.warning('请填写域名')
+  }
+  const res = await guidedomaincheck({
+    domain: selfdomain.value
+  })
+  if (res.code == 0) {
+    if (res.data == 1) {
+      // Message.success('操作成功')
+      setcheck.value = true
+    } else {
+      Message.error('检测不通过，请重新配置。')
+    }
+  }
+}
 
+const getStep = async () => {
+  const res = await guidegetnowstep()
+  if (res.code == 0 && res.data) {
+    tabCurrent.value = res.data
+    if (res.data == 2) {
+      ischecking()
+    }
+  }
+}
+const ischecking = () => {
+  if ((choseType.value == 1 && form.value.ali) || (choseType.value == 2 && form.value.made)) {
+    searchFn()
+  }
+}
+const isstart = ref(false)
 userStore.$onAction(({ name }) => {
   if (name === 'hasinfo') {
     choseType.value = userStore.getdatafrom
-    getstate()
-    initurl()
+    if (!isstart.value) {
+      isstart.value = true
+      getstate()
+      initurl()
+    }
   }
 })
 onMounted(() => {
-  getintronum()
   choseType.value = userStore.getdatafrom
-  getstate()
-  initurl()
+  getStep()
+  getfreedomain()
+  if (!isstart.value) {
+    isstart.value = true
+    getstate()
+    initurl()
+  }
 })
 </script>
 <style lang="scss" scoped>
@@ -537,7 +642,7 @@ onMounted(() => {
     flex: 1;
     color: rgb(255, 255, 255);
     position: relative;
-    height: 229px;
+    height: 249px;
     :deep(.mar-radio) {
       margin-top: 10px;
     }
@@ -568,7 +673,7 @@ onMounted(() => {
         font-size: 14px;
         font-weight: 400;
         line-height: 22px;
-        margin-top: 16px;
+        margin-top: 6px;
       }
       :deep(.nor-input) {
         margin: 0;
@@ -674,7 +779,7 @@ onMounted(() => {
       }
     }
     .arco-steps-item:not(:last-child) {
-      min-height: 67px;
+      min-height: 73px;
       .arco-steps-item-tail {
         left: 217px;
         top: -6px;
@@ -804,6 +909,51 @@ onMounted(() => {
 .pic-text {
   margin-bottom: 16px;
   font-size: 12px;
-  color: var(--color-text-4)
+  color: var(--color-text-4);
+}
+.self-name {
+  position: absolute;
+  top: 25px;
+  left: 264px;
+}
+.nofree {
+  left: 150px;
+}
+table {
+  margin-top: 6px;
+  border-collapse: collapse;
+  width: 527px;
+  color: #fff;
+  text-align: center;
+  td {
+    padding: 0 4px;
+  }
+  thead {
+    td {
+      background: rgba(255, 255, 255, 0.4);
+      height: 24px;
+      line-height: 24px;
+    }
+  }
+  tbody {
+    td {
+      background: rgba(255, 255, 255, 0.16);
+      height: 24px;
+      line-height: 24px;
+      color: rgba(255, 255, 255, 0.64);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+.tb-wrap {
+  width: 613px;
+  :deep(.btn) {
+    float: right;
+    position: relative;
+    top: -24px;
+  }
+}
+:deep(.arco-radio-disabled .arco-radio-icon) {
+  background: rgb(201, 205, 212);
 }
 </style>

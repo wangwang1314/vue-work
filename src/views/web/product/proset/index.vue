@@ -25,7 +25,6 @@
               :checkable="true"
               class="tree-list"
               v-model:checked-keys="cusform.checkedKeys"
-              :check-strictly="true"
               :data="treeData"
               :fieldNames="{
                 key: 'id',
@@ -135,15 +134,17 @@
       <!-- 二次确认弹框 -->
       <a-modal v-model:visible="popup" :width="286">
         <template #title>提示</template>
-        <div><icon-exclamation-circle-fill size="16" style="color: rgb(var(--orangered-5))" /> 确认要对 {{ cateName }}, 分类产品 {{ currentProp.name }} 属性进行批量删除吗？</div>
+        <div>
+          <icon-exclamation-circle-fill size="16" style="color: rgb(var(--orangered-5))" /> 确认要对 {{ cateName }},
+          分类产品 {{ currentProp.name }} 属性进行批量删除吗？
+        </div>
         <template #footer>
           <a-button @click="popup = false" :disabled="btnloading">取消</a-button>
           <a-button type="primary" @click="batchDel" :loading="btnloading">确定</a-button>
         </template>
       </a-modal>
     </div>
-  </div> 
-  
+  </div>
 </template>
 <script setup lang="ts" name="proset">
 import type { setform, listItem } from './type'
@@ -317,16 +318,19 @@ const confirmFn = async () => {
   }
   btnloading.value = true
   const currentObj = {}
-  couArr.value.forEach((item) => {
-    currentObj[item.attr_key] = item.attr_val
-  })
+
+  const newarr = couArr.value.map((item) => ({
+    name: item.attr_key,
+    value: item.attr_val
+  }))
   cusform.itemList.forEach((item) => {
     currentObj[item.key] = item.value
   })
   const res = await prBatchSet({
     ids: cusform.checkedKeys,
     type: 1, // 1以分类维度，2品牌维度
-    ...currentObj
+    details: {...currentObj},
+    custom_attrs: newarr
   }).finally(() => {
     btnloading.value = false
   })

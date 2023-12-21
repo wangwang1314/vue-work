@@ -74,3 +74,23 @@ export function downloadByUrl({
     }
   })
 }
+
+export function downloadFile(obj: { name: string; url: string }) {
+  const xhr = new XMLHttpRequest()
+  xhr.open('get', obj.url)
+  xhr.responseType = 'blob'
+  // 关键部分
+  xhr.onload = function (e) {
+    // 如果请求执行成功
+    if (this.status === 200) {
+      const blob = this.response
+      const a = document.createElement('a')
+      a.href = window.URL.createObjectURL(blob)
+      a.download = obj.name
+      a.click()
+      // 释放之前创建的URL对象
+      window.URL.revokeObjectURL(blob)
+    }
+  }
+  xhr.send()
+}

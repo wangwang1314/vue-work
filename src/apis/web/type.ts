@@ -107,3 +107,33 @@ export interface aiParams {
 export interface aiRecommendRes {
   attr: Array<any>
 }
+export interface InquirylistRes {
+  [x: string]: any
+  lists: []
+  iid: string
+  p_users: proPersonItem[]
+  categories: procateItem[]
+}
+export interface IndexflaglistRes {
+  [x: string]: any
+  lists: []
+  iid: string
+  p_users: proPersonItem[]
+  categories: procateItem[]
+}
+export interface IndexflagParams {
+  iid: string // 询盘id
+  iq_source?: string // 类型 1 在线询盘 2智能询盘
+  indexflag: string // 置顶状态 1 置顶  0 取消置顶
+}
+
+export interface InquirylistParams {
+  page: number
+  pagesize: number
+  iid: string // 询盘id
+  tab?: any // 顶部tab 1 全部询盘 2 智能询盘 3 在线询盘
+  isread?: string // 是否已读 0 否 1是 2全部
+  search_kw: string // 买家信息
+  sort?: string // desc倒序，asc升序，默认desc
+  status?: string // 状态 0 正常  1 已删除
+}
