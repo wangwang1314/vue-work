@@ -13,9 +13,24 @@
                 field="name"
                 label="新闻标题"
                 :content-flex="false"
-                :rules="[{ required: true, message: '请填写新闻标题', type: 'string' }]"
+                :rules="[
+                  { required: true, message: '请填写新闻标题', type: 'string' },
+                  {
+                    validator: (value, cb) => {
+                      if (/^\s+$/.test(value)) {
+                        cb('不能输入全空格')
+                      }
+                    }
+                  }
+                ]"
               >
-                <a-input placeholder="请输入" v-model.trim="form.name" allow-clear show-word-limit :max-length="{ length: 120 }"/>
+                <a-input
+                  placeholder="请输入"
+                  v-model="form.name"
+                  allow-clear
+                  show-word-limit
+                  :max-length="{ length: 120 }"
+                />
               </a-form-item>
 
               <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
@@ -340,7 +355,7 @@ const saveFn = () => {
         })
       }
       if (res.code === 0) {
-        Message.success(res.message || '提交成功')
+        // Message.success(res.message || '提交成功')
         router.push({ path: '/file/news' })
       }
     }

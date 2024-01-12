@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import router from '../router/index'
-import { uc_login_sdk } from '@/utils/common'
+import { uc_login_sdk, debounceisfirst } from '@/utils/common'
 
 const link = import.meta.env.VITE_API_LOCA + '?refresh=no'
 
@@ -14,7 +14,13 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 interface ICodeMessage {
   [propName: number]: string
 }
-
+const debounceajax = debounceisfirst(
+  () => {
+    Notification.error('当前用户未登录')
+  },
+  200,
+  true
+)
 const StatusCodeMessage: ICodeMessage = {
   200: '服务器成功返回请求的数据',
   201: '新建或修改数据成功。',
@@ -54,23 +60,26 @@ http.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-
+const noerrarr = ['index/datafrom', 'index/getdata', 'picture/download']
 // 响应拦截器
 http.interceptors.response.use(
   (response: AxiosResponse) => {
     const { data } = response
     const { message, code } = data
+    NProgress.done()
     if (code == 401) {
-      NProgress.done()
       // router.push({ path: '/login' })
-      Notification.error(message || '登录失效')
+      debounceajax()
+      // Notification.error(message || '登录失效')
       uc_login_sdk.setCookie('PHP_SESSION_ID', '', -1)
       // uc_login_sdk.setCookie('app_ueid', '', -1)
-      location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent(link)
+      if (!uc_login_sdk.getUrlParam('refresh')) {
+        location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent(link)
+      }
+      // location.href = 'https://uc.ecer.com/home/login?goto=' + encodeURIComponent(link)
       return Promise.reject(new Error('Error'))
     }
     if (code == 999) {
-      NProgress.done()
       if (!data.data.provetime) {
         router.push({ path: '/agreement', query: { company_name: data.data.company_name } })
       } else {
@@ -78,12 +87,19 @@ http.interceptors.response.use(
       }
       return response
     }
+    let showError = true
+    noerrarr.forEach((item) => {
+      if (response.config.url?.indexOf(item) != -1) {
+        showError = false
+      }
+    })
+    if (!showError) {
+      return response
+    }
     if (code != 0) {
-      NProgress.done()
       Notification.error(message || '服务器端错误')
       return response
     }
-    NProgress.done()
     return response
   },
   (error) => {

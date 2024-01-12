@@ -31,7 +31,7 @@
         </a-card>
         <a-card :bordered="false" title="屏蔽国内">
           <a-form-item label="屏蔽国内" :hide-label="true" :content-flex="false">
-            <a-radio-group v-model="form.maskchina">
+            <a-radio-group v-model="form.maskchina" @change="changeFn">
               <a-radio :value="0">
                 <template #radio="{ checked }">
                   <a-space align="start" class="custom-radio-card" :class="{ 'custom-radio-card-checked': checked }">
@@ -74,13 +74,12 @@
   </div>
 </template>
 <script setup lang="ts" name="adv">
-import { reactive, ref, h, nextTick } from 'vue'
+import { reactive, ref, h, nextTick, watch } from 'vue'
 import { companygetlanguage, companysavelanguage } from '@/apis'
-import { Message } from '@arco-design/web-vue'
+import { Message, Modal } from '@arco-design/web-vue'
 const baseURL = import.meta.env.VITE_API_PREFIX + import.meta.env.VITE_API_BASE_AJAX
 const picUploadUrl = baseURL + '?r=picture/upload'
 import { useUserStore, useFileStore } from '@/store'
-
 
 const fileStore = useFileStore()
 const form = reactive({
@@ -91,10 +90,10 @@ const form = reactive({
 })
 const saveFn = async () => {
   fileStore.setloading(true)
-  const {defaultlang, langstate, maskchina} = form
+  const { defaultlang, langstate, maskchina } = form
   const res = await companysavelanguage({
     defaultlang,
-    langstate: langstate?1:0,
+    langstate: langstate ? 1 : 0,
     maskchina
   }).finally(() => {
     fileStore.setloading(false)
@@ -111,7 +110,26 @@ const getData = async () => {
   }
 }
 getData()
-
+const changeFn = (newval, oldval) => {
+  const tips = form.maskchina ? '确定屏蔽国内用户吗？' : '确定允许全球用户访问？'
+  const status = form.maskchina
+  const oldstatus = form.maskchina ? 0 : 1
+  Modal.confirm({
+    title: '提示',
+    content: tips,
+    onOk: async() => {
+      const res = await companysavelanguage({
+        maskchina: form.maskchina
+      }).finally(() => {})
+      if (res.code == 0) {
+        Message.success(res.message || '操作成功')
+      }
+    },
+    onCancel: () => {
+      form.maskchina = oldstatus
+    }
+  })
+}
 fileStore.$onAction(({ name }) => {
   if (name === 'cancel') {
     getData()

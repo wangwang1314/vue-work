@@ -69,3 +69,9 @@ export function getCateTntro(params: SeoParams) {
 export function categoryImport(params: SeoParams) {
   return axios.post<ApiRes<CateData>>(`${baseURL}?r=category/import`, qs.stringify(params))
 }
+
+/** @desc 分类排序*/
+export function categorysort(params: SeoParams) {
+  return axios.post<ApiRes<CateData>>(`${baseURL}?r=category/adjust-sort`, qs.stringify(params))
+}
+

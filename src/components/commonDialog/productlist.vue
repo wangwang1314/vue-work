@@ -7,24 +7,39 @@
       </template>
       <a-form label-align="right" ref="formRef" auto-label-width :model="form" class="form" direction="inline">
         <a-row :gutter="16" wrap>
-          <a-col :span="6">
+          <a-col :span="9">
             <a-form-item field="search_name" label="产品名称">
               <a-input v-model="form.search_name" placeholder="请输入产品名称" />
             </a-form-item>
           </a-col>
           <a-col :span="9">
-            <a-form-item field="category_id" label="分类" v-if="props.flagType=='3' || props.flagType=='4' || props.flagType=='5'">
+            <a-form-item
+              field="category_id"
+              label="分类"
+              v-if="props.flagType == '3' || props.flagType == '4' || props.flagType == '5'"
+            >
               {{ props.cateName }}
             </a-form-item>
             <a-form-item field="category_id" label="分类" v-else>
-              <a-select placeholder="请选择" v-model="form.category_id">
+              <!-- <a-select placeholder="请选择" v-model="form.category_id">
                 <a-option value="">所有分类</a-option>
                 <a-option v-for="item in catelist" :key="item.id" :value="item.id">{{ item.name }}</a-option>
-              </a-select>
+              </a-select> -->
+              <a-cascader
+                id="cate"
+                :options="catelist"
+                v-model="form.category_id"
+                :field-names="{ value: 'id', label: 'name' }"
+                default-value=""
+                expand-trigger="hover"
+                placeholder="请选择"
+                check-strictly
+                value-key="id"
+              />
             </a-form-item>
           </a-col>
-          <a-col :span="4">
-            <a-space>
+          <a-col :span="6">
+            <a-space style="display: flex;justify-content: flex-end;">
               <a-button type="primary" @click="searchFn">查询</a-button>
               <a-button @click="resetFn">重置</a-button>
             </a-space>
@@ -71,6 +86,7 @@ import { ref, reactive, watch } from 'vue'
 import { Notification, Message } from '@arco-design/web-vue'
 import { usePagination } from '@/hooks'
 import { prFlagList, prFlagSet } from '@/apis'
+import { getTreeDate } from '@/utils/common'
 const emit = defineEmits(['update'])
 const props = defineProps({
   flagType: {
@@ -79,12 +95,15 @@ const props = defineProps({
   },
   cateName: {
     type: String
+  },
+  setcateid: {
+    type: Number
   }
 })
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
 const form = reactive({
   search_name: '',
-  category_id: ''
+  category_id: props.setcateid || ''
 })
 const formRef = ref()
 const resetFn = () => {
@@ -104,7 +123,8 @@ const getTableData = async () => {
     page_size: pageSize.value - pageCount.value,
     search_name,
     category_id,
-    flag_type: props.flagType
+    flag_type: props.flagType,
+    no_child_cate: props.setcateid ? 1 : ''
   }).finally(() => {
     listloading.value = false
   })
@@ -120,7 +140,7 @@ const getTableData = async () => {
     max.value = data.flag_max
     fileArr.value = data.flag_list.concat(data.list).slice(0, pageTotal.value)
     pageCount.value = data.flag_total
-    catelist.value = data.categories
+    catelist.value = getTreeDate(data.categories)
     setTotal(Number(data.total_records))
   }
 }
@@ -151,6 +171,7 @@ const showDialog = (id: string) => {
   videoId.value = id
   selectedKeys.value = []
   pageCount.value = 0
+  form.category_id = props.setcateid
   getTableData()
   visible.value = true
 }

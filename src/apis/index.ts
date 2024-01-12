@@ -8,6 +8,7 @@ export * from './web'
 export * from './company'
 export * from './banner'
 export * from './guide'
+export * from './seo'
 
 export * from './person/type'
 export * from './system/type'

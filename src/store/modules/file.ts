@@ -29,7 +29,7 @@ export const useFileStore = defineStore({
       },
       loading: false,
       status: false,
-      checkdata: []
+      checkdata: [1, 2]
     }
   },
   getters: {
@@ -42,6 +42,14 @@ export const useFileStore = defineStore({
     // 改变视图模式
     changeViewMode() {
       this.viewMode = this.viewMode === 'grid' ? 'list' : 'grid'
+    },
+    addSelectedFilelist (list: Array<FileItem>) {
+      if (!list) {
+        return
+      }
+      list.forEach((item) => {
+        this.addSelectedFileItem(item)
+      })
     },
     // 添加选中的文件到文件勾选列表
     addSelectedFileItem(item: FileItem) {

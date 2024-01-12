@@ -3,6 +3,7 @@
     <vue-ueditor-wrap v-model="content" @ready="ready" :config="config" @beforeInit="addCustomButtom" :destroy="true"></vue-ueditor-wrap>
     <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
     <video-dialog ref="videoDialogRef" @change="videoChange"></video-dialog>
+    <file-dialog ref="fileDialogRef" @change="fileChange"></file-dialog>
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import { ref, reactive, createApp, watch } from 'vue'
 import picDialog from '@/components/commonDialog/picDialog.vue'
 import videoDialog from '@/components/commonDialog/videoDialog.vue'
+import fileDialog from '@/components/commonDialog/fileDialog.vue'
 const baseURL = import.meta.env.VITE_API_BASE_AJAX
 const api = import.meta.env.VITE_API_PREFIX
 const baseRoute = import.meta.env.VITE_ROURE_BASE_URL
@@ -40,6 +42,7 @@ const config = reactive({
 
 const picDialogRef = ref()
 const videoDialogRef = ref()
+const fileDialogRef = ref()
 // 获取实例
 const editorIns = ref()
 const ready = (editorInstance) => {
@@ -102,6 +105,33 @@ const addCustomButtom = () => {
     },
     100 /* 指定添加到工具栏上的那个位置，默认时追加到最后 */
   )
+
+  window.UE.registerUI(
+    'cosdown',
+    function (editor, uiName) {
+      // 注册按钮执行时的 command 命令，使用命令默认就会带有回退操作
+      // editor.registerCommand(uiName, {
+      //   execCommand: function () {
+      //     editor.execCommand('inserthtml', ``)
+      //   }
+      // })
+      // 参考http://ueditor.baidu.com/doc/#COMMAND.LIST
+      var btn = new window.UE.ui.Button({
+        name: 'cosdown',
+        title: '附件',
+        cssRules: `background-position: -650px -77px;`,
+        onclick: function () {
+          // 渲染dialog
+          editorIns.value = editor
+          fileDialogRef.value?.showDialog()
+          // that.dialogVisible = true
+          editor.execCommand(uiName)
+        }
+      })
+      return btn
+    },
+    100 /* 指定添加到工具栏上的那个位置，默认时追加到最后 */
+  )
 }
 const picChange = (data) => {
   let str = ''
@@ -114,6 +144,13 @@ const videoChange = (data) => {
   const str = `<p><br/><video class="youtube-video-offline" poster="${data[0].img_path}" data-videoid="502" src="${data[0].youtube_url_local}" controls="controls" style="max-width:640px;"><span>''</span></video></p>`
   editorIns.value.execCommand('inserthtml', str)
 }
+const fileChange = (data) => {
+  let str = ``
+  data && data.forEach((item) => {
+    str += `<a href="${item.docpath}" target="_blank">${item.docname}</a>`
+  })
+  editorIns.value.execCommand('inserthtml', str)
+}
 </script>
 
 <style lang="less" scoped>
@@ -123,6 +160,7 @@ const videoChange = (data) => {
   z-index: 1;
   min-width: 350px;
   width: 100%;
+  overflow: hidden;
   &.w-e-full-screen-container {
     z-index: 9999;
   }
@@ -130,6 +168,7 @@ const videoChange = (data) => {
 :deep(.edui-default .edui-editor) {
   background: var(--color-bg-4);
   border: 1px solid var(--color-border-3);
+  box-sizing: border-box;
 }
 :deep(.edui-default .edui-editor-toolbarboxinner) {
   background-color: var(--color-bg-3);

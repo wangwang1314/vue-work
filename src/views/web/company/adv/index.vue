@@ -140,4 +140,5 @@ const saveFn = async () => {
 </script>
 <style lang="scss" scoped>
 @import './mod/list.scss';
+
 </style>

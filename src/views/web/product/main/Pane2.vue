@@ -11,12 +11,19 @@
               <a-input v-model="form.search_name" placeholder="请输入产品名称" :allow-clear="true" />
             </a-form-item>
           </a-col>
-          <a-col :xs="8" :md="8" :lg="7" :xl="5" :xxl="4">
+          <a-col :xs="16" :md="14" :lg="10" :xl="8" :xxl="8">
             <a-form-item field="category_id" label="分类名称">
-              <a-select placeholder="所有分类" v-model="form.category_id" @change="catechange" :allow-create="true">
-                <a-option value="" label="所有分类"></a-option>
-                <a-option v-for="item in cateArr" :key="item.id" :value="item.id" :label="item.name"></a-option>
-              </a-select>
+              <a-cascader
+                id="cate"
+                :options="cateArr"
+                v-model="form.category_id"
+                :field-names="{ value: 'id', label: 'name' }"
+                default-value=""
+                expand-trigger="hover"
+                placeholder="请选择"
+                check-strictly
+                value-key="id"
+              />
             </a-form-item>
           </a-col>
           <!-- <a-col :xs="12" :md="12" :lg="8" :xl="5" :xxl="6" v-show="collapsed">
@@ -108,7 +115,7 @@
               <a-table-column title="产品ID" data-index="id" :width="100" align="left">
                 <template #cell="{ record }">
                   <div class="pro-id">{{ record.id }}</div>
-                  <div class="tag-ai" v-if="record.ai_optimization"><i></i><span>AI优化</span></div>
+                  <div class="tag-ai" v-if="record.ai_optimization"><i></i><span>{{record.ai_optimization==1?'AI优化中': 'AI优化' }}</span></div>
                   <div class="tag-ai" v-if="record.ai_extend"><i></i><span>AI扩展</span></div>
                 </template>
               </a-table-column>
@@ -416,7 +423,7 @@ const getTableData = async () => {
   if (code == 0) {
     tableData.value = data.list
     personArr = data.p_users
-    cateArr.value = data.categories
+    cateArr.value = getTreeDate(data.categories)
     emit('update', data)
     setTotal(Number(data.total_records))
   }

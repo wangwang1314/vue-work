@@ -67,7 +67,7 @@
                 <template #default>新增</template>
               </a-button> -->
               <a-button size="small" @click="cateFn">
-                <template #default>分类调整</template>
+                <template #default>调整分类</template>
               </a-button>
               <a-button size="small" @click="jugeUser">
                 <template #default>负责人调整</template>

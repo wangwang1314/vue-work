@@ -11,16 +11,16 @@
       @selection-change="selectionChange"
     >
       <template #columns>
-        <a-table-column title="序号" :width="80">
+        <!-- <a-table-column title="序号" :width="80">
           <template #cell="{ record, rowIndex }">
             {{rowIndex + 1}}
           </template>
-        </a-table-column>
-        <a-table-column title="文档名称" :width="200">
+        </a-table-column> -->
+        <a-table-column title="文档名称" :width="200" align="left">
           <template #cell="{ record }">
-            <div class="file-name" @click="handleRowClick(record)">
-                <span>{{ record.docname }}</span>
-            </div>
+            <a-link class="file-name" style="font-size: 12px;" :href="prefix + record.docpath + '/' + record.docname">
+              {{ record.docname }}
+            </a-link>
           </template>
         </a-table-column>
         <a-table-column title="文档大小" data-index="updateTime" :width="100">
@@ -28,18 +28,22 @@
             {{ record.docsize }}
           </template>
         </a-table-column>
+        <a-table-column title="引用次数" data-index="extendName" :width="80">
+          <template #cell="{ record }">
+            {{ record.usedcnt }}
+          </template>
+        </a-table-column>
         <a-table-column title="上传时间" data-index="updateTime" :width="200">
           <template #cell="{ record }">
             {{ record.addtime }}
           </template>
         </a-table-column>
-        <a-table-column title="引用" data-index="extendName" :width="80">
-          <template #cell="{ record }">
-            {{ record.usedcnt }}
-          </template>
-        </a-table-column>
+       
         <a-table-column title="操作" :width="120" align="center">
           <template #cell="{ record }">
+            <a-button size="mini" type="text" @click="downloadSign(record)">
+              <icon-download :size="13" :stroke-width="3" />
+              </a-button>
             <a-popconfirm type="warning" content="您确定要删除该项吗?" @ok="delPro(record)">
               <a-button size="mini" type="text" status="danger">
                 <template #icon><icon-delete :size="13" :stroke-width="3" /></template>
@@ -61,6 +65,7 @@ import type { FileItem } from '@/apis'
 import type { TableInstance, TableRowSelection } from '@arco-design/web-vue'
 import { proDocumentDel } from '@/apis'
 import { Message, Modal } from '@arco-design/web-vue'
+const prefix = import.meta.env.VITE_API_PREFIX
 interface Props {
   data?: FileItem[]
   isBatchMode?: boolean
@@ -108,6 +113,9 @@ const delPro = (item: FileItem) => {
 const selectionChange = (list) => {
   emit('selectchange', list)
 }
+const downloadSign = (item) => {
+  location.href = prefix + item.docpath + '/' + item.docname
+}
 </script>
 
 <style lang="scss">
@@ -129,8 +137,6 @@ const selectionChange = (list) => {
   overflow: hidden;
   .file-name {
     height: 100%;
-    display: flex;
-    align-items: center;
     padding-top: 6px;
     padding-bottom: 6px;
     cursor: pointer;

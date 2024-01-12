@@ -1,11 +1,14 @@
 .msg-detail-out{
   overflow: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .msg-detail {
   
   padding: 15px 20px 0 20px;
-
-  min-height: 100%;
+flex:1;
+display: flex;
   box-sizing: border-box;
   :deep(.arco-card-size-medium .arco-card-body) {
     padding-right: 40px;

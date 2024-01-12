@@ -9,19 +9,21 @@
 }
 .cont-box {
   
-  margin: 16px var(--inner-padding);
+  margin: 12px var(--inner-padding) 24px var(--inner-padding);
   height: calc(100vh - 234px);
   box-sizing: border-box;
   // overflow-y: auto;
   .left {
     float: left;
     width: 22%;
+    border-radius: 8px;
     box-sizing: border-box;
     padding: 20px;
-    border: 1px solid var(--color-border-2);
+    // border: 1px solid var(--color-border-2);
     height: calc(100vh - 234px);
     overflow-y: auto;
     overflow-x: hidden;
+    background: #f7f8fa;
     .tree-list {
       
     }

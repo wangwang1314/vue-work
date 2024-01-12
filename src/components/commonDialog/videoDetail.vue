@@ -1,6 +1,6 @@
 <template>
   <div class="dialog-pic-wrap">
-    <a-modal v-model:visible="visible" :mask-closable="false" :width="900" title="视频详情">
+    <a-modal v-model:visible="visible" :mask-closable="false" :width="750" title="视频详情">
       <template #footer>
         <a-button type="primary" @click="handleBeforeOk" :disabled="loading">确定</a-button>
       </template>
@@ -11,7 +11,7 @@
       </template>
       <div class="detail-content" v-loading="loading">
         <a-row>
-          <a-col :span="5">
+          <a-col :span="6">
             <div class="video-box">
               <a @click="goPlay" target="_blank">
                 <img :src="videoDetail.video.img_path" alt="" />
@@ -49,7 +49,7 @@
               >
             </div> -->
           </a-col>
-          <a-col :span="18" :offset="1">
+          <a-col :span="17" :offset="1">
             <div class="pro-name" v-show="!isEdit">{{ videoDetail.video.title }}</div>
             <a-form
               label-align="left"
@@ -310,7 +310,7 @@ const goPlay = () => {
   }
 }
 const download = () => {}
-const emit = defineEmits(['change', 'delete'])
+const emit = defineEmits(['change', 'delete', 'update'])
 const form = ref({
   tpl: '',
   title: '',
@@ -343,9 +343,7 @@ const changeTpl = (index) => {
 const formRef = ref()
 const handleBeforeOk = () => {
   if (isEdit.value) {
-    console.log(66)
     formRef.value.validate(async (val) => {
-      console.log(val, '3333')
       if (val) {
         return
       }
@@ -357,6 +355,7 @@ const handleBeforeOk = () => {
         loading.value = false
       })
       if (res.code == 0) {
+        emit('update')
         Message.success('请求成功')
         visible.value = false
       }

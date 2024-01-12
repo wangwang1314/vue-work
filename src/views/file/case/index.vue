@@ -14,28 +14,26 @@
         <a-form label-align="right" ref="formRef" auto-label-width :model="searchForm" class="form" direction="inline">
           <a-row :gutter="16" wrap>
             <a-col :span="12">
-                <a-form-item field="search_name" :hide-label="true">
-                  <a-space style="padding-top: 4px" :size="8">
-                    <a-input-search
-                      @search="searchFn"
-                      placeholder="请输入案例名称"
-                      v-model="searchForm.search_name"
-                      search-button
-                    >
-                    </a-input-search>
-                    <a-button size="small" status="danger" type="text" @click="showPopFn">
-                      <template #default>批量删除</template>
-                    </a-button>
-                  </a-space>
-                </a-form-item>
-                <!-- <a-button type="primary" @click="addContent" size="small" status="success">
+              <a-form-item field="search_name" :hide-label="true">
+                <a-space style="padding-top: 4px" :size="8">
+                  <a-input-search
+                    style="width: 400px"
+                    @search="searchFn"
+                    placeholder="请输入案例名称"
+                    v-model="searchForm.search_name"
+                    search-button
+                  >
+                  </a-input-search>
+                  <a-button size="small" status="danger" type="text" @click="showPopFn">
+                    <template #default>批量删除</template>
+                  </a-button>
+                </a-space>
+              </a-form-item>
+              <!-- <a-button type="primary" @click="addContent" size="small" status="success">
                   <template #default>新增</template>
                 </a-button> -->
-                
             </a-col>
-            <a-col :span="6" :offset="10">
-             
-            </a-col>
+            <a-col :span="6" :offset="10"> </a-col>
           </a-row>
         </a-form>
         <div class="table-box">
@@ -63,9 +61,15 @@
               @page-size-change="changePageSize"
             >
               <template #columns>
-                <a-table-column :cellClass="'cell-cous'" title="案例名称" data-index="address" :width="280" align="left">
+                <a-table-column
+                  :cellClass="'cell-cous'"
+                  title="案例名称"
+                  data-index="address"
+                  :width="280"
+                  align="left"
+                >
                   <template #cell="{ record }">
-                    <a-link class="link-class" @click="goEdit(record)" >{{ record.name }}</a-link>
+                    <a-link class="link-class" @click="goEdit(record)">{{ record.name }}</a-link>
                   </template>
                 </a-table-column>
                 <a-table-column title="发布时间" data-index="pubtime" :width="160" align="left">
@@ -76,19 +80,23 @@
                 </a-table-column>
                 <a-table-column title="操作" :width="320" align="center">
                   <template #cell="{ record, rowIndex }">
-                    <a-space :size="8">
+                    <a-space :size="10">
                       <a-button type="text" status="warning" size="mini" @click="goEdit(record)">
                         <template #icon><icon-edit :size="13" :stroke-width="3" /></template>
                         <template #default>编辑</template>
                       </a-button>
-                      <icon-arrow-rise @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }" size="16" :strokeWidth="7" class="up-icon" />
-                      <icon-arrow-fall
+                      <span class="up-icon" @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }">
+                        <icon-arrow-rise size="16" :strokeWidth="7" class="up-icon" />
+                        <span>上移</span>
+                      </span>
+                      <span
                         @click="sortFn(1, record)"
+                        class="up-icon down-icon"
                         :class="{ disabled: tableData.length - 1 == rowIndex }"
-                        size="16"
-                        :strokeWidth="7"
-                        class="up-icon"
-                      />
+                      >
+                        <icon-arrow-fall size="16" :strokeWidth="7" class="up-icon" />
+                        <span>下移</span>
+                      </span>
                       <a-button size="mini" type="text" status="danger" @click="singeDel(record)">
                         <template #icon><icon-delete :size="13" :stroke-width="3" /></template>
                       </a-button>
@@ -123,16 +131,12 @@
       </div>
       <GiFooter></GiFooter>
     </div>
-  </div> 
+  </div>
 </template>
 <script setup lang="ts" name="catelist">
 import { reactive, ref, h } from 'vue'
 import { usePagination } from '@/hooks'
-import {
-  fileCaseList,
-  fileCaseDel,
-  fileCaseUp, fileCaseDown, fileDelCategory
-} from '@/apis'
+import { fileCaseList, fileCaseDel, fileCaseUp, fileCaseDown, fileDelCategory } from '@/apis'
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getTreeDate } from '@/utils/common'

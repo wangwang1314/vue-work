@@ -6,13 +6,13 @@
       </div>
       <div class="c-right">
         <a-space :size="32">
-          <span class="text"
+          <span class="text" v-if="userStore.userInfo.homeInfo?.company?.domain"
             ><icon-link></icon-link><span>网站域名：{{ userStore.userInfo.homeInfo?.company?.domain }}</span></span
           >
-          <span class="text"
+          <span class="text" v-if="userStore.userInfo.homeInfo?.company?.onlinetime"
             ><icon-calendar /><span>上线时间：{{ userStore.userInfo.homeInfo?.company?.onlinetime }}</span></span
           >
-          <span class="text"
+          <span class="text" v-if="userStore.userInfo.homeInfo?.company?.uptime"
             ><icon-schedule /><span>最近更新时间：{{ userStore.userInfo.homeInfo?.company?.uptime }}</span></span
           >
         </a-space>
@@ -24,6 +24,15 @@
         <div class="count">
           <span>{{ paneldata?.cur_month_incr_product }}</span>
           <span class="unit">个</span>
+          <span class="loading-b" v-if="userStore.userInfo.datastate == 0">
+            <a-tooltip position="bottom">
+              <template #content>
+                <div>AI资料导入中...</div>
+                <div class="opt-class">提交审核前，将先导入30个产品作为范例；审核通过后，将继续导入多至10个分类，每个分类多至30个产品的数据。</div>
+              </template>
+              <icon-loading :size="14" />
+            </a-tooltip>
+          </span>
         </div>
         <i class="w-icon icon-1"></i>
       </div>
@@ -32,6 +41,15 @@
         <div class="count">
           <span>{{ paneldata?.total_product }}</span>
           <span class="unit">个</span>
+          <span class="loading-b" v-if="userStore.userInfo.datastate == 0">
+            <a-tooltip position="bottom">
+              <template #content>
+                <div>AI资料导入中...</div>
+                <div class="opt-class">提交审核前，将先导入30个产品作为范例；审核通过后，将继续导入多至10个分类，每个分类多至30个产品的数据。</div>
+              </template>
+              <icon-loading :size="14" />
+            </a-tooltip>
+          </span>
         </div>
         <i class="w-icon icon-2"></i>
       </div>
@@ -168,6 +186,7 @@ const { chartOption } = useChart(() => {
     },
     yAxis: {
       type: 'value',
+      minInterval: 1,
       axisLine: {
         show: false
       },
@@ -283,6 +302,7 @@ const option2 = useChart(() => {
     },
     yAxis: {
       type: 'value',
+      minInterval: 1,
       axisLine: {
         show: false
       },
@@ -307,8 +327,8 @@ const option2 = useChart(() => {
         const [firstElement] = params as any[]
         return `<div class="echart-tootip">
             <p class="tooltip-title">${firstElement.axisValueLabel}</p>
-            <div class="content-panel"><span>商机获取：</span><span class="tooltip-value">
-              ${firstElement.value}条
+            <div class="content-panel"><span>访问数量：</span><span class="tooltip-value">
+              ${firstElement.value}次
             </span></div>
           </div>`
       },
@@ -521,6 +541,13 @@ a {
       margin-top: 18px;
     }
   }
+}
+.loading-b {
+  margin-left: 4px;
+  color: var(--color-text-3);
+}
+.opt-class {
+  opacity: 0.8;
 }
 </style>
 <style lang="scss">

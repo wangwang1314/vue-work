@@ -1,5 +1,5 @@
 <template>
-  <a-layout-sider :collapsed="appStore.menuCollapse" breakpoint="xl" :width="232" class="asider">
+  <a-layout-sider :collapsed="appStore.menuCollapse" breakpoint="xl" :width="200" class="asider">
     <a-menu
       :selected-keys="[activeKey]"
       :default-open-keys="['overview']"

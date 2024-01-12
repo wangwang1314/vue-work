@@ -16,14 +16,24 @@
           <div class="radio-item">
             <a-radio value="8" v-model="checkRadio">点击图片跳转到分类页</a-radio>
             <div v-show="checkRadio == '8'" class="select-w">
-              <a-select
+              <!-- <a-select
                 placeholder="请选择"
                 v-model="cateId"
               >
                 <a-option v-for="item in catelist" :key="item.id" :value="item.id">{{ item.name }}</a-option>
-              </a-select>
+              </a-select> -->
+              <a-cascader
+                id="cate"
+                :options="catelist"
+                v-model="cateId"
+                :field-names="{ value: 'id', label: 'name' }"
+                default-value=""
+                expand-trigger="hover"
+                placeholder="请选择"
+                check-strictly
+                value-key="id"
+              />
             </div>
-            
           </div>
           <div class="radio-item" v-if="isvr">
             <a-radio value="3" v-model="checkRadio">点击图片跳转到VR页</a-radio>
@@ -95,6 +105,7 @@ import { ref, reactive, watch } from 'vue'
 import { Notification, Message } from '@arco-design/web-vue'
 import { usePagination } from '@/hooks'
 import { prFlagList, prFlagSet, getLink, setLink } from '@/apis'
+import { getTreeDate } from '@/utils/common'
 const emit = defineEmits(['update'])
 const props = defineProps({
   flagType: {
@@ -144,7 +155,7 @@ const getTableData = async () => {
     max.value = data.flag_max
     fileArr.value = data.list
     pageCount.value = data.flag_total
-    catelist.value = data.categories
+    catelist.value = getTreeDate(data.categories)
     setTotal(Number(data.total_records))
   }
 }
@@ -154,9 +165,8 @@ const handleCancel = () => {
 }
 const btnloading = ref(false)
 const handleBeforeOk = async () => {
-  
   if (checkRadio.value) {
-    let sid;
+    let sid
     if (checkRadio.value == 3) {
       sid = 1
     } else if (checkRadio.value == 8) {
@@ -172,7 +182,7 @@ const handleBeforeOk = async () => {
     }
     btnloading.value = true
     const res = await setLink({
-      type: (checkRadio.value == 3) ? 4 : checkRadio.value,
+      type: checkRadio.value == 3 ? 4 : checkRadio.value,
       id: videoId.value,
       sid
     }).finally(() => {
@@ -201,13 +211,13 @@ const showDialog = (id: string) => {
 const cateId = ref('')
 const getlinkFn = async () => {
   const res = await getLink({
-    id: videoId.value 
+    id: videoId.value
   })
   if (res.code == 0 && res.data) {
     checkRadio.value = String(res.data.type)
     if (res.data.type == 4 && res.data.sid == 1) {
       checkRadio.value = '3'
-    } else if (res.data.type == 4){
+    } else if (res.data.type == 4) {
       selectedKeys.value = [String(res.data.sid)]
     } else if (res.data.type === 8) {
       cateId.value = String(res.data.sid)
@@ -275,6 +285,6 @@ defineExpose({
 .select-w {
   width: 300px;
   display: inline-block;
-  margin-left: 16px
+  margin-left: 16px;
 }
 </style>

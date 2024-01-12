@@ -147,7 +147,7 @@
     border-radius: 20px 0 0 20px;
   }
   .menu-level-2 {
-    padding-left: 36px;
+    padding-left: 32px;
     border-radius: 20px 0 0 20px;
   }
   .menu-level-3:last-child {
@@ -184,8 +184,9 @@
     }
   }
   .menu-level-2.arco-menu-selected,.menu-level-1.no-child.arco-menu-selected  {
-    background: #fff!important;
+    background: var(--bg-1)!important;
     color: rgb(var(--primary-6))!important;
+    position: relative;
   }
   .arco-menu-vertical .arco-menu-has-icon{
     .arco-menu-icon {
@@ -219,7 +220,7 @@
   }
 
   .arco-menu-vertical .arco-menu-inner {
-    padding: 0 0 4px 0px;
+    padding: 0px;
   }
 }
 
@@ -431,6 +432,7 @@ body[arco-theme='dark'] .arco-tabs-nav-type-capsule {
 }
 .arco-table-td {
   color: var(--color-text-7);
+  word-break: break-word;
 }
 .link-class {
   font-size: 12px;
@@ -496,4 +498,58 @@ body[arco-theme='dark'] .arco-tabs-nav-type-capsule {
 // textarea框
 .arco-textarea::placeholder {
   color: var(--color-border-2);
+}
+
+.arco-notification-title {
+  margin-top: 3px;
+}
+.arco-notification-content {
+  margin-top: 5px;
+}
+
+
+.arco-checkbox-label {
+  line-height: 1.5;
+}
+.arco-layout-sider-light {
+  box-shadow: none;
+}
+.arco-popconfirm-popup-content {
+  min-width: 220px;
+}
+
+.arco-tabs-nav-size-small.arco-tabs-nav-type-card.arco-tabs-nav::before {
+  bottom: 0.8px;
+}
+
+
+// 全局tootip
+.arco-trigger-position-bottom .arco-tooltip-content {
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.8);
+  font-size: 12px;
+}
+.arco-trigger-position-bottom .arco-tooltip-popup-arrow {
+  background: rgba(0,0,0,0.8);
+  background: linear-gradient(135deg,  rgba(0,0,0,0.8) 0%,  rgba(0,0,0,0.8) 50%,transparent 51%,transparent 100% );
+}
+
+.arco-trigger-position-top .arco-tooltip-content {
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.8);
+  font-size: 12px;
+}
+.arco-trigger-position-top .arco-tooltip-popup-arrow {
+  background: rgba(0,0,0,0.8);
+  background: linear-gradient(-45deg,  rgba(0,0,0,0.8) 0%,  rgba(0,0,0,0.8) 50%,transparent 51%,transparent 100% );
+}
+
+.arco-input-tag .arco-input-tag-inner .arco-input-tag-input::placeholder {
+  color: var(--color-border-2);
+}
+.arco-link {
+  font-size: inherit;
+}
+.arco-link:active {
+  color: rgba(var(--primary-6),0.8);
 }

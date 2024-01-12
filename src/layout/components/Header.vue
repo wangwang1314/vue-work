@@ -6,13 +6,9 @@
     <a-space class="system-head" size="medium">
       <div class="text-wrap">
         <div class="left">
-          <a-link
-            class="addr-span"
-            target="_blank"
-            :href="'http://' + (userStore.userInfo.homeInfo?.company?.domain || '')"
-          >
+          <a-link class="addr-span" target="_blank" :href=" '//' + (userStore.userInfo.homeInfo?.company?.domain || '')">
             <template #icon><icon-link :size="18" /></template>
-            {{ 'http://' + (userStore.userInfo.homeInfo?.company?.domain || '') }}
+            {{ (userStore.userInfo.homeInfo?.company?.domain || '') }}
           </a-link>
           <!-- <span class="addr-span"><a href="http://www.ryderelectronics.com" target="_blank">http://www.ryderelectronics.com</a></span> -->
           <!-- <a class="link-addr" target="_blank" href="http://mao.ecer.com/test/ryderelectronics.com/">制作环境</a> -->
@@ -23,9 +19,11 @@
             预览
           </a-link>
           <span class="line-span"></span>
-          <a-link class="addr-span service" target="_blank" href="">
-            <template #icon><icon-customer-service :size="18" /></template>
-          </a-link>
+          <a-tooltip content="帮助" position="bottom">
+            <a-link class="addr-span service" target="_blank" href="">
+              <template #icon><icon-customer-service :size="18" /></template>
+            </a-link>
+          </a-tooltip>
         </div>
       </div>
       <!-- 管理员账户 -->
@@ -133,6 +131,7 @@ const logout = () => {
       text-decoration: none;
       &:hover {
         background: none;
+        color: rgb(var(--primary-6));
       }
     }
 
@@ -143,6 +142,7 @@ const logout = () => {
       &:hover {
         // text-decoration: underline;
         background: none;
+        color: rgb(var(--primary-6));
       }
     }
     .service {

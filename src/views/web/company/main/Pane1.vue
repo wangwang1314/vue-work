@@ -1,18 +1,10 @@
 <template>
-  <div class="com-detail-out">
+  <div class="com-detail-out save-company">
     <div class="com-detail detail">
-      <a-form
-        class="com-form"
-        ref="formRef"
-        size="medium"
-        :model="form"
-        layout="vertical"
-        :auto-label-width="true"
-        label-align="left"
-      >
+      <a-form class="com-form" ref="formRef" size="medium" :model="form" :auto-label-width="true" label-align="left">
         <a-card :bordered="false">
-          <a-form-item field="name" label="公司名称" :label-col-style="{ flex: '0 0 70px' }">
-            <a-row class="full-width">
+          <a-form-item field="name" label="公司名称" :label-col-style="{ flex: '0 0 70px' }" :content-flex="false">
+            <a-row>
               <a-col :span="24">
                 <a-input v-model="form.name"></a-input>
               </a-col>
@@ -20,6 +12,7 @@
           </a-form-item>
           <a-form-item field="cate" label="公司logo" :content-flex="false" :label-col-style="{ flex: '0 0 70px' }">
             <a-upload
+              v-show="!fileLogo.length"
               list-type="picture-card"
               :action="logourl"
               :file-list="fileLogo"
@@ -41,12 +34,51 @@
                 </div>
               </template>
             </a-upload>
+            <div v-show="fileLogo.length" class="arco-upload-wrapper arco-upload-wrapper-type-picture-card">
+              <draggable v-model="fileLogo">
+                <template #item="{ element, index }">
+                  <span
+                    v-if="element.status == 'error'"
+                    class="arco-upload-list-picture arco-upload-list-picture-status-error"
+                    ><img :src="element.url" :alt="element.name" />
+                    <div class="arco-upload-list-picture-mask">
+                      <div class="arco-upload-list-picture-error-tip">
+                        <span class="arco-upload-icon arco-upload-icon-error"><icon-image-close /></span>
+                      </div>
+                      <div class="arco-upload-list-picture-operation">
+                        <span class="arco-upload-icon arco-upload-icon-remove"
+                          ><icon-delete @click="logodel(element)" />
+                        </span>
+                      </div>
+                    </div>
+                  </span>
+                  <span class="arco-upload-list-picture" v-else-if="element.status == 'uploading'">
+                    <a-progress size="mini" :percent="element.percent"> </a-progress>
+                  </span>
+                  <span class="arco-upload-list-picture" v-else>
+                    <img :src="element.url" :alt="element.name" />
+                    <div class="arco-upload-list-picture-mask">
+                      <div class="arco-upload-list-picture-operation">
+                        <span class="arco-upload-icon arco-upload-icon-preview">
+                          <icon-eye @click="picListShow(element)" />
+                        </span>
+                        <span class="arco-upload-icon arco-upload-icon-remove">
+                          <icon-delete @click="logodel(element)" />
+                        </span>
+                      </div>
+                    </div>
+                  </span>
+                </template>
+              </draggable>
+            </div>
             <template #extra>
-              <div style="line-height: 18px;margin:-29px 0 0 96px;">建议220*60尺寸，高度小于100，图片质量小于100k</div>
+              <div style="line-height: 18px; margin: -29px 0 0 96px">建议220*60尺寸，高度小于100，图片质量小于100k</div>
             </template>
           </a-form-item>
-          <a-form-item field="info.remark" label="描述" :label-col-style="{ flex: '0 0 70px' }">
-            <uedit v-model="form.info.remark" ref="ueditref"></uedit>
+          <a-form-item field="info.remark" label="描述" :label-col-style="{ flex: '0 0 70px' }" :content-flex="false">
+            <a-row>
+              <a-col :span="24"><uedit v-model="form.info.remark" ref="ueditref"></uedit> </a-col>
+            </a-row>
           </a-form-item>
           <a-form-item field="name" label="公司概要" class="no-bot" :label-col-style="{ flex: '0 0 70px' }">
             <a-textarea
@@ -64,7 +96,7 @@
             <a-card class="item">
               <div class="label-class">
                 <span>公司图片</span>
-                <a-button type="primary" size="mini" @click="showPicCenter">图片中心选择</a-button>
+                <!-- <a-button type="primary" size="mini" @click="showPicCenter">图片中心选择</a-button> -->
               </div>
               <a-form-item label="公司图片" :hide-label="true">
                 <a-row class="full-width">
@@ -212,11 +244,7 @@
           </a-col>
         </a-row>
         <a-card :bordered="false" title="公司资料">
-          <a-form-item
-            class="input-group-box no-bot"
-            :content-flex="false"
-            :label-col-style="{ flex: '0 0 70px' }"
-          >
+          <a-form-item class="input-group-box no-bot" :content-flex="false" :label-col-style="{ flex: '0 0 70px' }">
             <a-row class="full-width">
               <a-col :span="15">
                 <a-form-item label="Business Type" field="info.busitypename">
@@ -316,8 +344,8 @@
             </a-row>
             <a-row class="full-width" v-for="(item, index) in attrArr" :key="'attr' + index">
               <a-col :span="4">
-                <a-form-item label="Customers Served" :hide-label="true" >
-                    <a-input placeholder="" v-model="item.name" allow-clear style="margin-right: 10px;"/>
+                <a-form-item label="Customers Served" :hide-label="true">
+                  <a-input placeholder="" v-model="item.name" allow-clear style="margin-right: 10px" />
                 </a-form-item>
               </a-col>
               <a-col :span="11">
@@ -346,8 +374,14 @@
             </a-row> -->
           </a-form-item>
         </a-card>
-        <a-card :bordered="false">
-          <a-tabs type="card" size="small" v-model:active-key="activekey" :hide-content="true">
+        <a-card :bordered="false" title="公司优势">
+          <a-tabs
+            type="card"
+            size="small"
+            style="margin-top: -10px"
+            v-model:active-key="activekey"
+            :hide-content="true"
+          >
             <a-tab-pane :key="0" title="优势一"> </a-tab-pane>
             <a-tab-pane :key="1" title="优势二"> </a-tab-pane>
             <a-tab-pane :key="2" title="优势三"> </a-tab-pane>
@@ -532,7 +566,7 @@ import { reactive, ref, h, nextTick } from 'vue'
 import { companyInfo, companySave, pictureDdel, getVideoDetail } from '@/apis'
 import type {} from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
-import { Notification, Message } from '@arco-design/web-vue'
+import { Notification, Message, Modal } from '@arco-design/web-vue'
 import { getTreeDate } from '@/utils/common'
 import picDialog from '@/components/commonDialog/picDialog.vue'
 import videoDialog from '@/components/commonDialog/videoDialog.vue'
@@ -547,6 +581,7 @@ const logourl = baseURL + '?r=picture/upload-logo'
 const router = useRouter()
 const route = useRoute()
 import { useUserStore } from '@/store'
+import { Model } from 'echarts'
 const userStore = useUserStore()
 const picType = '0'
 const form = reactive({
@@ -604,6 +639,8 @@ const getTableData = async () => {
           picture_path: logopath
         }
       ]
+    } else {
+      fileLogo.value = []
     }
 
     // 视频相关
@@ -636,6 +673,7 @@ const formRef = ref()
 const fileList = ref([])
 const fileLogo = ref([])
 const successUploadlogo = (res) => {
+  console.log(res, 999)
   if (res.response.code == 0) {
     res.id = res.response.data?.picture_id
     res.url = res.response.data?.picture_url + '?' + new Date().getTime()
@@ -706,6 +744,9 @@ const picListDel2 = (file, type) => {
   fileList2.value.splice(index, 1)
 }
 const delPicAjax = async (id, type) => {
+  if (!id || !userStore.userInfo.homeInfo.company.id) {
+    return
+  }
   const res = await pictureDdel({
     id,
     sid: userStore.userInfo.homeInfo.company.id,
@@ -850,10 +891,18 @@ const sigleSuccess = async (result) => {
     isuploading.value = false
   }
 }
-
+const logodel = (item) => {
+  Modal.confirm({
+    title: '提示',
+    content: `您确定要删除吗？`,
+    onOk: () => {
+      fileLogo.value = []
+    }
+  })
+}
 const activekey = ref(0)
 
-fileStore.$onAction(({name}) => {
+fileStore.$onAction(({ name }) => {
   if (name === 'cancel') {
     cancelFn()
   } else if (name === 'save') {

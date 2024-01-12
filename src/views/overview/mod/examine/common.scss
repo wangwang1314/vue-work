@@ -24,6 +24,7 @@
 .e-btn.grash {
   background: rgb(201, 205, 212);
   pointer-events: none;
+  cursor: not-allowed;
 }
 .e-btn.grash:hover {
   opacity: 0.9;

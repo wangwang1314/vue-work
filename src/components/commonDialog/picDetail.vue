@@ -1,10 +1,9 @@
 <template>
   <div class="dialog-pic-wrap">
-    <a-modal v-model:visible="visible" :mask-closable="false" :width="900" title="视频详情">
+    <a-modal v-model:visible="visible" :mask-closable="false" :width="600" title="视频详情">
       <template #footer>
-        <a-button @click="handleBeforeOk">取消</a-button>
-        <a-button type="primary" @click="handleBeforeOk">更换</a-button>
-        
+        <a-button @click="handleCancel">取消</a-button>
+        <a-button type="primary" @click="handleBeforeOk">确定</a-button>
       </template>
       <template #title>
         <div class="cus-tit">
@@ -19,17 +18,35 @@
             </div>
           </a-col>
           <a-col :span="12" :offset="1">
-            
-            <a-form label-align="left" :model="form" :class="{'edit-form': isEdit}" ref="formRef" direction="vertical" auto-label-width layout="vertical">
-              <a-row>
-                <a-col :span="24">
-                  <div class="pic-name">{{ infodata.picname }}</div>
+            <a-form
+              label-align="left"
+              :model="form"
+              ref="formRef"
+              direction="vertical"
+              auto-label-width
+              layout="vertical"
+            >
+              <a-row :gutter="12">
+                <template v-if="isEdit">
+                  <a-col :span="18">
+                    <a-input v-model="infodata.picname"></a-input>
+                  </a-col>
+                  <a-col :span="6">
+                    <icon-check class="check-icon" @click="changenameFn" />
+                  </a-col>
+                </template>
+
+                <a-col :span="24" v-else>
+                  <div class="pic-name">
+                    <span class="name-inner">{{ infodata.picname }}</span
+                    ><icon-edit @click="goedit" />
+                  </div>
                 </a-col>
               </a-row>
               <a-row>
                 <a-col :span="24">
                   <a-form-item field="tpl" label="图片分组：">
-                    <div class="item-content">{{ infodata.group_name?infodata.group_name:'未分组' }}</div>
+                    <div class="item-content">{{ infodata.group_name ? infodata.group_name : '未分组' }}</div>
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
@@ -38,12 +55,9 @@
                   </a-form-item>
                 </a-col>
                 <a-col :span="24">
-                  <a-form-item field="tpl" label="正在被引用：">
-                    <div class="item-content"><img class="icon-img" :src="icon" alt="icon">{{infodata.isused=='0'?'否':'是'}}
-                      <div>共有 <span class="wraning-class">{{ infodata.picture_count }}</span> 个产品图片引用了该图片</div>
-                      <div class="alert-box">
-                        <a-alert type="warning">标注<img class="icon-img" :src="icon" alt="icon">的图片正在被产品详细描述所引用。如果删除这些图片，产品详细描述将无法正常显示。</a-alert>
-                      </div>
+                  <a-form-item field="tpl" label="引用次数：">
+                    <div class="item-content">
+                      <div>{{ infodata.picture_count }}</div>
                     </div>
                   </a-form-item>
                 </a-col>
@@ -59,7 +73,7 @@
 <script setup lang="ts" name="picDetail">
 import setProduct from '@/components/commonDialog/setProduct.vue'
 import { ref, reactive } from 'vue'
-import { getVideoDetail, setVideoSwitch, pubYoutube, setVideoEdit } from '@/apis'
+import { getVideoDetail, setVideoSwitch, pubYoutube, setVideoEdit, propictureeditinfo } from '@/apis'
 import lodash from 'lodash'
 import { Message } from '@arco-design/web-vue'
 import icon from '@/assets/images/right-icon2.png'
@@ -75,63 +89,10 @@ const showDialog = (info) => {
   // getDetail(info.id)
   visible.value = true
 }
-const publish = async () => {
-  const res = await pubYoutube({
-    id: videoId.value
-  })
-  if (res.code == 0) {
-    Message.success(res.message || '操作成功')
-  }
-}
-const setYouTube = async (val) => {
-  const res = await setVideoSwitch({
-    id: videoId.value,
-    platform: 'youtube',
-    status: val
-  })
-}
-const setTictok = async (val) => {
-  const res = await setVideoSwitch({
-    id: videoId.value,
-    platform: 'tiktok',
-    status: val
-  })
-}
 const isEdit = ref(false)
-
-const getName = (id) => {
-  if (!id) {
-    return '未分组'
-  } else {
-    const index = lodash.findIndex(videoDetail.value.group, { id })
-    return index != -1 ? videoDetail.value.group[index].name : '未分组'
-  }
-}
-const toArr = (str) => {
-  if (!str) {
-    return []
-  } else {
-    return str.split(',')
-  }
-}
 const videoId = ref('')
 const videoDetail = ref({ video: { ad_tiktok: '0', ad_switch: '0' }, group: [], tpl: [] })
 const loading = ref(false)
-const getDetail = async (id) => {
-  loading.value = true
-  const res = await getVideoDetail({
-    id
-  }).finally(() => {
-    loading.value = false
-  })
-  if (res.code == 0) {
-    videoDetail.value = res.data
-    const { title, desc, tags, vcid, words_value, selling_point_value } = res.data.video
-    form.value = {
-      title, desc, tags, group_id: vcid, words: words_value, selling_point: selling_point_value
-    }
-  }
-}
 const download = () => {}
 const emit = defineEmits(['change', 'delete'])
 const form = ref({
@@ -145,48 +106,28 @@ const form = ref({
 })
 
 const setProductRef = ref()
-const showProduct = () => {
-  setProductRef.value.showDialog(videoId.value)
-}
-const changeTpl = (index) => {
-  if (form.value.tpl === index) {
-    form.value.tpl = ''
-    const {desc, tags, title} = videoDetail.value.video
-    form.value.title = title
-    form.value.desc = desc
-    form.value.tags = tags
-  } else {
-    form.value.tpl = index
-    const {desc, tags, title} = videoDetail.value.tpl[index]
-    form.value.title = title
-    form.value.desc = desc
-    form.value.tags = tags
-  }
-}
 const formRef = ref()
+const goedit = () => {
+  isEdit.value = true
+}
 const handleBeforeOk = () => {
-  if (isEdit.value) {
-    console.log(66)
-    formRef.value.validate(async(val) => {
-      console.log(val, '3333')
-      if (val) {
-        return
-      }
-      loading.value = true
-      const res = await setVideoEdit({
-        id: videoId.value,
-        ...form.value
-      }).finally(() => {
-        loading.value = false
-      })
-      if (res.code == 0) {
-        Message.success('请求成功')
-        visible.value = false
-      }
-    })
-  } else {
+  visible.value = false
+}
+const changenameFn = async () => {
+  if (!infodata.value.picname) {
+    return Message.warning('请输入名称')
+  }
+  const { id, sid, title, picturedesc, picname } = infodata.value
+  const res = await propictureeditinfo({
+    id,
+    type: 4,
+    title,
+    picturedesc,
+    picname
+  })
+  if (res.code == 0) {
+    isEdit.value = false
     emit('change')
-    visible.value = false
   }
 }
 defineExpose({
@@ -241,7 +182,7 @@ defineExpose({
 }
 .video-box {
   width: 100%;
-  height: 400px;
+  height: 256px;
   position: relative;
   cursor: pointer;
   img {
@@ -298,6 +239,16 @@ defineExpose({
 .pic-name {
   font-size: 18px;
   margin-bottom: 15px;
+  word-break: break-word;
+  svg {
+    color: rgb(var(--primary-6));
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+  }
+  .name-inner {
+    margin-right: 4px;
+  }
 }
 .item-content {
   // margin-top: -10px;
@@ -313,5 +264,11 @@ defineExpose({
   .icon-img {
     margin-left: 4px;
   }
+}
+.check-icon {
+  color: rgb(var(--primary-6));
+  cursor: pointer;
+  position: relative;
+  top: 3px;
 }
 </style>

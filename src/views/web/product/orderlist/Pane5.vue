@@ -6,23 +6,12 @@
       >
       <a-form label-align="right" ref="formRef" auto-label-width :model="form" class="form" direction="inline">
         <a-row :gutter="16" wrap>
-          <a-col :xs="12" :md="12" :lg="8" :xl="7" :xxl="6">
-            <a-form-item field="search_name" label="当前分类">
-              <a-tooltip :content="cateName">
-                <span class="cate-name">{{ cateName }}</span>
-              </a-tooltip>
-              <a-button style="margin-left: 10px;" @click="cateFn">选择分类</a-button>
+          <a-col :span="7">
+            <a-form-item field="search_name" label="产品名称">
+              <a-input v-model="form.search_name" placeholder="请输入产品名称" :allow-clear="true" />
             </a-form-item>
           </a-col>
-          <!-- <a-col :xs="12" :md="12" :lg="8" :xl="6" :xxl="6">
-            <a-form-item field="p_uid" label="负责人">
-              <a-select placeholder="所有负责人" v-model="form.p_uid">
-                <a-option value="">所有负责人</a-option>
-                <a-option v-for="item in personArr" :key="item.id" :value="item.id">{{ item.username }}</a-option>
-              </a-select>
-            </a-form-item>
-          </a-col> -->
-          <a-col :xs="8" :md="8" :lg="6" :xl="6" :xxl="5">
+          <a-col :span="9">
             <a-form-item :hide-label="true">
               <a-space>
                 <a-button type="primary" @click="searchFn">
@@ -31,6 +20,18 @@
                 <a-button @click="resetFn">
                   <template #default>重置</template>
                 </a-button>
+              </a-space>
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item :hide-label="true" class="end-class">
+              <a-space>
+                <a-form-item field="search_name" label="当前分类" style="margin-bottom: 0">
+                  <a-tooltip :content="cateName">
+                    <span class="cate-name">{{ cateName }}</span>
+                  </a-tooltip>
+                  <a-button style="margin-left: 10px" @click="cateFn">选择分类</a-button>
+                </a-form-item>
                 <a-button type="primary" @click="goAdd" status="success">
                   <template #default>设定</template>
                 </a-button>
@@ -90,17 +91,35 @@
               <a-table-column title="更新时间" data-index="uptime" :width="140" align="left"> </a-table-column>
               <a-table-column title="操作" :width="150" align="center">
                 <template #cell="{ record, rowIndex }">
-                  <a-space :size="4">
-                    <icon-arrow-rise @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }" size="18" :strokeWidth="7" class="up-icon" />
-                    <icon-arrow-fall
-                      @click="sortFn(1, record)"
-                      :class="{ disabled: tableData.length - 1 == rowIndex }"
-                      size="18"
-                      :strokeWidth="7"
-                      class="up-icon"
-                    />
+                  <a-space :size="10">
+                    <span class="up-icon"
+                    @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }">
+                      <icon-arrow-rise
+                        
+                        
+                        size="16"
+                        :strokeWidth="7"
+                        class="up-icon"
+                      />
+                      <span>上移</span>
+                    </span>
+                    <span
+                    @click="sortFn(1, record)"
+                     class="up-icon down-icon" :class="{ disabled: tableData.length - 1 == rowIndex }">
+                      <icon-arrow-fall
+                        
+                        
+                        size="16"
+                        :strokeWidth="7"
+                        class="up-icon"
+                      />
+                      <span>下移</span>
+                    </span>
                     <a-popconfirm type="warning" content="您确定取消置顶吗?" @ok="cancelTag(record)">
-                      <icon-close size="18" :strokeWidth="7" class="close-icon" />
+                      <span class="close-icon">
+                        <icon-close size="18" :strokeWidth="7"  />
+                        <span>取消</span>
+                      </span>
                     </a-popconfirm>
                   </a-space>
                 </template>
@@ -119,18 +138,19 @@
               <a-grid-item v-for="item in treeData" :key="item.id">
                 <a-radio :value="item.id">{{ item.name }}</a-radio>
               </a-grid-item>
-              <a-grid-item>
+              <!-- <a-grid-item>
                 <a-radio value="0">清空</a-radio>
-              </a-grid-item>
+              </a-grid-item> -->
             </a-grid>
           </a-radio-group>
         </div>
         <template #footer>
           <a-button @click="cateHandleCancel" :disabled="btnloading">取消</a-button>
+          <a-button @click="cateKey='0';cateHandleOk()" :disabled="btnloading">清空</a-button>
           <a-button type="primary" @click="cateHandleOk" :loading="btnloading">确定</a-button>
         </template>
       </a-modal>
-      <productlist ref="listRef" :cateName="cateName" :flagType="flag_type" @update="getTableData"></productlist>
+      <productlist ref="listRef" :setcateid="setcateid" :cateName="cateName" :flagType="flag_type" @update="getTableData"></productlist>
     </div>
     <GiFooter></GiFooter>
   </div>
@@ -168,6 +188,7 @@ const tableData = ref<productListItem[]>([])
 const flag_type = ref('5')
 const flagTotal = ref(0)
 const flagMax = ref(0)
+const setcateid = ref('')
 const { current, pageSize, total, changeCurrent, changePageSize, setTotal } = usePagination(() => getTableData())
 const getTableData = async () => {
   loading.value = true
@@ -186,10 +207,11 @@ const getTableData = async () => {
   if (code == 0) {
     tableData.value = data.list
     personArr.value = data.p_users
-    treeData.value = getTreeDate(data.categories)
+    treeData.value = data.categories
     flagTotal.value = data.flags_count[flag_type.value]
     flagMax.value = data.flag_max
     cateName.value = data.category_name
+    setcateid.value = data.category_id
     emit('update', data)
     setTotal(Number(data.total_records))
   }

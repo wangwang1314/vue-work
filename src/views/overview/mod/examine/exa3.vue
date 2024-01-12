@@ -50,7 +50,7 @@ const gocheck = async () => {
       // Message.success('操作成功')
       userStore.setOnlineState(1)
     } else {
-      Message.error('检测不通过，请重新配置。')
+      Message.error('检测不通过，请完成配置后重新检测')
     }
   }
 }

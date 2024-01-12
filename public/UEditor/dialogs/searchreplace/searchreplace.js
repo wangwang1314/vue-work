@@ -44,7 +44,6 @@ function switchTab( tabParentId ) {
     var tabElements = $G( tabParentId ).children,
         tabHeads = tabElements[0].children,
         tabBodys = tabElements[1].children;
-
     for ( var i = 0, length = tabHeads.length; i < length; i++ ) {
         var head = tabHeads[i];
         if ( head.className === "focus" )clickHandler(tabHeads,tabBodys, head );
@@ -54,7 +53,7 @@ function switchTab( tabParentId ) {
     }
 }
 $G('searchtab').onmousedown = function(){
-    $G('search-msg').innerHTML = '';
+    // $G('search-msg').innerHTML = '';
     $G('replace-msg').innerHTML = ''
 }
 //是否区分大小写
@@ -62,24 +61,24 @@ function getMatchCase(id) {
     return $G(id).checked ? true : false;
 }
 //查找
-$G("nextFindBtn").onclick = function (txt, dir, mcase) {
-    var findtxt = $G("findtxt").value, obj;
-    if (!findtxt) {
-        return false;
-    }
-    obj = {
-        searchStr:findtxt,
-        dir:1,
-        casesensitive:getMatchCase("matchCase")
-    };
-    if (!frCommond(obj)) {
-        var bk = editor.selection.getRange().createBookmark();
-        $G('search-msg').innerHTML = lang.getEnd;
-        editor.selection.getRange().moveToBookmark(bk).select();
+// $G("nextFindBtn").onclick = function (txt, dir, mcase) {
+//     var findtxt = $G("findtxt").value, obj;
+//     if (!findtxt) {
+//         return false;
+//     }
+//     obj = {
+//         searchStr:findtxt,
+//         dir:1,
+//         casesensitive:getMatchCase("matchCase")
+//     };
+//     if (!frCommond(obj)) {
+//         var bk = editor.selection.getRange().createBookmark();
+//         $G('search-msg').innerHTML = lang.getEnd;
+//         editor.selection.getRange().moveToBookmark(bk).select();
 
 
-    }
-};
+//     }
+// };
 $G("nextReplaceBtn").onclick = function (txt, dir, mcase) {
     var findtxt = $G("findtxt1").value, obj;
     if (!findtxt) {
@@ -92,20 +91,20 @@ $G("nextReplaceBtn").onclick = function (txt, dir, mcase) {
     };
     frCommond(obj);
 };
-$G("preFindBtn").onclick = function (txt, dir, mcase) {
-    var findtxt = $G("findtxt").value, obj;
-    if (!findtxt) {
-        return false;
-    }
-    obj = {
-        searchStr:findtxt,
-        dir:-1,
-        casesensitive:getMatchCase("matchCase")
-    };
-    if (!frCommond(obj)) {
-        $G('search-msg').innerHTML = lang.getStart;
-    }
-};
+// $G("preFindBtn").onclick = function (txt, dir, mcase) {
+//     var findtxt = $G("findtxt").value, obj;
+//     if (!findtxt) {
+//         return false;
+//     }
+//     obj = {
+//         searchStr:findtxt,
+//         dir:-1,
+//         casesensitive:getMatchCase("matchCase")
+//     };
+//     if (!frCommond(obj)) {
+//         $G('search-msg').innerHTML = lang.getStart;
+//     }
+// };
 $G("preReplaceBtn").onclick = function (txt, dir, mcase) {
     var findtxt = $G("findtxt1").value, obj;
     if (!findtxt) {

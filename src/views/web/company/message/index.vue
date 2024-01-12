@@ -4,23 +4,26 @@
       <div class="m-left">客户赠言</div>
       <div class="m-right"></div>
     </div>
-    <div class="msg-detail">
+    <div class="msg-detail detail">
       <a-form ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
         <a-row class="msg-box" v-for="(item, index) in form.list" :key="'msg' + index">
-          <a-col :span="18">
-            <a-card>
+          <a-col :span="24">
+            <a-card :bordered="false">
               <a-popconfirm type="warning" content="您确定要删除该项吗?" @ok="onDelete(item, index)">
                 <icon-delete class="del-i-icon" />
               </a-popconfirm>
-              <a-form-item label="客户名称">
-                <a-input
-                  v-model="item.name"
-                  :max-length="{ length: 30 }"
-                  allow-clear
-                  show-word-limit
-                ></a-input>
+              <a-form-item
+                label="客户名称"
+                :field="'list.' + index + '.name'"
+                :rules="[{ required: true, message: '请输入客户名称' }]"
+              >
+                <a-input v-model="item.name" :max-length="{ length: 30 }" allow-clear show-word-limit></a-input>
               </a-form-item>
-              <a-form-item label="赠言内容">
+              <a-form-item
+                label="赠言内容"
+                :field="'list.' + index + '.content'"
+                :rules="[{ required: true, message: '请输入赠言内容' }]"
+              >
                 <a-textarea
                   :auto-size="{
                     minRows: 2
@@ -95,6 +98,9 @@ const form = reactive({
   ]
 })
 const delPicAjax = async (data) => {
+  if (!data.sid) {
+    return
+  }
   const res = await pictureDdel({
     id: data.id,
     sid: data.sid,
@@ -145,30 +151,34 @@ const onDelete = (item, index) => {
   form.list.splice(index, 1)
 }
 const saveFn = async () => {
-  loading.value = true
-  let arr = []
-  console.log(form, '777')
-  form.list.forEach((item, index) => {
-    let { id, name, content, sort, imgList } = item
-    let picture_info = {
-      id: imgList.length ? imgList[0].id : ''
+  formRef.value.validate(async(vali) => {
+    if (vali) {
+      return
     }
-    arr.push({
-      id,
-      name,
-      content,
-      sort,
-      picture_info
+    let arr = []
+    form.list.forEach((item, index) => {
+      let { id, name, content, sort, imgList } = item
+      let picture_info = {
+        id: imgList.length ? imgList[0].id : ''
+      }
+      arr.push({
+        id,
+        name,
+        content,
+        sort,
+        picture_info
+      })
     })
+    fileStore.setloading(true)
+    const res = await saveCompanyLeaveWord({
+      leave_word: arr
+    }).finally(() => {
+      fileStore.setloading(false)
+    })
+    if (res.code === 0) {
+      Message.success(res.message || '操作成功')
+    }
   })
-  const res = await saveCompanyLeaveWord({
-    leave_word: arr
-  }).finally(() => {
-    loading.value = false
-  })
-  if (res.code === 0) {
-    Message.success(res.message || '操作成功')
-  }
 }
 
 fileStore.$onAction(({ name }) => {

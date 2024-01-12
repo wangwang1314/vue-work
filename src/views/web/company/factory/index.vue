@@ -86,7 +86,7 @@
               </a-col>
             </a-row>
             <template #extra>
-              <div style="line-height: 18px">拖拽可调整顺序</div>
+              <div style="line-height: 18px">建议质量小于100K，长按图片拖拽可以调整顺序。</div>
               <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
             </template>
           </a-form-item>
@@ -162,7 +162,7 @@ import { reactive, ref, h, nextTick } from 'vue'
 import { getCompanyFactory, saveCompanyFactory, pictureDdel } from '@/apis'
 import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
-import { Notification, Message } from '@arco-design/web-vue'
+import { Notification, Message, Modal } from '@arco-design/web-vue'
 import { getTreeDate } from '@/utils/common'
 import picDialog from '@/components/commonDialog/picDialog.vue'
 import lodash from 'lodash'
@@ -233,11 +233,18 @@ const showPicCenter = () => {
 }
 
 const picListDel = (file) => {
-  let index = lodash.findIndex(fileList.value, function (o) {
-    return o.uid == file.uid
+  Modal.confirm({
+    title: '提示',
+    content: `您确定要删除吗？`,
+    onOk: () => {
+      let index = lodash.findIndex(fileList.value, function (o) {
+        return o.uid == file.uid
+      })
+      delPicAjax(fileList.value[index]?.id)
+      fileList.value.splice(index, 1)
+    }
   })
-  delPicAjax(fileList.value[index]?.id)
-  fileList.value.splice(index, 1)
+
 }
 const delPicAjax = async (id) => {
   const res = await pictureDdel({

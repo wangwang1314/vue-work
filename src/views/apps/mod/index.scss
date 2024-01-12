@@ -1,0 +1,29 @@
+.intmod {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.intmod-inner {
+  padding: 20px 15px 0 20px;
+}
+.tab {
+  display: flex;
+  margin: 0px 0 18px 0;
+  justify-content: space-between;
+  .tab-right {
+    display: flex;
+    align-items: center;
+    .gift {
+      svg {
+        font-size: 15px;
+        vertical-align: top;
+        position: relative;
+        top: 3px;
+      }
+      color: var(--color-text-4);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      margin-right: 32px;
+    }
+  }
+}

@@ -58,21 +58,16 @@ const changeTab = (val: number) => {
 
 <style lang="scss" scoped>
 .banner-detail-out {
-  padding: 16px 0px 16px 20px;
-  background-color: var(--color-bg-1);
-  margin: 16px var(--inner-padding) 28px var(--inner-padding);
+
+
+  margin: 16px var(--inner-padding) 10px var(--inner-padding);
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex: 1;
 }
 :deep(.arco-card) {
-  .arco-card-header {
-    border-bottom-style: dashed;
-    margin: 0 16px;
-    padding-left: 0;
-    padding-right: 0;
-  }
+
 }
 .manage {
   width: 100%;

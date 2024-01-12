@@ -1,234 +1,256 @@
 <template>
-  <div class="banner-detail">
-    <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
-      <a-form-item label="视频中心" :content-flex="false">
-        <a-row class="full-width">
-          <div class="dra-wrap-b inner-banner">
-            <a-col :span="16" class="pic-item" v-for="(element, index) in fileList" :key="index">
-              <span class="arco-upload-list-picture">
-                <img :src="element.url" :alt="element.name" />
-                <div class="arco-upload-list-picture-mask">
-                  <div class="arco-upload-list-picture-operation">
-                    <span class="arco-upload-icon arco-upload-icon-remove">
-                      <icon-delete :size="20" @click="picListDel(element, 1, 28)" />
+  <div class="banner-detail detail">
+    <a-form  ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
+      <a-row :gutter="16">
+        <a-col :span="12">
+          <a-card :bordered="false" title="视频中心">
+            <a-form-item label="视频中心" :content-flex="false" :hide-label="true">
+              <a-row class="full-width">
+                <div class="dra-wrap-b inner-banner">
+                  <a-col :span="16" class="pic-item" v-for="(element, index) in fileList" :key="index">
+                    <span class="arco-upload-list-picture">
+                      <img :src="element.url" :alt="element.name" />
+                      <div class="arco-upload-list-picture-mask">
+                        <div class="arco-upload-list-picture-operation">
+                          <span class="arco-upload-icon arco-upload-icon-remove">
+                            <icon-delete :size="20" @click="picListDel(element, 1, 28)" />
+                          </span>
+                        </div>
+                      </div>
                     </span>
-                  </div>
+                  </a-col>
+                  <a-col :span="16" v-show="fileList.length < 1">
+                    <a-upload
+                      multiple
+                      :with-credentials="true"
+                      @change="
+                        (res) => {
+                          picUploadChange(res, 1)
+                        }
+                      "
+                      :file-list="fileList"
+                      :show-file-list="false"
+                      ref="uploadRef"
+                      :data="{ type: '28' }"
+                      @success="
+                        (res) => {
+                          successUpload(res, 1, 28)
+                        }
+                      "
+                      draggable
+                      :action="picUrl"
+                    />
+                  </a-col>
                 </div>
-              </span>
-            </a-col>
-            <a-col :span="16" v-show="fileList.length < 1">
-              <a-upload
-                multiple
-                :with-credentials="true"
-                @change="
-                  (res) => {
-                    picUploadChange(res, 1)
-                  }
-                "
-                :file-list="fileList"
-                :show-file-list="false"
-                ref="uploadRef"
-                :data="{ type: '28' }"
-                @success="
-                  (res) => {
-                    successUpload(res, 1, 28)
-                  }
-                "
-                draggable
-                :action="picUrl"
-              />
-            </a-col>
-          </div>
-        </a-row>
-        <template #extra>
-          <div style="line-height: 18px; max-width: 630px">
-            提示：建议使用<span class="warning-color">1680*160</span>尺寸，JPEG、JPG格式，100K以下图片。
-          </div>
-        </template>
-      </a-form-item>
-      <a-form-item label="Products页" :content-flex="false">
-        <a-row class="full-width">
-          <div class="dra-wrap-b">
-            <a-col :span="16" class="pic-item" v-for="(element, index) in fileList2" :key="index">
-              <span class="arco-upload-list-picture">
-                <img :src="element.url" :alt="element.name" />
-                <div class="arco-upload-list-picture-mask">
-                  <div class="arco-upload-list-picture-operation">
-                    <span class="arco-upload-icon arco-upload-icon-remove">
-                      <icon-delete :size="20" @click="picListDel(element, 2, 15)" />
+              </a-row>
+              <template #extra>
+                <div style="line-height: 18px; max-width: 630px">
+                  提示：建议使用<span class="warning-color">1680*160</span>尺寸，JPEG、JPG格式，100K以下图片。
+                </div>
+              </template>
+            </a-form-item>
+          </a-card>
+        </a-col>
+        <a-col :span="12">
+          <a-card :bordered="false" title="Products页">
+            <a-form-item label="Products页" :content-flex="false" :hide-label="true">
+              <a-row class="full-width">
+                <div class="dra-wrap-b">
+                  <a-col :span="16" class="pic-item" v-for="(element, index) in fileList2" :key="index">
+                    <span class="arco-upload-list-picture">
+                      <img :src="element.url" :alt="element.name" />
+                      <div class="arco-upload-list-picture-mask">
+                        <div class="arco-upload-list-picture-operation">
+                          <span class="arco-upload-icon arco-upload-icon-remove">
+                            <icon-delete :size="20" @click="picListDel(element, 2, 15)" />
+                          </span>
+                        </div>
+                      </div>
                     </span>
-                  </div>
+                  </a-col>
+                  <a-col :span="16" v-show="fileList2.length < 1">
+                    <a-upload
+                      multiple
+                      :with-credentials="true"
+                      @change="
+                        (res) => {
+                          picUploadChange(res, 2)
+                        }
+                      "
+                      :file-list="fileList"
+                      :show-file-list="false"
+                      ref="uploadRef"
+                      :data="{ type: '15' }"
+                      @success="
+                        (res) => {
+                          successUpload(res, 2, 15)
+                        }
+                      "
+                      draggable
+                      :action="picUrl"
+                    />
+                  </a-col>
                 </div>
-              </span>
-            </a-col>
-            <a-col :span="16" v-show="fileList2.length < 1">
-              <a-upload
-                multiple
-                :with-credentials="true"
-                @change="
-                  (res) => {
-                    picUploadChange(res, 2)
-                  }
-                "
-                :file-list="fileList"
-                :show-file-list="false"
-                ref="uploadRef"
-                :data="{ type: '15' }"
-                @success="
-                  (res) => {
-                    successUpload(res, 2, 15)
-                  }
-                "
-                draggable
-                :action="picUrl"
-              />
-            </a-col>
-          </div>
-        </a-row>
-        <template #extra>
-          <div style="line-height: 18px; max-width: 630px">
-            提示：建议使用<span class="warning-color">1920*400</span>尺寸，JPEG、JPG格式，100K以下图片。
-          </div>
-        </template>
-      </a-form-item>
-      <a-form-item label="About Us页" :content-flex="false">
-        <a-row class="full-width">
-          <div class="dra-wrap-b">
-            <a-col :span="16" class="pic-item" v-for="(element, index) in fileList3" :key="index">
-              <span class="arco-upload-list-picture">
-                <img :src="element.url" :alt="element.name" />
-                <div class="arco-upload-list-picture-mask">
-                  <div class="arco-upload-list-picture-operation">
-                    <span class="arco-upload-icon arco-upload-icon-remove">
-                      <icon-delete :size="20" @click="picListDel(element, 3, 17)" />
+              </a-row>
+              <template #extra>
+                <div style="line-height: 18px; max-width: 630px">
+                  提示：建议使用<span class="warning-color">1920*400</span>尺寸，JPEG、JPG格式，100K以下图片。
+                </div>
+              </template>
+            </a-form-item>
+          </a-card>
+        </a-col>
+        <a-col :span="12">
+          <a-card :bordered="false" title="About Us页">
+            <a-form-item label="About Us页" :content-flex="false" :hide-label="true">
+              <a-row class="full-width">
+                <div class="dra-wrap-b">
+                  <a-col :span="16" class="pic-item" v-for="(element, index) in fileList3" :key="index">
+                    <span class="arco-upload-list-picture">
+                      <img :src="element.url" :alt="element.name" />
+                      <div class="arco-upload-list-picture-mask">
+                        <div class="arco-upload-list-picture-operation">
+                          <span class="arco-upload-icon arco-upload-icon-remove">
+                            <icon-delete :size="20" @click="picListDel(element, 3, 17)" />
+                          </span>
+                        </div>
+                      </div>
                     </span>
-                  </div>
+                  </a-col>
+                  <a-col :span="16" v-show="fileList3.length < 1">
+                    <a-upload
+                      multiple
+                      :with-credentials="true"
+                      @change="
+                        (res) => {
+                          picUploadChange(res, 3)
+                        }
+                      "
+                      :file-list="fileList"
+                      :show-file-list="false"
+                      ref="uploadRef"
+                      :data="{ type: '17' }"
+                      @success="
+                        (res) => {
+                          successUpload(res, 3, 17)
+                        }
+                      "
+                      draggable
+                      :action="picUrl"
+                    />
+                  </a-col>
                 </div>
-              </span>
-            </a-col>
-            <a-col :span="16" v-show="fileList3.length < 1">
-              <a-upload
-                multiple
-                :with-credentials="true"
-                @change="
-                  (res) => {
-                    picUploadChange(res, 3)
-                  }
-                "
-                :file-list="fileList"
-                :show-file-list="false"
-                ref="uploadRef"
-                :data="{ type: '17' }"
-                @success="
-                  (res) => {
-                    successUpload(res, 3, 17)
-                  }
-                "
-                draggable
-                :action="picUrl"
-              />
-            </a-col>
-          </div>
-        </a-row>
-        <template #extra>
-          <div style="line-height: 18px; max-width: 630px">
-            提示：建议使用<span class="warning-color">1920*400</span>尺寸，JPEG、JPG格式，100K以下图片。
-          </div>
-        </template>
-      </a-form-item>
-      <a-form-item label="新闻动态页" :content-flex="false">
-        <a-row class="full-width">
-          <div class="dra-wrap-b">
-            <a-col :span="16" class="pic-item" v-for="(element, index) in fileList5" :key="index">
-              <span class="arco-upload-list-picture">
-                <img :src="element.url" :alt="element.name" />
-                <div class="arco-upload-list-picture-mask">
-                  <div class="arco-upload-list-picture-operation">
-                    <span class="arco-upload-icon arco-upload-icon-remove">
-                      <icon-delete :size="20" @click="picListDel(element, 5, 16)" />
+              </a-row>
+              <template #extra>
+                <div style="line-height: 18px; max-width: 630px">
+                  提示：建议使用<span class="warning-color">1920*400</span>尺寸，JPEG、JPG格式，100K以下图片。
+                </div>
+              </template>
+            </a-form-item>
+          </a-card>
+        </a-col>
+        <a-col :span="12">
+          <a-card :bordered="false" title="新闻动态页">
+            <a-form-item label="新闻动态页" :content-flex="false" :hide-label="true">
+              <a-row class="full-width">
+                <div class="dra-wrap-b">
+                  <a-col :span="16" class="pic-item" v-for="(element, index) in fileList5" :key="index">
+                    <span class="arco-upload-list-picture">
+                      <img :src="element.url" :alt="element.name" />
+                      <div class="arco-upload-list-picture-mask">
+                        <div class="arco-upload-list-picture-operation">
+                          <span class="arco-upload-icon arco-upload-icon-remove">
+                            <icon-delete :size="20" @click="picListDel(element, 5, 16)" />
+                          </span>
+                        </div>
+                      </div>
                     </span>
-                  </div>
+                  </a-col>
+                  <a-col :span="16" v-show="fileList5.length < 1">
+                    <a-upload
+                      multiple
+                      :with-credentials="true"
+                      @change="
+                        (res) => {
+                          picUploadChange(res, 5)
+                        }
+                      "
+                      :file-list="fileList"
+                      :show-file-list="false"
+                      ref="uploadRef"
+                      :data="{ type: '16' }"
+                      @success="
+                        (res) => {
+                          successUpload(res, 5, 16)
+                        }
+                      "
+                      draggable
+                      :action="picUrl"
+                    />
+                  </a-col>
                 </div>
-              </span>
-            </a-col>
-            <a-col :span="16" v-show="fileList5.length < 1">
-              <a-upload
-                multiple
-                :with-credentials="true"
-                @change="
-                  (res) => {
-                    picUploadChange(res, 5)
-                  }
-                "
-                :file-list="fileList"
-                :show-file-list="false"
-                ref="uploadRef"
-                :data="{ type: '16' }"
-                @success="
-                  (res) => {
-                    successUpload(res, 5, 16)
-                  }
-                "
-                draggable
-                :action="picUrl"
-              />
-            </a-col>
-          </div>
-        </a-row>
-        <template #extra>
-          <div style="line-height: 18px; max-width: 630px">
-            提示：建议使用<span class="warning-color">1920*400</span>尺寸，JPEG、JPG格式，100K以下图片。
-          </div>
-        </template>
-      </a-form-item>
-      <a-form-item label="Contact Us页" :content-flex="false">
-        <a-row class="full-width">
-          <div class="dra-wrap-b">
-            <a-col :span="16" class="pic-item" v-for="(element, index) in fileList4" :key="index">
-              <span class="arco-upload-list-picture">
-                <img :src="element.url" :alt="element.name" />
-                <div class="arco-upload-list-picture-mask">
-                  <div class="arco-upload-list-picture-operation">
-                    <span class="arco-upload-icon arco-upload-icon-remove">
-                      <icon-delete :size="20" @click="picListDel(element, 4, 18)" />
+              </a-row>
+              <template #extra>
+                <div style="line-height: 18px; max-width: 630px">
+                  提示：建议使用<span class="warning-color">1920*400</span>尺寸，JPEG、JPG格式，100K以下图片。
+                </div>
+              </template>
+            </a-form-item>
+          </a-card>
+        </a-col>
+        <a-col :span="12">
+          <a-card :bordered="false" title="Contact Us页">
+            <a-form-item label="Contact Us页" :content-flex="false" :hide-label="true">
+              <a-row class="full-width">
+                <div class="dra-wrap-b">
+                  <a-col :span="16" class="pic-item" v-for="(element, index) in fileList4" :key="index">
+                    <span class="arco-upload-list-picture">
+                      <img :src="element.url" :alt="element.name" />
+                      <div class="arco-upload-list-picture-mask">
+                        <div class="arco-upload-list-picture-operation">
+                          <span class="arco-upload-icon arco-upload-icon-remove">
+                            <icon-delete :size="20" @click="picListDel(element, 4, 18)" />
+                          </span>
+                        </div>
+                      </div>
                     </span>
-                  </div>
+                  </a-col>
+                  <a-col :span="16" v-show="fileList4.length < 1">
+                    <a-upload
+                      multiple
+                      :with-credentials="true"
+                      @change="
+                        (res) => {
+                          picUploadChange(res, 4)
+                        }
+                      "
+                      :file-list="fileList"
+                      :show-file-list="false"
+                      ref="uploadRef"
+                      :data="{ type: '18' }"
+                      @success="
+                        (res) => {
+                          successUpload(res, 4, 18)
+                        }
+                      "
+                      draggable
+                      :action="picUrl"
+                    />
+                  </a-col>
                 </div>
-              </span>
-            </a-col>
-            <a-col :span="16" v-show="fileList4.length < 1">
-              <a-upload
-                multiple
-                :with-credentials="true"
-                @change="
-                  (res) => {
-                    picUploadChange(res, 4)
-                  }
-                "
-                :file-list="fileList"
-                :show-file-list="false"
-                ref="uploadRef"
-                :data="{ type: '18' }"
-                @success="
-                  (res) => {
-                    successUpload(res, 4, 18)
-                  }
-                "
-                draggable
-                :action="picUrl"
-              />
-            </a-col>
-          </div>
-        </a-row>
-        <template #extra>
-          <div style="line-height: 18px; max-width: 630px">
-            提示：建议使用<span class="warning-color">1920*400</span>尺寸，JPEG、JPG格式，100K以下图片。
-          </div>
-        </template>
-      </a-form-item>
-      
-      <a-form-item label="">
-        <div style="margin-top: 20px">
+              </a-row>
+              <template #extra>
+                <div style="line-height: 18px; max-width: 630px">
+                  提示：建议使用<span class="warning-color">1920*400</span>尺寸，JPEG、JPG格式，100K以下图片。
+                </div>
+              </template>
+            </a-form-item>
+          </a-card>
+        </a-col>
+      </a-row>
+
+      <a-form-item label="" :hide-label="true">
+        <div style="margin-top: 10px">
           <a-button type="primary" @click="saveFn" :loading="loading" :disabled="loading">保存</a-button>
         </div>
       </a-form-item>

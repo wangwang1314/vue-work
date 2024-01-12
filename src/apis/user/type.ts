@@ -10,6 +10,7 @@ export interface UserInfo {
   homeInfo: undefined | homePage
   loading: boolean
   showMain: boolean
+  datastate: number
 }
 
 export interface LoginRes {

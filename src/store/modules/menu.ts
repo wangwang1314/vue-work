@@ -10,7 +10,7 @@ export const useMenuStore = defineStore({
     return {
       menuTree: [
         {
-          icon: 'icon-apps',
+          icon: 'icon-home',
           id: 'GK',
           name: '概况',
           path: '/overview',
@@ -27,22 +27,57 @@ export const useMenuStore = defineStore({
           hidden: false,
           level: 1
         },
-        // {
-        //   id: 'SJXQ',
-        //   name: '商机详情',
-        //   path: '/web/inquiry/detail',
-        //   keepAlive: false,
-        //   hidden: true,
-        //   level: 2
-        // },
-        // {
-        //   id: 'SJHF',
-        //   name: '商机回复',
-        //   path: '/web/inquiry/reply',
-        //   keepAlive: false,
-        //   hidden: true,
-        //   level: 2
-        // },
+        {
+          icon: 'icon-ordered-list',
+          id: 'SEOFW',
+          name: 'SEO服务',
+          path: '/seo',
+          keepAlive: false,
+          hidden: false,
+          level: 1,
+          children: [
+            {
+              id: 'AIFBFW',
+              name: 'AI发布服务',
+              path: '/seo/ai',
+              keepAlive: false,
+              hidden: false,
+              level: 2
+            },
+            {
+              id: 'GOOGLESSPM',
+              name: 'Google搜索排名',
+              path: '/seo/google',
+              keepAlive: false,
+              hidden: false,
+              level: 2
+            },
+            {
+              id: 'YOUTUBEPM',
+              name: 'YouTube排名',
+              path: '/seo/youtube',
+              keepAlive: false,
+              hidden: false,
+              level: 2
+            },
+            {
+              id: 'TIKTOKPM',
+              name: 'TikTok排名',
+              path: '/seo/tiktok',
+              keepAlive: false,
+              hidden: false,
+              level: 2
+            },
+            {
+              id: 'SYFLSEO',
+              name: '首页分类SEO',
+              path: '/seo/cate',
+              keepAlive: false,
+              hidden: false,
+              level: 2
+            },
+          ]
+        },
         {
           icon: 'icon-file',
           id: 'CP',
@@ -60,14 +95,6 @@ export const useMenuStore = defineStore({
               hidden: false,
               level: 2
             },
-            // {
-            //   id: 'YXZS',
-            //   name: '优先展示',
-            //   path: '/web/webproduct/orderlist',
-            //   keepAlive: true,
-            //   hidden: false,
-            //   level: 3
-            // },
             {
               id: 'FLGL',
               name: '分类管理',
@@ -84,85 +111,6 @@ export const useMenuStore = defineStore({
               hidden: false,
               level: 2
             }
-            // {
-            //   id: 'HGBM',
-            //   name: '海关编码',
-            //   path: '/web/webproduct/hscode',
-            //   keepAlive: true,
-            //   hidden: false,
-            //   level: 3
-            // }
-
-            // {
-            //   id: 'GSZL',
-            //   name: '公司资料',
-            //   path: '/web/company',
-            //   keepAlive: false,
-            //   hidden: false,
-            //   icon: 'menu-detail',
-            //   level: 2,
-            //   children: [
-            //     {
-            //       id: 'GSJS',
-            //       name: '公司介绍',
-            //       path: '/web/company/intro',
-            //       keepAlive: false,
-            //       hidden: false,
-            //       level: 3
-            //     },
-            //     {
-            //       id: 'GSYS',
-            //       name: '公司优势',
-            //       path: '/web/company/adv',
-            //       keepAlive: false,
-            //       hidden: false,
-            //       level: 3
-            //     },
-            //     {
-            //       id: 'HZPP',
-            //       name: '合作品牌',
-            //       path: '/web/company/brand',
-            //       keepAlive: false,
-            //       hidden: false,
-            //       level: 3
-            //     },
-            //     {
-            //       id: 'KHZY',
-            //       name: '客户赠言',
-            //       path: '/web/company/message',
-            //       keepAlive: false,
-            //       hidden: false,
-            //       level: 3
-            //     },
-            //     {
-            //       id: 'GCZS',
-            //       name: '工厂展示',
-            //       path: '/web/company/factory',
-            //       keepAlive: false,
-            //       hidden: false,
-            //       level: 3
-            //     },
-            //   ]
-            // },
-            // {
-            //   id: 'FLGL',
-            //   name: '分类管理',
-            //   path: '',
-            //   keepAlive: false,
-            //   hidden: false,
-            //   icon: 'menu-detail',
-            //   level: 2,
-            //   children: [
-            //     {
-            //       id: 'FLLB',
-            //       name: '分类列表',
-            //       path: '/web/webcate/list',
-            //       keepAlive: true,
-            //       hidden: false,
-            //       level: 3
-            //     }
-            //   ]
-            // }
           ]
         },
         {
@@ -192,24 +140,6 @@ export const useMenuStore = defineStore({
               icon: 'menu-detail',
               level: 2
             }
-            // {
-            //   id: 'FAQS',
-            //   name: 'Faqs',
-            //   path: '/file/faqs',
-            //   keepAlive: false,
-            //   hidden: false,
-            //   icon: 'menu-detail',
-            //   level: 2
-            // },
-            // {
-            //   id: 'ZDYYM',
-            //   name: '自定义页面',
-            //   path: '/file/custom',
-            //   keepAlive: false,
-            //   hidden: false,
-            //   icon: 'menu-detail',
-            //   level: 2
-            // }
           ]
         },
         {
@@ -371,6 +301,16 @@ export const useMenuStore = defineStore({
           path: '/resource/list'
         },
         {
+          icon: 'icon-public',
+          id: 'WLFW',
+          name: '物流服务',
+          keepAlive: false,
+          hidden: false,
+          level: 1,
+          path: 'inquiryadd',
+          link: ' https://scm.ecer.com/index.php?r=inquiry/add'
+        },
+        {
           icon: 'icon-settings',
           id: 'WZSZ',
           name: '后台设置',
@@ -386,246 +326,27 @@ export const useMenuStore = defineStore({
               hidden: false,
               icon: 'menu-detail',
               level: 2
+            },
+            {
+              id: 'ZHJF',
+              name: '账户积分',
+              path: '/integral/detail',
+              keepAlive: false,
+              hidden: false,
+              icon: 'menu-detail',
+              level: 2
             }
           ]
-        }
-        // {
-        //   icon: 'menu-form',
-        //   id: 'BDGL',
-        //   name: '表单管理',
-        //   path: '/form',
-        //   keepAlive: true,
-        //   hidden: false,
-        //   children: [
-        //     {
-        //       id: 'JCBD',
-        //       name: '基础表单',
-        //       path: '/form/base',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'FBBD',
-        //       name: '分步表单',
-        //       path: '/form/step',
-        //       keepAlive: false,
-        //       hidden: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   icon: 'menu-table',
-        //   id: 'BGGL',
-        //   name: '表格管理',
-        //   path: '/table',
-        //   keepAlive: true,
-        //   hidden: false,
-        //   children: [
-        //     {
-        //       id: 'ZHBG',
-        //       name: '综合表格',
-        //       path: '/table/main',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'ZDYBG',
-        //       name: '自定义表格',
-        //       path: '/table/custom',
-        //       keepAlive: false,
-        //       hidden: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   icon: 'menu-system',
-        //   id: 'XTGL',
-        //   name: '系统管理',
-        //   keepAlive: false,
-        //   hidden: false,
-        //   children: [
-        //     {
-        //       id: 'BMGL',
-        //       name: '部门管理',
-        //       path: '/system/dept-manage',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'YHGL',
-        //       name: '用户管理',
-        //       path: '/system/user-manage',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'JSGL',
-        //       name: '角色管理',
-        //       path: '/system/role-manage',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'CDGL',
-        //       name: '菜单管理',
-        //       path: '/system/menu-manage',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'GRZX',
-        //       name: '个人中心',
-        //       path: '/system/user-center',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'NQST',
-        //       name: '内嵌页面',
-        //       path: '/system',
-        //       keepAlive: false,
-        //       hidden: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   icon: 'menu-detail',
-        //   id: 'XQYM',
-        //   name: '详情页',
-        //   path: '/detail',
-        //   keepAlive: true,
-        //   hidden: false,
-        //   children: [
-        //     {
-        //       id: 'JCXQY',
-        //       name: '基础详情页',
-        //       path: '/detail/base',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'GJXQY',
-        //       name: '高级详情页',
-        //       path: '/detail/senior',
-        //       keepAlive: false,
-        //       hidden: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   icon: 'menu-error',
-        //   id: 'ERROR',
-        //   name: '异常页',
-        //   keepAlive: false,
-        //   hidden: false,
-        //   children: [
-        //     {
-        //       id: 'error403',
-        //       name: '403',
-        //       path: '/error/403',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'error404',
-        //       name: '404',
-        //       path: '/error/404',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'error500',
-        //       name: '500',
-        //       path: '/error/500',
-        //       keepAlive: false,
-        //       hidden: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   icon: 'menu-result',
-        //   id: 'RESULT',
-        //   name: '结果页',
-        //   keepAlive: false,
-        //   hidden: false,
-        //   children: [
-        //     {
-        //       id: 'page-success',
-        //       name: '成功页',
-        //       path: '/result/success',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'page-fail',
-        //       name: '失败页',
-        //       path: '/result/fail',
-        //       keepAlive: false,
-        //       hidden: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   icon: 'menu-document',
-        //   id: 'WD',
-        //   name: '文档',
-        //   keepAlive: false,
-        //   hidden: false,
-        //   children: [
-        //     {
-        //       id: 'vue3',
-        //       name: 'vue3文档',
-        //       path: '/document/vue3',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'arco-design',
-        //       name: 'arco ui文档',
-        //       path: '/document/arco-design',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'juejin',
-        //       name: '掘金',
-        //       path: '/document/juejin',
-        //       keepAlive: false,
-        //       hidden: false
-        //     },
-        //     {
-        //       id: 'itab',
-        //       name: 'iTab',
-        //       path: '/document/itab',
-        //       keepAlive: false,
-        //       hidden: false
-        //     }
-        //   ]
-        // },
-        // {
-        //   icon: 'menu-test',
-        //   id: 'Tool',
-        //   name: '功能页',
-        //   path: '/tool',
-        //   keepAlive: false,
-        //   hidden: false
-        // },
-        // {
-        //   icon: 'menu-nav',
-        //   id: 'DHY',
-        //   name: '导航',
-        //   path: '/navigation',
-        //   keepAlive: false,
-        //   hidden: false
-        // },
-        // {
-        //   icon: 'menu-about',
-        //   id: 'ABOUT',
-        //   name: '关于',
-        //   path: '/about',
-        //   keepAlive: false,
-        //   hidden: false
-        // }
+        },
+        {
+          icon: 'icon-apps',
+          id: 'YYSC',
+          name: '应用市场',
+          path: '/apps/list',
+          keepAlive: false,
+          hidden: false,
+          level: 1
+        },
       ]
     }
   },

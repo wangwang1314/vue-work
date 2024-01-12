@@ -12,11 +12,12 @@
     <div class="table-wrap">
       <div class="table-page">
         <a-form label-align="right" ref="formRef" auto-label-width :model="searchForm" class="form" direction="inline">
-          <a-row :gutter="16" wrap style="margin-top: 14px">
-            <a-col :span="12">
-              <a-form-item field="search_name">
-                <a-space style="padding-top: 4px" :size="8">
+          <a-row :gutter="16" wrap style="margin-top: 4px">
+            <a-col :span="18">
+              <a-form-item field="search_name" :hide-label="true" :content-flex="false">
+                <a-space :size="8">
                   <a-input-search
+                    style="width: 400px"
                     @search="searchFn"
                     placeholder="请输入分类名称"
                     v-model="searchForm.search_name"
@@ -35,6 +36,8 @@
         <div class="table-box">
           <div class="table-inner">
             <a-table
+              @change="handleChange"
+              :draggable="{ type: 'handle', width: 40 }"
               class="coustom-table"
               row-key="id"
               :data="tableData"
@@ -70,7 +73,13 @@
                 <a-table-column title="操作" :width="300" align="center">
                   <template #cell="{ record }">
                     <a-space :size="4">
-                      <a-button size="mini" type="text" @click="addSubCate(record)" :class="{'hide-class': record.level=='2'}">
+                      <a-button
+                        size="mini"
+                        type="text"
+                        @click="addSubCate(record)"
+                        :class="{ 'hide-class': record.level == '2' }"
+                      >
+                        <template #icon><icon-plus /></template>
                         <template #default>添加子分类</template>
                       </a-button>
                       <a-button type="text" size="mini" @click="editFn(record)" status="warning">
@@ -109,6 +118,7 @@
               </template>
             </a-table>
           </div>
+          <div class="tips-dra"><span>*</span>拖拽可调整分类顺序</div>
         </div>
         <!-- 批量删除弹框 -->
         <a-modal v-model:visible="popup" :width="286">
@@ -148,7 +158,7 @@
           <div>
             <div class="add-tit">{{ cateObj.id ? '编辑分类' : '新增分类' }}</div>
             <div class="add-sub-tit" v-show="cateObj.pid">父级分类：{{ cateObj.pname }}</div>
-            <div :class="cateErr ? 'arco-form-item-status-error' : ''">
+            <div style="margin-top: 8px" :class="cateErr ? 'arco-form-item-status-error' : ''">
               <a-input v-model="cateObj.name" @blur="cateTitChange" show-word-limit max-length="100"></a-input>
               <div v-if="cateErr" role="alert" class="arco-form-item-message">{{ cateErrtips }}</div>
             </div>
@@ -231,7 +241,8 @@ import {
   addCateKeyword,
   resetSeo,
   setSeo,
-  getSeo
+  getSeo,
+  categorysort
 } from '@/apis'
 import { Notification, Message } from '@arco-design/web-vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -258,6 +269,7 @@ const loading = ref(false)
 const soid = ref('')
 const calist = ref([])
 const summary = ref({})
+const nextData = ref([])
 const getTableData = async () => {
   loading.value = true
   const { code, data } = await getCategoryList({
@@ -267,6 +279,7 @@ const getTableData = async () => {
   })
   if (code === 0) {
     tableData.value = getTreeDate(data.list)
+    nextData.value = JSON.parse(JSON.stringify(tableData.value))
     isEdit.value = data.full_edit
     soid.value = data.soid
     setTotal(data.total_record)
@@ -301,6 +314,7 @@ const batchDel = async () => {
   if (res.code === 0) {
     popup.value = false
     Message.success(res.message || '操作成功')
+    selectObj.keys = []
     getTableData()
   }
 }
@@ -336,6 +350,7 @@ const addPopup = ref(false)
 const cateObj = reactive({ id: '', name: '', pid: '', pname: '' })
 const addCate = () => {
   cateObj.name = ''
+  cateObj.id = ''
   cateObj.pid = ''
   addPopup.value = true
   cateErr.value = false
@@ -479,7 +494,6 @@ const keyForm = reactive({
 })
 const keyDialog = ref(false)
 const addkeyword = (row: CateItem) => {
-  console.log(row)
   keyForm.keyContent = ['', '', '', '', '']
   row.keyword?.forEach((item, index) => {
     keyForm.keyContent[index] = item
@@ -487,12 +501,40 @@ const addkeyword = (row: CateItem) => {
   keyForm.category_id = row.id
   keyDialog.value = true
 }
+const handleChange = async(res) => {
+  let changeArr = []
+  for (let i = 0; i < res.length; i++) {
+    if (res[i].id != nextData.value[i].id) {
+      changeArr = res
+    } else {
+      if (JSON.stringify(res[i].children) != JSON.stringify(nextData.value[i].children)) {
+        for (let j = 0; j < res[i].children.length; j++) {
+          if (res[i].children[j].id != nextData.value[i].children[j].id) {
+            changeArr = res[i].children
+          } else {
+            if (JSON.stringify(res[i].children[j].children) != JSON.stringify(nextData.value[i].children[j].children)) {
+              changeArr = res[i].children[j].children
+            }
+          }
+        }
+      }
+    }
+  }
+  if (!changeArr.length) {
+    return
+  }
+  tableData.value = res
+  const result = await categorysort({
+    category_ids: changeArr.map((item) => item.id)
+  })
+  if (result.code == 0) {
+   
+  }
+}
 const addKeyFn = async () => {
-  console.log(keyForm.keyContent)
   const newArr = keyForm.keyContent.filter((item) => {
     return item
   })
-  console.log(newArr)
   btnloading.value = true
   const res = await addCateKeyword({
     keyword: newArr,

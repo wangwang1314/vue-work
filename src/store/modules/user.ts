@@ -7,6 +7,8 @@ export type RoleType = '' | '*' | 'admin' | 'user'
 
 interface UserState {
   userInfo: UserInfo
+  hidemenuid: Array<string>
+  inithidemenuid: Array<string>
 }
 interface UserRes {
   code: number
@@ -25,8 +27,11 @@ export const useUserStore = defineStore({
         role: '',
         homeInfo: undefined,
         loading: false,
-        showMain: true
-      }
+        showMain: true,
+        datastate: -1
+      },
+      inithidemenuid: ['TIKTOKPM', 'YOUTUBEPM', 'GOOGLESSPM'],
+      hidemenuid: []
     }
   },
   getters: {
@@ -66,9 +71,25 @@ export const useUserStore = defineStore({
     },
     getmgkshow(): number {
       return this.userInfo.homeInfo && this.userInfo.homeInfo.mgkshow
+    },
+    getcid(): number {
+      return this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && this.userInfo.homeInfo.ecweb.cid
+    },
+    getAiService(): number {
+      return (
+        this.userInfo.homeInfo &&
+        this.userInfo.homeInfo.opscompanyinfo &&
+        this.userInfo.homeInfo.opscompanyinfo.ai_publish_service
+      )
+    },
+    getHidemenu(): Array<string> {
+      return this.getAiService > 0 ? this.hidemenuid : this.inithidemenuid
     }
   },
   actions: {
+    setdataurl(url): number {
+      this.userInfo.homeInfo && this.userInfo.homeInfo.ecweb && (this.userInfo.homeInfo.ecweb.dataurl = url)
+    },
     setcheckstate(state) {
       this.userInfo.homeInfo.ecweb.checkstate = state
     },
@@ -90,7 +111,7 @@ export const useUserStore = defineStore({
         await userLogout()
         this.userInfo.homeInfo = undefined
         clearToken()
-        location.href = 'https://uc.ecer.com/home/logouts?goto=https://uc.ecer.com/home/login'
+        location.href = 'https://uc.ecer.com/home/logouts?goto=' + window.location.origin
       } catch (err) {
         return err
       }
@@ -121,6 +142,9 @@ export const useUserStore = defineStore({
       if (this.userInfo.homeInfo && this.userInfo.homeInfo.opscompanyinfo) {
         this.userInfo.homeInfo.opscompanyinfo.status = val
       }
+    },
+    setdatastate(val) {
+      this.userInfo.datastate = val
     }
   }
 })

@@ -92,25 +92,25 @@
         "simpleupload",
         "insertimage",
         "emotion",
-        "scrawl",
+        // "scrawl",
         // "insertvideo",
-        "music",
-        "attachment",
-        "map",
-        "gmap",
-        "insertframe",
-        "insertcode",
-        "webapp",
-        "pagebreak",
-        "template",
-        "background",
+        // "music",
+        // "attachment",
+        // "map",
+        // "gmap",
+        // "insertframe",
+        // "insertcode",
+        // "webapp",
+        // "pagebreak",
+        // "template",
+        // "background",
         "|",
         "horizontal",
         "date",
         "time",
         "spechars",
-        "snapscreen",
-        "wordimage",
+        // "snapscreen",
+        // "wordimage",
         "|",
         "inserttable",
         "deletetable",
@@ -127,13 +127,14 @@
         "splittocols",
         "charts",
         "|",
-        "print",
+        // "print",
         "preview",
         "searchreplace",
-        "drafts",
+        // "drafts",
         "help",
         "cosvideo",
-        "cospic"
+        "cospic",
+        "cosdown"
       ]
     ]
     //当鼠标放在工具栏上时显示的tooltip提示,留空支持自动多语言配置，否则以配置值为准
@@ -393,7 +394,7 @@
     //,toolbarTopOffset:400
 
     //设置远程图片是否抓取到本地保存
-    //,catchRemoteImageEnable: true //设置是否抓取远程图片
+    ,catchRemoteImageEnable: false //设置是否抓取远程图片
 
     //pageBreakTag
     //分页标识符,默认是_ueditor_page_break_tag_
@@ -449,7 +450,7 @@
 
     //默认过滤规则相关配置项目
     //,disabledTableInTable:true  //禁止表格嵌套
-    //,allowDivTransToP:true      //允许进入编辑器的div标签自动变成p标签
+    ,allowDivTransToP:false      //允许进入编辑器的div标签自动变成p标签
     //,rgb2Hex:true               //默认产出的数据中的color自动从rgb格式变成16进制格式
   };
 

@@ -17,6 +17,7 @@
               <a-form-item field="search_name" :hide-label="true">
                 <a-space style="padding-top: 4px" :size="8">
                   <a-input-search
+                    style="width: 400px"
                     @search="searchFn"
                     placeholder="请输入新闻名称"
                     v-model="searchForm.search_name"
@@ -80,25 +81,23 @@
                 </a-table-column>
                 <a-table-column title="操作" :width="320" align="center">
                   <template #cell="{ record, rowIndex }">
-                    <a-space :size="8">
+                    <a-space :size="10">
                       <a-button type="text" status="warning" size="mini" @click="goEdit(record)">
                         <template #icon><icon-edit :size="13" :stroke-width="3" /></template>
                         <template #default>编辑</template>
                       </a-button>
-                      <icon-arrow-rise
-                        @click="sortFn(0, record)"
-                        :class="{ disabled: rowIndex == 0 }"
-                        size="16"
-                        :strokeWidth="7"
-                        class="up-icon"
-                      />
-                      <icon-arrow-fall
+                      <span class="up-icon" @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }">
+                        <icon-arrow-rise size="16" :strokeWidth="7" class="up-icon" />
+                        <span>上移</span>
+                      </span>
+                      <span
                         @click="sortFn(1, record)"
+                        class="up-icon down-icon"
                         :class="{ disabled: tableData.length - 1 == rowIndex }"
-                        size="16"
-                        :strokeWidth="7"
-                        class="up-icon"
-                      />
+                      >
+                        <icon-arrow-fall size="16" :strokeWidth="7" class="up-icon" />
+                        <span>下移</span>
+                      </span>
                       <a-button size="mini" type="text" status="danger" @click="singeDel(record)">
                         <template #icon><icon-delete :size="13" :stroke-width="3" /></template>
                       </a-button>

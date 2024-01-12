@@ -1,0 +1,304 @@
+.guide {
+  
+  height: 100%;
+  // background: url('@/assets/images/step1.png') no-repeat;
+  background-size: cover;
+  :deep(.arco-form) {
+    .arco-form-item-wrapper-col {
+      position: relative;
+      .arco-form-item-message {
+        position: absolute;
+        right: 0;
+        top: -30px;
+        font-size: 14px;
+      }
+    }
+    .arco-form-item.arco-form-item-error {
+      margin-bottom: 16px;
+    }
+  }
+  :deep(.arco-input-wrapper) {
+    height: 44px;
+    
+  }
+}
+.guide-box {
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // margin-top: -50px;
+  // transform: translate(-50%, -50%);
+  width: 480px;
+  .guide-box-top {
+    text-align: center;
+    &>img {
+      width: 146px;
+    }
+    &>div {
+      color: rgb(29, 33, 41);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: 8px;
+      text-align: center;
+      color: var(--color-text-1);
+      margin-top: 12px;
+    }
+  }
+  .guide-inner-box {
+    margin-top: 24px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 16px 0px rgba(98, 87, 255, 0.16);
+    background: rgb(255, 255, 255);
+    padding: 32px 48px 48px 48px;
+    .guide-inner-top {
+      text-align: center;
+      &>img {
+        width: 321px;
+        margin: 10px 0;
+      }
+      &>div {
+        color: rgb(78, 89, 105);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+        letter-spacing: 4px;
+        text-align: center;
+        color: var(--color-text-4);
+      }
+    }
+    .guide-inner-content {
+      margin-top: 32px;
+    }
+  }
+}
+.l-btn {
+  text-align: center;
+  border-radius: 2px;
+  height: 48px;
+  line-height: 48px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  background: linear-gradient(135.00deg, rgb(43, 89, 255) 0%,rgb(105, 87, 255) 58.779%,rgb(167, 86, 255) 99.237%);
+  transition: all 0.3s;
+  margin-top: 24px;
+  span {
+    margin-right: 10px;
+  }
+}
+.l-btn.disabled {
+  pointer-events: none;
+}
+.l-btn:hover {
+  background: linear-gradient(135.00deg, rgb(0, 53, 245) 0%,rgb(105, 87, 255) 58.779%,rgb(158, 0, 255) 99.724%);
+}
+.l-btn.grash {
+  background: rgb(201, 205, 212);
+  pointer-events: none;
+}
+.l-btn.grash:hover {
+  opacity: 0.9;
+}
+.guide-2 {
+  .guide-box {
+    width: 840px;
+    margin-top: 0;
+    .guide-inner-box {
+      .guide-inner-top {
+        &>div {
+          color: var(--color-text-4);
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 28px;
+        }
+      }
+      .guide-inner-list {
+        margin-top: 24px;
+        display: flex;
+        justify-content: space-between;
+        .item {
+          margin-right: 16px;
+          cursor: pointer;
+          border-radius: 2px;
+          /* #E6ECFF */
+          background: rgb(230, 236, 255);
+          padding: 16px;
+          flex: 1;
+          .tit {
+            color: var(--color-text-1);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+            i {
+              vertical-align: top;
+              width: 20px;
+              height: 20px;
+              display: inline-block;
+              margin-right: 4px;
+              background: url('@/assets/images/ai-icon.png') no-repeat;
+              background-size: cover;
+            }
+          }
+          .cont {
+            color: var(--color-text-6);
+            margin-top: 4px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+          }
+        }
+        .item.active {
+          background: linear-gradient(135.00deg, rgb(43, 89, 255) 0%,rgb(105, 87, 255) 58.779%,rgb(167, 86, 255) 99.237%);
+          .tit {
+            color: #fff;
+            i {
+              background: url('@/assets/images/ai-icon2.png') no-repeat;
+              background-size: cover;
+            }
+            
+          }
+          .cont {
+            color: #fff;
+          }
+        }
+        .item:last-child {
+          margin-right: 0;
+        }
+      }
+      .guide-input-wrap {
+        margin-top: 20px;
+        .status-box-wrap {
+          height: 20px;
+          margin-top: -8px;
+          .status-box {
+            color: rgb(38, 90, 255);
+            font-size: 14px;
+            font-weight: 400;
+            display: flex;
+            height: 20px;
+            align-items: center;
+            span {
+              margin-left: 4px;
+            }
+          }
+          .status-box.success {
+            color: rgb(var(--success-6));
+          }
+          .status-box.error {
+            color: rgb(var(--danger-6));
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.go-link {
+  text-align: center;
+  margin-top: 24px;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  span {
+    cursor: pointer;
+    user-select: none;
+  }
+}
+
+.loading,
+.loading > div {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.loading {
+  display: block;
+  font-size: 0;
+  color: rgb(38, 90, 255);
+}
+
+.loading.la-dark {
+  color: rgb(38, 90, 255);
+}
+
+.loading > div {
+  display: inline-block;
+  float: none;
+  background-color: currentColor;
+  border: 0 solid currentColor;
+}
+
+.loading {
+  // width: 54px;
+  // height: 18px;
+}
+
+.loading > div:nth-child(1) {
+  animation-delay: -200ms;
+}
+
+.loading > div:nth-child(2) {
+  animation-delay: -100ms;
+}
+
+.loading > div:nth-child(3) {
+  animation-delay: 0ms;
+}
+
+.loading > div {
+  width: 4px;
+  height: 4px;
+  margin: 2px;
+  border-radius: 100%;
+  animation: ball-pulse 1s ease infinite;
+}
+
+.loading.la-sm {
+  width: 26px;
+  height: 8px;
+}
+
+.loading.la-sm > div {
+  width: 4px;
+  height: 4px;
+  margin: 2px;
+}
+
+.loading.la-2x {
+  width: 108px;
+  height: 36px;
+}
+
+.loading.la-2x > div {
+  width: 20px;
+  height: 20px;
+  margin: 8px;
+}
+
+.loading.la-3x {
+  width: 162px;
+  height: 54px;
+}
+
+.loading.la-3x > div {
+  width: 30px;
+  height: 30px;
+  margin: 12px;
+}
+
+@keyframes ball-pulse {
+  0%,
+  60%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  30% {
+    opacity: 0.1;
+    transform: scale(0.01);
+  }
+}

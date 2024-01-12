@@ -30,7 +30,7 @@
             <div class="text">
               利用搜索引擎的规则提高网站在有关搜索引擎内的自然排名。目的是让其在行业内占据领先地位，获得品牌收益。所以优化SEO势在必行
             </div>
-            <div class="l-btn s"><span>立即优化</span><icon-arrow-right /></div>
+            <div class="l-btn s" @click="goai"><span>立即优化</span><icon-arrow-right /></div>
           </div>
           <div class="content-item" v-show="step == 3">
             <div class="text">
@@ -60,6 +60,9 @@ const goproduct = () => {
 }
 const gocompany = () => {
   router.push({ path: '/web/company/intro' })
+}
+const goai = () => {
+  router.push({ path: '/seo/ai' })
 }
 </script>
 <style lang="scss" scoped>

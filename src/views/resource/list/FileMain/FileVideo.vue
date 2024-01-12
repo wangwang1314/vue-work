@@ -12,7 +12,8 @@
     >
       <li class="file-grid-item" @click.stop="handleCheckFile(item)">
         <div class="file-image">
-          <GiSvgIcon size="100%" name="file-video"></GiSvgIcon>
+          <img class="img" :src="item.img_path || ''" @click.stop="showDetail(item)" />
+          <img class="img-icon" v-if="item.used>0" src="@/assets/images/right-icon2.png" alt="">
         </div>
         <div class="file-name">{{ item.title }}</div>
 
@@ -30,7 +31,7 @@
           <div class="single-mode">
             <a-space :size="6">
               <icon-delete @click.stop="deletefn(item)" :size="18" style="color:rgb(var(--danger-6));"/>
-              <icon-info-circle @click.stop="showDetail(item)" :size="18"/>
+              <!-- <icon-info-circle @click.stop="showDetail(item)" :size="18"/> -->
             </a-space>
           </div>
         </section>
@@ -41,7 +42,7 @@
         <!-- <FileRightMenu :file-info="item" @click="handleRightMenuItemClick($event, item)"></FileRightMenu> -->
       </template>
     </a-trigger>
-    <video-detail ref="videodetailref"></video-detail>
+    <video-detail ref="videodetailref" @update="changeupdate"></video-detail>
   </ul>
 </template>
 
@@ -112,6 +113,9 @@ const videodetailref = ref()
 const showDetail = (item: FileItem) => {
   videodetailref.value.showDialog(item)
 }
+const changeupdate = () => {
+  emit('update')
+}
 </script>
 
 <style lang="scss" scoped>
@@ -157,12 +161,24 @@ const showDetail = (item: FileItem) => {
     justify-content: center;
     overflow: hidden;
     margin-top: 20px;
+    position: relative;
     .img {
       width: auto;
       max-width: 100%;
       height: 100%;
       transition: all 0.3s;
       object-fit: contain;
+      position: relative;
+      z-index: 10;
+    }
+    .img-icon {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      z-index: 10;
+      bottom: 0;
+      right: 18px;
+      pointer-events: none;
     }
     .svg-img {
       height: 100%;

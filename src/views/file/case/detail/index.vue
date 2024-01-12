@@ -13,9 +13,24 @@
                 field="name"
                 label="案例标题"
                 :content-flex="false"
-                :rules="[{ required: true, message: '请填写案例标题', type: 'string' }]"
+                :rules="[
+                  { required: true, message: '请填写案例标题', type: 'string' },
+                  {
+                    validator: (value, cb) => {
+                      if (/^\s+$/.test(value)) {
+                        cb('不能输入全空格')
+                      }
+                    }
+                  }
+                ]"
               >
-                <a-input placeholder="请输入" v-model.trim="form.name" show-word-limit allow-clear :max-length="{ length: 120 }" />
+                <a-input
+                  placeholder="请输入"
+                  v-model="form.name"
+                  show-word-limit
+                  allow-clear
+                  :max-length="{ length: 120 }"
+                />
               </a-form-item>
               <pic-dialog ref="picDialogRef" @change="picChange"></pic-dialog>
               <a-form-item label="案例内容" :content-flex="false" class="no-bot">
@@ -107,8 +122,11 @@
                 </a-form-item>
                 <a-form-item label="SEO描述" class="no-bot" field="seo.description">
                   <a-textarea
-                  v-model="form.seo.description" 
-                  :auto-size="{ minRows: 6 }" placeholder="建议在140 - 160个字符之间。" allow-clear />
+                    v-model="form.seo.description"
+                    :auto-size="{ minRows: 6 }"
+                    placeholder="建议在140 - 160个字符之间。"
+                    allow-clear
+                  />
                 </a-form-item>
               </a-card>
             </div>
@@ -341,7 +359,7 @@ const saveFn = () => {
         })
       }
       if (res.code === 0) {
-        Message.success(res.message || '提交成功')
+        // Message.success(res.message || '提交成功')
         router.push({ path: '/file/case' })
       }
     }
@@ -418,7 +436,7 @@ const editImg = () => {
   }
 }
 
-fileStore.$onAction(({name}) => {
+fileStore.$onAction(({ name }) => {
   if (name === 'cancel') {
     cancelFn()
   } else if (name === 'save') {

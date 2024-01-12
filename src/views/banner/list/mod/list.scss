@@ -3,8 +3,11 @@
   overflow: auto;
   padding-right: 20px;
   width: 100%;
- 
-  
+  display: flex;
+  flex-direction: column;
+  :deep(.arco-card) {
+    flex: 1;
+  }
 }
 .full-width {
   width: 100%;

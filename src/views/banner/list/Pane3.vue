@@ -1,7 +1,10 @@
 <template>
-  <div class="banner-detail">
-    <a-form class="com-form" ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
-      <a-form-item label="首页视频背景" :content-flex="false">
+  <div class="banner-detail detail">
+    <a-card :bordered="false" title="首页视频背景">
+
+    
+    <a-form  ref="formRef" size="medium" :model="form" layout="horizontal" :auto-label-width="true">
+      <a-form-item label="首页视频背景" :content-flex="false" :hide-label="true">
         <a-row class="full-width">
           <div class="dra-wrap-b">
             <a-col :span="11" class="pic-item" v-for="(element, index) in fileList" :key="index">
@@ -46,12 +49,13 @@
           </div>
         </template>
       </a-form-item>
-      <a-form-item label="">
+      <a-form-item label="" :hide-label="true">
         <div style="margin-top: 20px">
           <a-button type="primary" @click="saveFn" :loading="loading" :disabled="loading">保存</a-button>
         </div>
       </a-form-item>
     </a-form>
+  </a-card>
   </div>
 </template>
 

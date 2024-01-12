@@ -244,3 +244,13 @@
   opacity: 0;
   pointer-events: none;
 }
+.cell-cous-lever-0 {
+  font-weight: bold;
+}
+.tips-dra {
+  margin-top: 8px;
+  span {
+    color: rgb(var(--danger-6));
+  }
+  text-indent: 18px;
+}

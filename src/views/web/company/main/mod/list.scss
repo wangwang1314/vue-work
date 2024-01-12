@@ -107,9 +107,10 @@
       }
     }
   }
-  
+ 
 }
 
-:deep(.arco-checkbox-label) {
-  line-height: 1.5;
+:deep(.arco-select-view-value) {
+  color: var(--color-text-1);
 }
+

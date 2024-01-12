@@ -1,13 +1,18 @@
 <template>
   <div class="file-manage">
-    <FileAside></FileAside>
-    <FileMain></FileMain>
+    <FileAside @change="changeFn"></FileAside>
+    <FileMain ref="filemain"></FileMain>
   </div>
 </template>
 
 <script setup lang="ts" name="Resource">
 import FileAside from './FileAside.vue'
 import FileMain from './FileMain/index.vue'
+import { ref, onMounted, computed, watch, reactive } from 'vue'
+const filemain = ref()
+const changeFn = () => {
+  filemain.value?.getTableData()
+}
 </script>
 
 <style lang="scss" scoped>

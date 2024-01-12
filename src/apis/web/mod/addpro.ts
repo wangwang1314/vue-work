@@ -105,3 +105,49 @@ export function setVideoEdit(params) {
 export function qualityControl(params) {
   return axios.post<ApiRes<productdata>>(`${baseURL}?r=product/quality-control`, qs.stringify(params))
 }
+
+/** @desc 视频打包 */
+export function provideoarchive(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=video/archive`, qs.stringify(params))
+}
+
+
+/** @desc 文档批量下载打包 */
+export function prodocumentarchive(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=document/archive`, qs.stringify(params))
+}
+
+/** @desc 调整视频分组 */
+export function provideoadjustgroup(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=video/adjust-group`, qs.stringify(params))
+}
+
+/** @desc 删除图片分组 */
+export function propicturedelgroup(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=picture/del-group`, qs.stringify(params))
+}
+
+/** @desc 删除视频分组 */
+export function provideodelgroup(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=video/del-group`, qs.stringify(params))
+}
+
+/** @desc 新增图片分组 */
+export function propicturesavegroupp(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=picture/save-group`, qs.stringify(params))
+}
+
+/** @desc 新增视频分组 */
+export function provideosavegroup(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=video/save-group`, qs.stringify(params))
+}
+
+/** @desc 保存图片信息 */
+export function propictureeditinfo(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=picture/edit-info`, qs.stringify(params))
+}
+
+/** @desc 视频信息编辑v2 */
+export function setVideoEditv2(params) {
+  return axios.post<ApiRes<productdata>>(`${baseURL}?r=video/edit`, params)
+}

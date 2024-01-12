@@ -24,7 +24,7 @@
               <a-form-item field="group_id" label="视频分组">
                 <a-select placeholder="请选择" v-model="form.group_id">
                   <a-option value="">所有分组</a-option>
-                  <a-option value="1">未分组</a-option>
+                  <a-option value="0">未分组</a-option>
                   <a-option :value="item.id" v-for="(item, index) in groupList" :key="item.id">{{
                     item.name
                   }}</a-option>
@@ -192,6 +192,7 @@ defineExpose({
       color: rgb(var(--primary-6));
       text-decoration: none;
       line-height: 25px;
+      cursor: pointer;
     }
   }
 }

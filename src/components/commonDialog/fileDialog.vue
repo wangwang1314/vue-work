@@ -6,16 +6,16 @@
         <a-button type="primary" @click="handleBeforeOk">确定</a-button>
       </template>
       <div v-loading="loading" class="cont-box">
-        <a-form label-align="right" ref="formRef" auto-label-width :model="form" class="form" direction="inline">
-          <a-row :gutter="4" wrap>
+        <a-form label-align="left" ref="formRef" auto-label-width :model="form" class="form" direction="inline">
+          <a-row :gutter="16" wrap style="width: 100%;">
             <a-col :span="8">
-              <a-form-item field="begin_time" label="From">
-                <a-date-picker format="YYYY-MM-DD" v-model="form.begin_time" />
+              <a-form-item field="begin_time" label="From" :label-col-flex="28">
+                <a-date-picker format="YYYY-MM-DD" v-model="form.begin_time" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="8">
-              <a-form-item field="end_time" label="to">
-                <a-date-picker format="YYYY-MM-DD" v-model="form.end_time" />
+              <a-form-item field="end_time" label="to" :label-col-flex="28">
+                <a-date-picker format="YYYY-MM-DD" v-model="form.end_time" style="width: 100%" />
               </a-form-item>
             </a-col>
             <a-col :span="6">
@@ -75,7 +75,11 @@ const form = reactive({
 const loading = ref(false)
 const getTableData = async () => {
   loading.value = true
-  const res = await profileList({ page_no: current.value, page_size: pageSize.value, ...form }).finally(() => {
+  const res = await profileList({ page_no: current.value, page_size: pageSize.value, 
+    ...form,
+    begin_time: form.begin_time?form.begin_time+' 00:00:00':form.begin_time,
+    end_time: form.end_time?form.end_time+'  23:59:59':form.end_time
+   }).finally(() => {
     loading.value = false
   })
   if (res.code == 0) {

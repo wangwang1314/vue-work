@@ -41,7 +41,7 @@
                 </a-card>
                 <a-row :gutter="12" class="media-class">
                   <a-col :span="16">
-                    <a-card class="item">
+                    <a-card class="item" :bordered="false">
                       <div class="label-class">
                         <span>产品图片</span>
                         <a-button type="primary" size="mini" @click="showPicCenter">图片中心选择</a-button>
@@ -130,7 +130,7 @@
                     </a-card>
                   </a-col>
                   <a-col :span="8">
-                    <a-card class="item">
+                    <a-card class="item" :bordered="false">
                       <div class="label-class">
                         <span>产品视频</span>
                         <a-button type="primary" size="mini" @click="showVideoCenter">视频中心选择</a-button>
@@ -163,14 +163,16 @@
                               <video-detail ref="videoDetailRef"></video-detail>
                             </div>
 
-                            <a-upload 
-                            :show-file-list="false"
-                            :on-before-upload="siglebefore"
-                            @progress="sigleChange"
-                            @success="sigleSuccess"
-                            @error="sigleError"
-                            :action="baseURL + '?r=video/upload'"
-                             v-else>
+                            <a-upload
+                              :show-file-list="false"
+                              :on-before-upload="siglebefore"
+                              @progress="sigleChange"
+                              @success="sigleSuccess"
+                              @error="sigleError"
+                              accept="video/*"
+                              :action="baseURL + '?r=video/upload'"
+                              v-else
+                            >
                               <template #upload-button>
                                 <div class="arco-upload-picture-card video-upload" v-if="!isuploading">
                                   <div class="arco-upload-picture-card-text">
@@ -201,7 +203,7 @@
                 <a-card title="产品属性" :bordered="false" class="item" id="step2">
                   <a-row class="full-width" :gutter="12">
                     <a-col :span="12">
-                      <a-form-item label="品牌">
+                      <a-form-item label="品牌" field="details[0]['Brand Name']">
                         <a-input placeholder="请输入品牌" v-model="form.details[0]['Brand Name'].value" allow-clear />
                       </a-form-item>
                     </a-col>
@@ -218,11 +220,7 @@
                   <a-row class="full-width" :gutter="12">
                     <a-col :span="12">
                       <a-form-item label="型号">
-                        <a-input
-                          placeholder="请输入型号"
-                          v-model="form.details[0]['Model Number'].value"
-                          allow-clear
-                        />
+                        <a-input placeholder="请输入型号" v-model="form.details[0]['Model Number'].value" allow-clear />
                       </a-form-item>
                     </a-col>
                     <a-col :span="12">
@@ -261,7 +259,6 @@
                               :data="attrData"
                               :loading="reloading"
                               style="width: 100%"
-                              
                               :pagination="false"
                               class="select-table"
                               height="400"
@@ -277,7 +274,7 @@
                                       {{ record.attr_name }}
                                       <a-input v-model="record.attr_name"></a-input>
                                     </div> -->
-                                    <a-input v-model="record.attr_name" style="margin: 8px;width: 200px;"></a-input>
+                                    <a-input v-model="record.attr_name" style="margin: 8px; width: 200px"></a-input>
                                   </template>
                                 </a-table-column>
                                 <a-table-column title="推荐属性值" data-index="value" align="center" :width="200">
@@ -290,7 +287,7 @@
                                           >{{ record.attr_value }}</span
                                         >
                                     </div> -->
-                                    <a-input v-model="record.attr_value" style="margin: 0 8px;"></a-input>
+                                    <a-input v-model="record.attr_value" style="margin: 0 8px"></a-input>
                                   </template>
                                 </a-table-column>
                                 <a-table-column title="操作" data-index="value" align="center" :width="100">
@@ -303,9 +300,8 @@
                             <div class="cus-btn-wrap">
                               <a-button @click="addaiCou()"><Icon-plus></Icon-plus></a-button>
                               <span>属性名和属性值必须同时填写，例如、：Color:Red</span>
-                           </div>
+                            </div>
                           </div>
-                         
                         </a-modal>
                         <a-table
                           :data="couArr"
@@ -517,9 +513,12 @@
                     />
                   </a-form-item>
                   <a-form-item label="SEO描述" field="seo.description">
-                    <a-textarea 
-                    v-model="form.seo.description"
-                    :auto-size="{ minRows: 6 }" placeholder="建议在140 - 160个字符之间。" allow-clear />
+                    <a-textarea
+                      v-model="form.seo.description"
+                      :auto-size="{ minRows: 6 }"
+                      placeholder="建议在140 - 160个字符之间。"
+                      allow-clear
+                    />
                   </a-form-item>
                   <a-form-item label="Tag词" field="tags.0">
                     <a-input placeholder="请输入TAG词1" v-model="form.tags[0]"></a-input>
@@ -585,6 +584,7 @@ const step4div = ref<HTMLElement | null>()
 
 fileStore.$onAction(({ name }) => {
   if (name === 'cancel') {
+    router.push({ path: '/web/webproduct/list' })
     if (pid.value) {
       initProduct()
     } else {
@@ -640,7 +640,7 @@ fileStore.$onAction(({ name }) => {
         '2': {}
       }
       form.tags = ['', '', '']
-      fileStore.setCheckdata([])
+      fileStore.setCheckdata([1, 2])
     }
   } else if (name === 'confirm') {
     saveFn('pro')
@@ -757,13 +757,9 @@ const form = reactive({
     keyword: '',
     description: ''
   },
-  tags: [
-    '',
-    '',
-    ''
-  ]
+  tags: ['', '', '']
 })
-fileStore.setCheckdata([])
+fileStore.setCheckdata([1,2])
 const rules = reactive({
   name: [{ required: true, message: '请输入产品名称' }]
 })
@@ -1020,8 +1016,8 @@ const getSubObj = () => {
     picture_ids,
     document_ids,
     video_id,
-    ai_optimization: fileStore.checkdata.indexOf(1)!=-1?1:0,
-    ai_extend: fileStore.checkdata.indexOf(2)!=-1?1:0,
+    ai_optimization: fileStore.checkdata.indexOf(1) != -1 ? 1 : 0,
+    ai_extend: fileStore.checkdata.indexOf(2) != -1 ? 1 : 0,
     seo,
     tags
   }
@@ -1055,6 +1051,9 @@ const saveFn = (priview) => {
 }
 const addProSub = async (priview: string) => {
   priview == 'priview' ? (loading1.value = true) : (loading.value = true)
+  if (!checkFn()) {
+    return
+  }
   if (!cateOptions.value.length) {
     const result = await addCategory({
       name: 'Unnamed Category'
@@ -1067,7 +1066,7 @@ const addProSub = async (priview: string) => {
     priview == 'priview' ? (loading1.value = false) : (loading.value = false)
   })
   if (res.code == 0) {
-    Message.success(res.message || '提交成功')
+    // Message.success(res.message || '提交成功')
     if (priview == 'priview') {
       window.open(res.data.preview_url, '_blank')
     } else {
@@ -1079,6 +1078,9 @@ const addProSub = async (priview: string) => {
 }
 const editProSub = async (priview: string) => {
   priview == 'priview' ? (loading1.value = true) : (loading.value = true)
+  if (!checkFn()) {
+    return
+  }
   if (!cateOptions.value.length) {
     const result = await addCategory({
       name: 'Unnamed Category'
@@ -1091,7 +1093,7 @@ const editProSub = async (priview: string) => {
     priview == 'priview' ? (loading1.value = false) : (loading.value = false)
   })
   if (res.code == 0) {
-    Message.success(res.message || '提交成功')
+    // Message.success(res.message || '提交成功')
     if (priview == 'priview') {
       window.open(res.data.preview_url, '_blank')
     } else {
@@ -1190,7 +1192,7 @@ const reverdetail = (product) => {
   const { cateid, id, details, name, remark, ai_optimization, ai_extend, tags, seo } = product
   form.category_id = product.cateid
   form.id = id
-  fileStore.setCheckdata([ai_optimization?1:'', ai_extend?2:''])
+  fileStore.setCheckdata([ai_optimization ? 1 : '', ai_extend ? 2 : ''])
   if (details) {
     Object.assign(form.details['0'], details['0'])
     Object.assign(form.details['1'], details['1'])
@@ -1198,7 +1200,7 @@ const reverdetail = (product) => {
   }
   Object.assign(form.tags, tags)
   if (seo) {
-      form.seo = {
+    form.seo = {
       title: seo.title,
       keyword: seo.keyword,
       description: seo.description
@@ -1275,7 +1277,6 @@ const goCheck = async () => {
   }
 }
 
-
 // 选择的数组
 const selectedArr = ref([])
 const selectKeyFn = (val: string) => {
@@ -1333,19 +1334,83 @@ const sigleChange = (res) => {
 const sigleError = () => {
   isuploading.value = false
 }
-const sigleSuccess = async(result) => {
-  if (result.response?.data.id) {
-    const res = await getVideoDetail({id: result.response?.data.id})
+const sigleSuccess = async (result) => {
+  if (result.response?.data?.id) {
+    const res = await getVideoDetail({ id: result.response?.data.id })
     if (res.code === 0) {
       videoChosed.value.push(res.data.video)
     } else {
       Message.warning(res.response.message || '操作失败')
     }
-    
+  }
+  if (result.response?.code != 0) {
+    Message.warning(result.response.message || '上传失败')
   }
   isuploading.value = false
 }
-
+const checkFn = () => {
+  const base = form.details['0']
+  const pay = form.details['1']
+  const cus = form.details['5']
+  const reg = /[\u4e00-\u9fa5]+/
+  if (form.name && reg.test(form.name)) {
+    Message.warning('产品名称不能含有中文')
+    return false
+  }
+  if (base['Brand Name'].value && reg.test(base['Brand Name'].value)) {
+    Message.warning('品牌不能含有中文')
+    return false
+  }
+  if (base.Certification.value && reg.test(base.Certification.value)) {
+    Message.warning('认证证书不能含有中文')
+    return false
+  }
+  if (base['Model Number'].value && reg.test(base['Model Number'].value)) {
+    Message.warning('型号不能含有中文')
+    return false
+  }
+  if (base['Place of Origin'].value && reg.test(base['Place of Origin'].value)) {
+    Message.warning('原产地不能含有中文')
+    return false
+  }
+  let cusjuge = true
+  couArr.value.forEach((item) => {
+    if (item.key && reg.test(item.key)) {
+      cusjuge = false
+      Message.warning('自定义属性不能含有中文')
+      return
+    }
+    if (item.value && reg.test(item.value)) {
+      cusjuge = false
+      Message.warning('自定义属性不能含有中文')
+      return
+    }
+  })
+  if (!cusjuge) {
+    return false
+  }
+  if (pay['Minimum Order Quantity'].value && reg.test(pay['Minimum Order Quantity'].value)) {
+    Message.warning('最小起订量不能含有中文')
+    return false
+  }
+  if (pay['Price'].value && reg.test(pay['Price'].value)) {
+    Message.warning('价格不能含有中文')
+    return false
+  }
+  if (pay['Supply Ability'].value && reg.test(pay['Supply Ability'].value)) {
+    Message.warning('供货能力不能含有中文')
+    return false
+  }
+  if (pay['Delivery Time'].value && reg.test(pay['Delivery Time'].value)) {
+    Message.warning('发货期限不能含有中文')
+    return false
+  }
+  if (pay['Packaging Details'].value && reg.test(pay['Packaging Details'].value)) {
+    Message.warning('常规包装不能含有中文')
+    return false
+  }
+  return true
+}
 </script>
 <style lang="scss" scoped>
 @import './mod/index.scss';

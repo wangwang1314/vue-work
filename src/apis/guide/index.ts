@@ -54,7 +54,7 @@ export function guidegetfreedomain(params) {
 
 /** @desc 域名校验 */
 export function guidedomaincheck(params) {
-  return axios.get<ApiRes<null>>(`${baseURL}?r=index/domaincheck`, params)
+  return axios.post<ApiRes<null>>(`${baseURL}?r=index/domaincheck`, qs.stringify(params))
 }
 
 /** @desc 申请上线(保存域名) */
@@ -96,4 +96,10 @@ export function guidegetnowstep(params) {
 /** @desc 当前步骤 */
 export function guidenextsetdomain(params) {
   return axios.get<ApiRes<null>>(`${baseURL}?r=index/nextsetdomain`, params)
+}
+
+/** @desc 审核拒绝理由
+ */
+export function guiderefusereason(params) {
+  return axios.get<ApiRes<null>>(`${baseURL}?r=index/refusereason`, params)
 }

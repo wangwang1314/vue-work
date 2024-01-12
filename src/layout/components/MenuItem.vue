@@ -13,7 +13,7 @@
     </template>
   </a-sub-menu>
 
-  <a-menu-item class="mormal-menu no-child" :class="'menu-level-' + data.level" v-else :key="data.path"
+  <a-menu-item class="mormal-menu no-child" :class="'menu-level-' + data.level" v-else-if="userStore.getHidemenu.indexOf(data.id)==-1" :key="data.path"
     @click="onClickMenuItem(data)">
     <template #icon>
       <!-- <GiSvgIcon v-if="data.icon" :size="24" :name="data.icon"></GiSvgIcon> -->
@@ -26,7 +26,8 @@
 </template>
 
 <script setup lang="ts" name="MenuItem">
-import $t from '@/i18n/use'
+import { useUserStore } from '@/store'
+const userStore = useUserStore()
 
 export interface Props {
   data: MenuItem
@@ -35,7 +36,6 @@ export interface Props {
 withDefaults(defineProps<Props>(), {
   data: () => ({ id: '', name: '' })
 })
-
 const emit = defineEmits(['click'])
 
 const onClickMenuItem = (item: MenuItem) => {

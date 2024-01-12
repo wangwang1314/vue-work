@@ -1,0 +1,34 @@
+.file-main {
+  flex: 1;
+  background: var(--color-bg-1);
+  margin: $margin;
+  border-radius: $radius-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .row-operate {
+    border-bottom: 1px dashed var(--color-border-3);
+    margin: 0 $padding;
+    padding-bottom: 12px;
+    > * {
+      margin-top: 16px;
+    }
+  }
+  .file-wrap {
+    flex: 1;
+    padding: 0 $padding $padding;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .page-box {
+    display: flex;
+    justify-content: end;
+    margin-top: 15px;
+  }
+}
+.g-box {
+  max-height: 320px;
+  overflow-y: auto;
+}

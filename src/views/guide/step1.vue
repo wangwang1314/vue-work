@@ -49,7 +49,7 @@ const rules = [
       if (/^\s+$/.test(value)) {
         cb('不能输入全空格')
       }
-      if (!/[a-zA-Z\s]{6,20}$/.test(value) || value === undefined) {
+      if (!/^[a-zA-Z0-9\s]{6,20}$/.test(value) || value === undefined) {
         cb('6~20个英文字符')
       }
     }
@@ -81,7 +81,7 @@ const submit = () => {
       disabled.value = false
     })
     if (result.code == 0) {
-      Message.success(result.message || '操作成功')
+      // Message.success(result.message || '操作成功')
       setTimeout(() => {
         router.push({ path: '/guide2' })
       })

@@ -1,6 +1,9 @@
 <template>
-  <img class="img" :src="props.data.picture_url_d || ''" />
-  <!-- <GiSvgIcon size="100%" :name="props.data.name" v-else></GiSvgIcon> -->
+  <div>
+    <img class="img" :src="props.data.picture_url_d || ''" />
+    <img class="img-icon" v-if="props.data.isused>0" src="@/assets/images/right-icon2.png" alt="">
+  </div>
+ 
 </template>
 
 <script setup lang="ts">

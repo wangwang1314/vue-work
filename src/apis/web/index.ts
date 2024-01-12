@@ -200,6 +200,6 @@ export function getMailsign(params: any) {
 }
 /** @desc 设置邮件签名 */
 export function setMailsign(params: any) {
-  return axios.get<ApiRes<any>>(`${baseURL}?r=inquiry/set-mailsign`, params)
+  return axios.post<ApiRes<any>>(`${baseURL}?r=inquiry/set-mailsign`, qs.stringify(params))
 }
 export * from './mod/addpro'

@@ -3,6 +3,8 @@
     <div class="top-nav-tit">
       <div class="m-left">产品管理</div>
       <div class="m-right">
+        <span class="ai-span no-link" v-if="userStore.getAiService>0"><img src="@/assets/images/ai-icon.png">AI发布服务已启用</span>
+        <span class="ai-span" @click="goAilink" v-else><img src="@/assets/images/ai-icon.png">开通AI发布服务, 提升Google/YouTube/TikTok排名</span>
         <a-button type="primary" size="large" @click="goAdd">
           <template #icon><icon-plus /></template>
           添加产品
@@ -37,9 +39,11 @@
 <script setup lang="ts" name="productlist">
 import { ref, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/store'
 import Pane1 from './Pane1.vue'
 import Pane2 from './Pane2.vue'
 import Pane3 from './Pane3.vue'
+const userStore = useUserStore()
 const router = useRouter()
 const PaneMap: any = {
   1: Pane1,
@@ -59,6 +63,11 @@ const changeTab = (val: number) => {
 }
 const goAdd = () => {
   router.push({ path: '/web/webproduct/detail' })
+}
+const goAilink = () => {
+  router.push({
+    path: '/seo/ai'
+  })
 }
 </script>
 
@@ -129,5 +138,21 @@ const goAdd = () => {
       }
     }
   }
+}
+.ai-span {
+  color: rgb(var(--primary-6));
+  margin-right: 8px;
+  cursor: pointer;
+  user-select: none;
+  img {
+    margin-right: 4px;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 4px;
+  }
+}
+.no-link {
+  cursor: default;
 }
 </style>

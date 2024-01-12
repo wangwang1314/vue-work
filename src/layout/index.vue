@@ -40,7 +40,8 @@ const routeNameArr = [
   'webcompanylanguage',
   'webcompanystatisticedit',
   'webcompanyquality',
-  'webcompanycontact'
+  'webcompanycontact',
+  'integrallist'
 ]
 const inquiryRouteNameArr = ['inquiryDetail', 'inquiryReply']
 watch(

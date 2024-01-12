@@ -6,28 +6,31 @@
       >
       <a-form label-align="right" ref="formRef" auto-label-width :model="form" class="form" direction="inline">
         <a-row :gutter="16" wrap>
-          <a-col :xs="12" :md="12" :lg="8" :xl="5" :xxl="6">
+          <a-col :span="7">
             <a-form-item field="search_name" label="产品名称">
               <a-input v-model="form.search_name" placeholder="请输入产品名称" :allow-clear="true" />
             </a-form-item>
           </a-col>
-          <a-col :xs="14" :md="14" :lg="10" :xl="7" :xxl="8">
+          <a-col :span="9">
             <a-form-item field="category_id" label="分类名称">
-              <a-select placeholder="所有分类" v-model="form.category_id" :allow-create="true">
+              <!-- <a-select placeholder="所有分类" v-model="form.category_id" :allow-create="true">
                 <a-option value="" label="所有分类"></a-option>
                 <a-option v-for="item in cateArr" :key="item.id" :value="item.id" :label="item.name"></a-option>
-              </a-select>
+              </a-select> -->
+              <a-cascader
+                id="cate"
+                :options="cateArr"
+                v-model="form.category_id"
+                :field-names="{ value: 'id', label: 'name' }"
+                default-value=""
+                expand-trigger="hover"
+                placeholder="请选择"
+                check-strictly
+                value-key="id"
+              />
             </a-form-item>
           </a-col>
-          <!-- <a-col :xs="12" :md="12" :lg="8" :xl="5" :xxl="6">
-            <a-form-item field="p_uid" label="负责人">
-              <a-select placeholder="所有负责人" v-model="form.p_uid">
-                <a-option value="">所有负责人</a-option>
-                <a-option v-for="item in personArr" :key="item.id" :value="item.id">{{ item.username }}</a-option>
-              </a-select>
-            </a-form-item>
-          </a-col> -->
-          <a-col :xs="8" :md="8" :lg="6" :xl="6" :xxl="5">
+          <a-col :span="6">
             <a-form-item :hide-label="true">
               <a-space>
                 <a-button type="primary" @click="searchFn">
@@ -36,10 +39,14 @@
                 <a-button @click="resetFn">
                   <template #default>重置</template>
                 </a-button>
-                <a-button type="primary" @click="goAdd" status="success">
-                  <template #default>设定</template>
-                </a-button>
               </a-space>
+            </a-form-item>
+          </a-col>
+          <a-col :span="2">
+            <a-form-item :hide-label="true" class="end-class">
+              <a-button type="primary" @click="goAdd" status="success" style="float: right">
+                <template #default>设定</template>
+              </a-button>
             </a-form-item>
           </a-col>
         </a-row>
@@ -106,17 +113,24 @@
               <a-table-column title="更新时间" data-index="uptime" :width="140" align="left"> </a-table-column>
               <a-table-column title="操作" :width="150" align="center">
                 <template #cell="{ record, rowIndex }">
-                  <a-space :size="4">
-                    <icon-arrow-rise @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }" size="18" :strokeWidth="7" class="up-icon" />
-                    <icon-arrow-fall
+                  <a-space :size="10">
+                    <span class="up-icon" @click="sortFn(0, record)" :class="{ disabled: rowIndex == 0 }">
+                      <icon-arrow-rise size="16" :strokeWidth="7" class="up-icon" />
+                      <span>上移</span>
+                    </span>
+                    <span
                       @click="sortFn(1, record)"
+                      class="up-icon down-icon"
                       :class="{ disabled: tableData.length - 1 == rowIndex }"
-                      size="18"
-                      :strokeWidth="7"
-                      class="up-icon"
-                    />
+                    >
+                      <icon-arrow-fall size="16" :strokeWidth="7" class="up-icon" />
+                      <span>下移</span>
+                    </span>
                     <a-popconfirm type="warning" content="您确定取消置顶吗?" @ok="cancelTag(record)">
-                      <icon-close size="18" :strokeWidth="7" class="close-icon" />
+                      <span class="close-icon">
+                        <icon-close size="18" :strokeWidth="7"  />
+                        <span>取消</span>
+                      </span>
                     </a-popconfirm>
                   </a-space>
                 </template>
@@ -125,7 +139,6 @@
           </a-table>
         </div>
       </section>
- 
 
       <productlist ref="listRef" :flagType="flag_type" @update="getTableData"></productlist>
     </div>
@@ -136,16 +149,12 @@
 <script setup lang="ts" name="MainTable">
 import { reactive, ref, h } from 'vue'
 import { usePagination } from '@/hooks'
-import {
-  prTopFlagList,
-  prFlagCancelTop,
-  prFlagDown,
-  prFlagUp
-} from '@/apis'
+import { prTopFlagList, prFlagCancelTop, prFlagDown, prFlagUp } from '@/apis'
 import type { productListItem, webSelectObj, proPersonItem, procateItem } from '@/apis'
 import { useRoute, useRouter } from 'vue-router'
 import { Notification, Message } from '@arco-design/web-vue'
 import productlist from '@/components/commonDialog/productlist.vue'
+import { getTreeDate } from '@/utils/common'
 const emit = defineEmits(['update'])
 const router = useRouter()
 const route = useRoute()
@@ -153,7 +162,7 @@ const form = reactive({
   search_name: '',
   category_id: '',
   p_uid: '',
-  product_id: '',
+  product_id: ''
 })
 const personArr = ref<proPersonItem[]>([])
 const cateArr = ref<procateItem[]>([])
@@ -269,31 +278,6 @@ const searchName = (name: string) => {
   resetFn()
   form.search_name = name
   getTableData()
-}
-// 分类option
-const getTreeDate = (arrayData) => {
-  function getChildren(data, result, pid) {
-    for (const item of data) {
-      if (item.parentid === pid) {
-        if (!Array.isArray(result)) {
-          if (!result.children) {
-            result.children = []
-          }
-          result.children.push(item)
-        } else {
-          result.push(item)
-        }
-        getChildren(data, item, item.id)
-      }
-    }
-  }
-
-  function arrayToTree(data, pid) {
-    let result = []
-    getChildren(data, result, pid)
-    return result
-  }
-  return arrayToTree(arrayData, '0')
 }
 
 const listRef = ref()

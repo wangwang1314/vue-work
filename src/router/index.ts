@@ -70,40 +70,6 @@ const routes = [
       keepAlive: false
     }
   },
-  {
-    path: '/layout',
-    name: 'Layout',
-    component: DEFAULT_LAYOUT,
-    children: [
-      {
-        path: 'about',
-        name: 'About',
-        component: () => import('@/views/about/index.vue'),
-        meta: {
-          title: '关于',
-          keepAlive: false
-        }
-      },
-      {
-        path: 'navigation',
-        name: 'Navigation',
-        component: () => import('@/views/navigation/index.vue'),
-        meta: {
-          title: '导航',
-          keepAlive: false
-        }
-      },
-      {
-        path: 'tool',
-        name: 'Tool',
-        component: () => import('@/views/tool/index.vue'),
-        meta: {
-          title: '功能页',
-          keepAlive: true
-        }
-      }
-    ]
-  },
   ...appRoutes
 ]
 const router = createRouter({

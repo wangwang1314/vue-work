@@ -46,12 +46,12 @@
                   </div>
                 </template>
               </a-table-column>
-              <a-table-column title="顶部导航" data-index="id" :width="80" align="left">
+              <a-table-column title="顶部导航" data-index="id" :width="80" align="center">
                 <template #cell="{ record }">
                   <a-checkbox v-model="record.isheader" @change="changeFn(record)"></a-checkbox>
                 </template>
               </a-table-column>
-              <a-table-column title="底部导航" data-index="id" :width="80" align="left">
+              <a-table-column title="底部导航" data-index="id" :width="80" align="center">
                 <template #cell="{ record }">
                   <a-checkbox v-model="record.isfooter" @change="changeFn(record)"></a-checkbox>
                 </template>
